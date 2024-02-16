@@ -164,7 +164,7 @@ namespace FICCI_API.Controller.API
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{customerId}")]
         public async Task<IActionResult> Delete(int customerId)
         {
             try

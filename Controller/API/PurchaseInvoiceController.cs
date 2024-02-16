@@ -8,8 +8,8 @@ using Newtonsoft.Json;
 
 namespace FICCI_API.Controller.API
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    //[Route("api/[controller]")]
+    //[ApiController]
     public class PurchaseInvoiceController : BaseController
     {
         private readonly FICCI_DB_APPLICATIONSContext _dbContext;

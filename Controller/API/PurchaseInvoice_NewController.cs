@@ -50,13 +50,17 @@ namespace FICCI_API.Controller.API
                         ficciImpiHeader.ImpiHeaderCreatedOn = DateTime.Now;
                         ficciImpiHeader.ImpiHeaderActive = true;
                         ficciImpiHeader.ImpiHeaderTotalInvoiceAmount = request.ImpiHeaderTotalInvoiceAmount;
-                        ficciImpiHeader.ImpiHeaderAttachment = UploadFile(request.ImpiHeaderAttachment);
+                        if (request.ImpiHeaderAttachment != null)
+                        {
+                            ficciImpiHeader.ImpiHeaderAttachment = UploadFile(request.ImpiHeaderAttachment);
+                        }
                         ficciImpiHeader.ImpiHeaderPaymentTerms = request.ImpiHeaderPaymentTerms;
                         ficciImpiHeader.ImpiHeaderRemarks = request.ImpiHeaderRemarks;
                         ficciImpiHeader.ImpiHeaderStatus = request.IsDraft == true ? "Draft" : "Pending";
                         ficciImpiHeader.IsDraft = request.IsDraft;
                         ficciImpiHeader.ImpiHeaderPiNo = DateTime.Now.ToString("yyyyMMddhhmmss");
                         ficciImpiHeader.ImpiHeaderSubmittedDate = DateTime.Now;
+                      
 
                         _dbContext.Add(ficciImpiHeader);
                         _dbContext.SaveChanges();
@@ -184,7 +188,7 @@ namespace FICCI_API.Controller.API
             }
         }
 
-        [HttpGet]
+        [HttpGet("{headerid}")]
 
         public async Task<IActionResult> GET(int headerid = 0)
         {
@@ -203,6 +207,7 @@ namespace FICCI_API.Controller.API
                     foreach (var k in list)
                     {
                         PurchaseInvoice_Response purchaseInvoice_response = new PurchaseInvoice_Response();
+                        purchaseInvoice_response.HeaderId = k.ImpiHeaderPiNo; ;
                         purchaseInvoice_response.ImpiHeaderInvoiceType = k.ImpiHeaderInvoiceType;
                         purchaseInvoice_response.ImpiHeaderProjectCode = k.ImpiHeaderProjectCode;
                         purchaseInvoice_response.ImpiHeaderDepartment = k.ImpiHeaderDepartment;
@@ -220,7 +225,12 @@ namespace FICCI_API.Controller.API
                         purchaseInvoice_response.ImpiHeaderCustomerEmailId = k.ImpiHeaderCustomerEmailId;
                         purchaseInvoice_response.ImpiHeaderCustomerPhoneNo = k.ImpiHeaderCustomerPhoneNo;
                         purchaseInvoice_response.ImpiHeaderCreatedBy = k.ImpiHeaderCreatedBy;
-
+                        purchaseInvoice_response.IsDraft = k.IsDraft;
+                        purchaseInvoice_response.ImpiHeaderSubmittedDate = k.ImpiHeaderSubmittedDate;
+                        purchaseInvoice_response.ImpiHeaderTotalInvoiceAmount = k.ImpiHeaderTotalInvoiceAmount;
+                        purchaseInvoice_response.ImpiHeaderPaymentTerms = k.ImpiHeaderPaymentTerms;
+                        purchaseInvoice_response.ImpiHeaderRemarks = k.ImpiHeaderRemarks;
+                        purchaseInvoice_response.ImpiHeaderModifiedDate = k.ImpiHeaderModifiedOn;
                         var lindata = _dbContext.FicciImpiLines.Where(m => m.ImpiLineActive == true && m.PiHeaderId == k.ImpiHeaderId).ToList();
                         if (lindata.Count > 0)
                         {
@@ -268,7 +278,7 @@ namespace FICCI_API.Controller.API
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{headerid}")]
 
         public async Task<IActionResult> DELETE(int headerid)
         {

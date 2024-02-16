@@ -52,17 +52,17 @@ namespace FICCI_API.Controller.API
             }
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{IMEM_ID}")]
+        public async Task<IActionResult> Delete(int IMEM_ID)
         {
             GetEmployee_MasterResponse response = new GetEmployee_MasterResponse();
             try
             {
-                if(id == 0)
+                if(IMEM_ID == 0)
                 {
                     return NotFound("No User Master found for Delete");
                 }
-                var res = await _dbContext.GetProcedures().prc_UserMaster_DeleteAsync(id);
+                var res = await _dbContext.GetProcedures().prc_UserMaster_DeleteAsync(IMEM_ID);
                 response.status = res[0].returncode == 1 ? true : false;
                 response.message = res[0].Message;
                 return StatusCode(200, response);
@@ -76,7 +76,7 @@ namespace FICCI_API.Controller.API
             }
         }
 
-        [HttpGet]
+        [HttpGet("{IMEM_ID}")]
         public async Task<IActionResult> Get(int IMEM_ID = 0)
         {
             GetEmployee_MasterResponse response = new GetEmployee_MasterResponse();

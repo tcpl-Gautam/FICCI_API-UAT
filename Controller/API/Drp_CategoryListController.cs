@@ -5,8 +5,8 @@ using FICCI_API.Models;
 
 namespace FICCI_API.Controller.API
 {
-    [Route("api/[controller]")]
-    [ApiController]
+    //[Route("api/[controller]")]
+    //[ApiController]
     public class Drp_CategoryListController : BaseController
     {
         private readonly FICCI_DB_APPLICATIONSContext _dbContext;

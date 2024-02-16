@@ -15,5 +15,7 @@
         public int ProjectId { get; set; }
         public string ProjectCode { get; set; }
         public string ProjectName { get; set; }
+        public string? Divison { get; set; }
+        public string? Department { get; set; }
     }
 }

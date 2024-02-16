@@ -270,5 +270,130 @@ namespace FICCI_API.Controller.API
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("GetProject")]
+        public async Task<IActionResult> GetProject(int id = 0)
+        {
+            var result = new ProjectDTO();
+            var resu = new List<AllProjectList>();
+            try
+            {
+                if (id > 0)
+                {
+                    result = await _dbContext.FicciErpProjectDetails.Where(x => x.IsDelete != true && x.ProjectActive != false)
+                        .Select(project => new ProjectDTO
+                        {
+                            ProjectId = project.ProjectId,
+                            ProjectCode = project.ProjectNo,
+                            GST = project.ProjectGst ?? "",
+                            PAN = project.ProjectPan ?? "",
+                            Department = project.ProjectDepartment,
+                            Division = project.ProjectDivision,
+
+                        }).FirstOrDefaultAsync(x => x.ProjectId == id);
+
+                    if (result == null)
+                    {
+                        var respons = new
+                        {
+                            status = false,
+                            message = "No Projects found for the given Id",
+                            data = result
+                        };
+                        return NotFound(respons);
+                    }
+                    var response = new
+                    {
+                        status = true,
+                        message = "Project Detail fetch successfully",
+                        data = result
+                    };
+                    return Ok(response);
+                }
+                else if (id == 0)
+                {
+                    resu = await _dbContext.FicciErpProjectDetails.Where(x => x.IsDelete != true && x.ProjectActive != false)
+                    .Select(project => new AllProjectList
+                    {
+                        ProjectId = project.ProjectId,
+                        ProjectName = project.ProjectName,
+                        ProjectCode = project.ProjectNo,
+                        Department = project.ProjectDepartment,
+                        Divison = project.ProjectDivision
+                        
+                    })
+                    .ToListAsync();
+                    if (resu.Count <= 0)
+                    {
+                        var respons = new
+                        {
+                            status = false,
+                            message = "No Projects found for the given Id",
+                            data = result
+                        };
+                        return NotFound(respons);
+                    }
+                    var response = new
+                    {
+                        status = true,
+                        message = "List fetch successfully",
+                        data = resu
+                    };
+
+                    return Ok(response);
+                }
+                else
+                {
+                    var response = new
+                    {
+                        status = false,
+                        message = "Invalid Id",
+                        data = resu
+                    };
+                    return NotFound(response);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { status = false, message = "An error occurred while fetching the detail of projects." });
+            }
+        }
+
+        [HttpGet("GetCategory")]
+        public async Task<IActionResult> GetCategory()
+        {
+            Drp_CategoryList drp_CategoryList = new Drp_CategoryList();
+            try
+            {
+                var list = await _dbContext.GetProcedures().prc_drp_categorylistAsync();
+                if (list.Count > 0)
+                {
+                    foreach (var k in list)
+                    {
+                        Drp_CategoryListResponse drp_CategoryListResponse = new Drp_CategoryListResponse();
+                        drp_CategoryListResponse.Id = k.Id;
+                        drp_CategoryListResponse.Category_Name = k.Category_Name;
+                        drp_CategoryList.Data.Add(drp_CategoryListResponse);
+                    }
+                    drp_CategoryList.status = true;
+                    drp_CategoryList.message = "List Fecth Successfully";
+                    return StatusCode(200, drp_CategoryList);
+                }
+                else
+                {
+                    drp_CategoryList.status = false;
+                    drp_CategoryList.message = "Data Not found";
+                    return StatusCode(200, drp_CategoryList);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                drp_CategoryList.status = false;
+                drp_CategoryList.message = ex.InnerException.Message.ToString();
+                return StatusCode(500, drp_CategoryList);
+            }
+        }
     }
 }
