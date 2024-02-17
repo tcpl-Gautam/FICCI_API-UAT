@@ -103,6 +103,7 @@ namespace FICCI_API.Controller.API
                             Pincode = customer.CustomerPinCode,
                             PAN = customer.CustomerPanNo,
                             GSTNumber = customer.CustomerGstNo,
+                            IsActive = customer.IsActive,
                             GstType = customer.GstCustomerTypeNavigation == null ? null : new GSTCustomerTypeInfo
                             {
                                 GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,

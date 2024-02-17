@@ -41,6 +41,7 @@ namespace FICCI_API.DTO
         public string? GSTNumber { get; set; }
         //public int GSTCustomerType { get; set; }
         public string? PAN { get; set; }
+        public bool? IsActive { get; set; }
         public CityInfo? City { get; set; }
         public StateInfo? State { get; set; }
         public CountryInfo? Country { get; set; }
