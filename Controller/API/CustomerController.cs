@@ -50,6 +50,7 @@ namespace FICCI_API.Controller.API
                                 Phone = customer.CustomerPhoneNo,
                                 TextAreaCode = customer.CustomerTextArea,
                                 ResponsibilityCenter = customer.CustomerResponsibility,
+                                IsDraft = customer.IsDraft,
                                 GstType = customer.GstCustomerTypeNavigation == null ? null : new GSTCustomerTypeInfo
                                 {
                                     GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,
@@ -111,6 +112,7 @@ namespace FICCI_API.Controller.API
                             PAN = customer.CustomerPanNo,
                             GSTNumber = customer.CustomerGstNo,
                             IsActive = customer.IsActive,
+                            IsDraft = customer.IsDraft,
                             GstType = customer.GstCustomerTypeNavigation == null ? null : new GSTCustomerTypeInfo
                             {
                                 GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,

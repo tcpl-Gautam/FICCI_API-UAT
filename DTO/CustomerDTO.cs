@@ -23,6 +23,7 @@ namespace FICCI_API.DTO
         public string Email { get; set; }
         public string? TextAreaCode { get; set; }
         public string? ResponsibilityCenter { get; set; }
+        public bool? IsDraft { get; set; }
         public CityInfo? City { get; set; }
         public StateInfo? State { get; set; }
         public CountryInfo? Country { get; set; }
@@ -44,6 +45,7 @@ namespace FICCI_API.DTO
         //public int GSTCustomerType { get; set; }
         public string? PAN { get; set; }
         public bool? IsActive { get; set; }
+        public bool? IsDraft { get; set; }
         public CityInfo? City { get; set; }
         public StateInfo? State { get; set; }
         public CountryInfo? Country { get; set; }
