@@ -50,20 +50,27 @@ namespace FICCI_API.Controller.API
                                 Phone = customer.CustomerPhoneNo,
                                 TextAreaCode = customer.CustomerTextArea,
                                 ResponsibilityCenter = customer.CustomerResponsibility,
+                                GstType = customer.GstCustomerTypeNavigation == null ? null : new GSTCustomerTypeInfo
+                                {
+                                    GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,
+                                    GstTypeName = customer.GstCustomerTypeNavigation.CustomerTypeName,
+                                },
                                 City = customer.CustomerCityNavigation == null ? null : new CityInfo
                                 {
                                     CityId = customer.CustomerCityNavigation.CityId,
                                     CityName = customer.CustomerCityNavigation.CityName,
-                                    State = customer.CustomerCityNavigation.State == null ? null : new StateInfo
-                                    {
-                                        StateId = customer.CustomerCityNavigation.StateId,
-                                        StateName = customer.CustomerCityNavigation.State.StateName,
-                                        Country = customer.CustomerCityNavigation.State.Country == null ? null : new CountryInfo
-                                        {
-                                            CountryId = customer.CustomerCityNavigation.State.CountryId,
-                                            CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
-                                        }
-                                    }
+
+                                },
+                                State = customer.CustomerCityNavigation.State == null ? null : new StateInfo
+                                {
+                                    StateId = customer.CustomerCityNavigation.StateId,
+                                    StateName = customer.CustomerCityNavigation.State.StateName,
+
+                                },
+                                Country = customer.CustomerCityNavigation.State.Country == null ? null : new CountryInfo
+                                {
+                                    CountryId = customer.CustomerCityNavigation.State.CountryId,
+                                    CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
                                 }
 
                             }).FirstOrDefaultAsync(x => x.CustomerId == id);
@@ -230,7 +237,7 @@ namespace FICCI_API.Controller.API
                             customer.CustomerPhoneNo = data.Phone;
                             customer.GstCustomerType = data.GSTCustomerType;
                             customer.IsPending = true;
-                            customer.IsDraft = false;
+                            customer.IsDraft = data.IsDraft;
 
                             _dbContext.Add(customer);
                             _dbContext.SaveChanges();
@@ -260,7 +267,7 @@ namespace FICCI_API.Controller.API
                                 result.CustomerPhoneNo = data.Phone;
                                 result.GstCustomerType = data.GSTCustomerType;
                                 result.IsPending = true;
-                                result.IsDraft = false;
+                                result.IsDraft = data.IsDraft;
 
                                 _dbContext.SaveChanges();
                                 transaction.Commit();

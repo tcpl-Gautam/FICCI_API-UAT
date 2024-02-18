@@ -207,7 +207,8 @@ namespace FICCI_API.Controller.API
                     foreach (var k in list)
                     {
                         PurchaseInvoice_Response purchaseInvoice_response = new PurchaseInvoice_Response();
-                        purchaseInvoice_response.HeaderId = k.ImpiHeaderPiNo; ;
+                        purchaseInvoice_response.HeaderId = k.ImpiHeaderId;
+                        purchaseInvoice_response.HeaderPiNo = k.ImpiHeaderPiNo ;
                         purchaseInvoice_response.ImpiHeaderInvoiceType = k.ImpiHeaderInvoiceType;
                         purchaseInvoice_response.ImpiHeaderProjectCode = k.ImpiHeaderProjectCode;
                         purchaseInvoice_response.ImpiHeaderDepartment = k.ImpiHeaderDepartment;

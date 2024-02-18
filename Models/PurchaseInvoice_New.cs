@@ -13,7 +13,8 @@
     }
     public class PurchaseInvoice_Response
     {
-        public string? HeaderId { get; set; }
+        public int? HeaderId { get; set; }
+        public string HeaderPiNo { get; set; }
         public string ImpiHeaderInvoiceType { get; set; }
         public string ImpiHeaderProjectCode { get; set; }
         public string ImpiHeaderDepartment { get; set; }

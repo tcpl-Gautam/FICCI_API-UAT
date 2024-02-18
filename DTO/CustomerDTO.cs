@@ -24,7 +24,9 @@ namespace FICCI_API.DTO
         public string? TextAreaCode { get; set; }
         public string? ResponsibilityCenter { get; set; }
         public CityInfo? City { get; set; }
-
+        public StateInfo? State { get; set; }
+        public CountryInfo? Country { get; set; }
+        public GSTCustomerTypeInfo? GstType { get; set; }
     }
     public class CustomerList
     {
