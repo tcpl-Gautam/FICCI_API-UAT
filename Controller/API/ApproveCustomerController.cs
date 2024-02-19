@@ -49,6 +49,7 @@ namespace FICCI_API.Controller.API
                                 Phone = customer.CustomerPhoneNo,
                                 TextAreaCode = customer.CustomerTextArea,
                                 ResponsibilityCenter = customer.CustomerResponsibility,
+                                IsDraft = customer.IsDraft,
                                 City = customer.CustomerCityNavigation == null ? null : new CityInfo
                                 {
                                     CityId = customer.CustomerCityNavigation.CityId,
@@ -71,7 +72,7 @@ namespace FICCI_API.Controller.API
                     {
                         var response = new
                         {
-                            status = false,
+                            status = true,
                             message = "No customer found for the given Id",
                             data = result
                         };
@@ -87,7 +88,7 @@ namespace FICCI_API.Controller.API
                 }
                 else if (id == 0)
                 {
-                    resu = await _dbContext.FicciErpCustomerDetails.Where(x => x.IsDelete != true && x.IsActive != false)
+                    resu = await _dbContext.FicciErpCustomerDetails.Where(x => x.IsDelete != true && x.IsActive != false && x.IsPending != false)
                         .Select(customer => new CustomerList
                         {
                             CustomerId = customer.CustomerId,
@@ -97,20 +98,34 @@ namespace FICCI_API.Controller.API
                             Email = customer.CustomerEmailId,
                             PhoneNumber = customer.CustomerPhoneNo,
                             Pincode = customer.CustomerPinCode,
+                            IsActive = customer.IsActive,
+                            CustomerLastName = customer.CustomerLastname,
+                            Address2 = customer.CustoemrAddress2,
+                            Contact = customer.CustomerContact,
+                            IsDraft = customer.IsDraft,
+                            PAN = customer.CustomerPanNo,
+                            GSTNumber = customer.CustomerGstNo,
                             City = customer.CustomerCityNavigation == null ? null : new CityInfo
                             {
                                 CityId = customer.CustomerCityNavigation.CityId,
                                 CityName = customer.CustomerCityNavigation.CityName,
-                                State = customer.CustomerCityNavigation.State == null ? null : new StateInfo
-                                {
-                                    StateId = customer.CustomerCityNavigation.StateId,
-                                    StateName = customer.CustomerCityNavigation.State.StateName,
-                                    Country = customer.CustomerCityNavigation.State.Country == null ? null : new CountryInfo
-                                    {
-                                        CountryId = customer.CustomerCityNavigation.State.CountryId,
-                                        CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
-                                    }
-                                }
+                               
+                            },
+                            State = customer.CustomerCityNavigation.State == null ? null : new StateInfo
+                            {
+                                StateId = customer.CustomerCityNavigation.StateId,
+                                StateName = customer.CustomerCityNavigation.State.StateName,
+                                
+                            },
+                            Country = customer.CustomerCityNavigation.State.Country == null ? null : new CountryInfo
+                            {
+                                CountryId = customer.CustomerCityNavigation.State.CountryId,
+                                CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
+                            },
+                            GstType = customer.GstCustomerTypeNavigation == null ? null : new GSTCustomerTypeInfo
+                            {
+                                GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,
+                                GstTypeName = customer.GstCustomerTypeNavigation.CustomerTypeName,
                             }
 
                         }).ToListAsync();

@@ -221,8 +221,10 @@ namespace FICCI_API.Controller.API
                 {
                     if(data != null)
                     {
+                        
                         if(!data.isupdate)
                         {
+                           
                             FicciErpCustomerDetail customer = new FicciErpCustomerDetail();
                             customer.CusotmerNo = data.CustomerCode;
                             customer.CustoemrAddress = data.Address;
@@ -280,7 +282,7 @@ namespace FICCI_API.Controller.API
                             }
                             else
                             {
-                                request.Status = false;
+                                request.Status = true;
                                 request.Message = "Customer not found";
                                 return NotFound(request);
                             }

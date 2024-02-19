@@ -95,7 +95,7 @@ namespace FICCI_API.Controller.API
                 {
                     var response = new GetEmployee_MasterResponse
                     {
-                        status = false,
+                        status = true,
                         message = "No List Found",
                         data = new List<Employee_Master>()
                     };
@@ -136,7 +136,7 @@ namespace FICCI_API.Controller.API
                 {
                     var response = new
                     {
-                        status = false,
+                        status = true,
                         message = "No City list found",
                         data = city
                     };
@@ -178,7 +178,7 @@ namespace FICCI_API.Controller.API
                 {
                     var response = new
                     {
-                        status = false,
+                        status = true,
                         message = "No State list found",
                         data = state
                     };
@@ -220,7 +220,7 @@ namespace FICCI_API.Controller.API
                 {
                     var response = new
                     {
-                        status = false,
+                        status = true,
                         message = "No Country list found",
                         data = country
                     };
@@ -258,7 +258,7 @@ namespace FICCI_API.Controller.API
                 {
                     var response = new
                     {
-                        status = false,
+                        status = true,
                         message = "No Country list found",
                         data = custType
                     };
@@ -296,7 +296,7 @@ namespace FICCI_API.Controller.API
                     {
                         var respons = new
                         {
-                            status = false,
+                            status = true,
                             message = "No Projects found for the given Id",
                             data = result
                         };
@@ -327,7 +327,7 @@ namespace FICCI_API.Controller.API
                     {
                         var respons = new
                         {
-                            status = false,
+                            status = true,
                             message = "No Projects found for the given Id",
                             data = result
                         };
