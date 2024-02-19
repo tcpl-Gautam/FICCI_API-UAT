@@ -133,7 +133,7 @@ namespace FICCI_API.Controller.API
                     {
                         var response = new
                         {
-                            status = false,
+                            status = true,
                             message = "No customer list found",
                             data = resu
                         };
