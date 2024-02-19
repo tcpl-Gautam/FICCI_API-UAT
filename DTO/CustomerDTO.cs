@@ -105,5 +105,6 @@ namespace FICCI_API.DTO
         public string? GSTNumber { get; set; }
         public string? PAN { get; set; }
         public int GSTCustomerType { get; set; }
+        public string? LoginId { get; set; }
     }
 }

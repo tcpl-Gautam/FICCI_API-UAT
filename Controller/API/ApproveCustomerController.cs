@@ -76,7 +76,7 @@ namespace FICCI_API.Controller.API
                             message = "No customer found for the given Id",
                             data = result
                         };
-                        return NotFound(response);
+                        return Ok(response);
                     }
                     var respons = new
                     {
@@ -137,7 +137,7 @@ namespace FICCI_API.Controller.API
                             message = "No customer list found",
                             data = resu
                         };
-                        return NotFound(response);
+                        return Ok(response);
                     }
                     var respons = new
                     {
@@ -200,7 +200,7 @@ namespace FICCI_API.Controller.API
                             message = "Could not find the customer",
                             data = result
                         };
-                        return NotFound(response);
+                        return Ok(response);
                     }
 
                 }

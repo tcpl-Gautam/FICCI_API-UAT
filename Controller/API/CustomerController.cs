@@ -80,11 +80,11 @@ namespace FICCI_API.Controller.API
                     {
                         var response = new
                         {
-                            status = false,
+                            status = true,
                             message = "No customer found for the given Id",
                             data = result
                         };
-                        return NotFound(response);
+                        return Ok(response);
                     }
                     var respons = new
                     {
@@ -141,11 +141,11 @@ namespace FICCI_API.Controller.API
                     {
                         var response = new
                         {
-                            status = false,
+                            status = true,
                             message = "No customer list found",
                             data = resu
                         };
-                        return NotFound(response);
+                        return Ok(response);
                     }
                     var respons = new
                     {
@@ -242,6 +242,10 @@ namespace FICCI_API.Controller.API
                             customer.GstCustomerType = data.GSTCustomerType;
                             customer.IsPending = true;
                             customer.IsDraft = data.IsDraft;
+                            customer.CustomerTlApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefaultAsync().ToString();
+                            customer.CustomerClusterApprover= _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemClusterEmail).FirstOrDefaultAsync().ToString();
+                            customer.CustomerSgApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefaultAsync().ToString();
+
 
                             _dbContext.Add(customer);
                             _dbContext.SaveChanges();
@@ -284,7 +288,7 @@ namespace FICCI_API.Controller.API
                             {
                                 request.Status = true;
                                 request.Message = "Customer not found";
-                                return NotFound(request);
+                                return Ok(request);
                             }
                         }
                     }

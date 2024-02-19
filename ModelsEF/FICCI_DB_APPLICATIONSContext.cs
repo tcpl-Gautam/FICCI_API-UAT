@@ -47,6 +47,8 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
 
     public virtual DbSet<TblFicciRole> TblFicciRoles { get; set; }
 
+    public virtual DbSet<Userloginlog> Userloginlogs { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<City>(entity =>
@@ -124,6 +126,16 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("CUSTOEMR_ADDRESS2");
             entity.Property(e => e.CustomerCity).HasColumnName("CUSTOMER_CITY");
+            entity.Property(e => e.CustomerClusterApprover)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_CLUSTER_APPROVER");
+            entity.Property(e => e.CustomerClusterApproverDate)
+                .HasColumnType("datetime")
+                .HasColumnName("CUSTOMER_CLUSTER_APPROVER_DATE");
+            entity.Property(e => e.CustomerClusterApproverRemarks)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_CLUSTER_APPROVER_REMARKS");
             entity.Property(e => e.CustomerContact)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOMER_CONTACT");
@@ -170,9 +182,29 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.CustomerSalepersonCode)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOMER_SALEPERSON_CODE");
+            entity.Property(e => e.CustomerSgApprover)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_SG_APPROVER");
+            entity.Property(e => e.CustomerSgApproverDate)
+                .HasColumnType("datetime")
+                .HasColumnName("CUSTOMER_SG_APPROVER_DATE");
+            entity.Property(e => e.CustomerSgRemaks)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_SG_REMAKS");
             entity.Property(e => e.CustomerTextArea)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOMER_TEXT_AREA");
+            entity.Property(e => e.CustomerTlApprover)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_TL_APPROVER");
+            entity.Property(e => e.CustomerTlApproverDate)
+                .HasColumnType("datetime")
+                .HasColumnName("CUSTOMER_TL_APPROVER_DATE");
+            entity.Property(e => e.CustomerTlApproverRemarks)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_TL_APPROVER_REMARKS");
             entity.Property(e => e.CustomerUpdatedOn)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOMER_UPDATED_ON");
@@ -683,6 +715,8 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
 
             entity.ToTable("FICCI_IMUM");
 
+            entity.HasIndex(e => e.ImumEmail, "UQ_IMUM_EMAIL").IsUnique();
+
             entity.Property(e => e.ImumId).HasColumnName("IMUM_ID");
             entity.Property(e => e.ImumActive).HasColumnName("IMUM_ACTIVE");
             entity.Property(e => e.ImumCreatedBy)
@@ -898,6 +932,15 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("Role_name");
+        });
+
+        modelBuilder.Entity<Userloginlog>(entity =>
+        {
+            entity.HasKey(e => e.UserLoginLogId).HasName("PK__Userlogi__AB731A613797DB01");
+
+            entity.Property(e => e.LoginDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
         });
 
         OnModelCreatingGeneratedProcedures(modelBuilder);

@@ -84,6 +84,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Userloginlogs]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[prc_Configuration_Delete]",
          "ObjectType": 1
       },

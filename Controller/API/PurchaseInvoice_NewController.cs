@@ -58,9 +58,12 @@ namespace FICCI_API.Controller.API
                         ficciImpiHeader.ImpiHeaderRemarks = request.ImpiHeaderRemarks;
                         ficciImpiHeader.ImpiHeaderStatus = request.IsDraft == true ? "Draft" : "Pending";
                         ficciImpiHeader.IsDraft = request.IsDraft;
-                        ficciImpiHeader.ImpiHeaderPiNo = DateTime.Now.ToString("yyyyMMddhhmmss");
+                        ficciImpiHeader.ImpiHeaderPiNo = request.ImpiHeaderPiNo == null ? DateTime.Now.ToString("yyyyMMddhhmmss") : request.ImpiHeaderPiNo;
                         ficciImpiHeader.ImpiHeaderSubmittedDate = DateTime.Now;
-                      
+                        ficciImpiHeader.ImpiHeaderTlApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == request.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefaultAsync().ToString();
+                        ficciImpiHeader.ImpiHeaderSgApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == request.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefaultAsync().ToString();
+                        ficciImpiHeader.ImpiHeaderClusterApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == request.LoginId).Select(x => x.ImemClusterEmail).FirstOrDefaultAsync().ToString();
+
 
                         _dbContext.Add(ficciImpiHeader);
                         _dbContext.SaveChanges();

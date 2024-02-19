@@ -69,6 +69,24 @@ public partial class FicciErpCustomerDetail
 
     public int? GstCustomerType { get; set; }
 
+    public string CustomerTlApprover { get; set; }
+
+    public DateTime? CustomerTlApproverDate { get; set; }
+
+    public string CustomerTlApproverRemarks { get; set; }
+
+    public string CustomerClusterApprover { get; set; }
+
+    public DateTime? CustomerClusterApproverDate { get; set; }
+
+    public string CustomerClusterApproverRemarks { get; set; }
+
+    public string CustomerSgApprover { get; set; }
+
+    public DateTime? CustomerSgApproverDate { get; set; }
+
+    public string CustomerSgRemaks { get; set; }
+
     public virtual City CustomerCityNavigation { get; set; }
 
     public virtual GstCustomerType GstCustomerTypeNavigation { get; set; }
