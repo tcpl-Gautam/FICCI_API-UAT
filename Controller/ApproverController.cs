@@ -14,22 +14,25 @@ namespace FICCI_API.Controller
         {
             _dbContext = dbContext;
         }
-        //[HttpPost]
-        //public async Task<IActionResult> Post(ApproveCustomer cust)
-        //{
-        //    try
-        //    {
-        //        ApproverCustomer_Crud crud = new ApproverCustomer_Crud();
-        //        var res = await _dbContext.GetProcedures().prc_Approval_CustomerAsync(cust.CustomerId.ToString(), cust.IsApproved, cust.LoginId, cust.StatusId, cust.Remarks);
-               
+        [HttpPost]
+        public async Task<IActionResult> Post(ApproveCustomer cust)
+        {
+            ApproverCustomer_Crud crud = new ApproverCustomer_Crud();
 
+            try
+            {
+                var res = await _dbContext.GetProcedures().prc_Approval_CustomerAsync(cust.CustomerId.ToString(), cust.IsApproved, cust.LoginId, cust.StatusId, cust.Remarks);
+                crud.status = res[0].returncode == 1 ? true : false;
+                crud.message = res[0].Message;
+                return StatusCode(200, crud);
 
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //    }
-        //}
+            }
+            catch (Exception ex)
+            {
+                crud.status = false;
+                crud.message = ex.InnerException.Message.ToString();
+                return StatusCode(500, crud);
+            }
+        }
     }
 }
