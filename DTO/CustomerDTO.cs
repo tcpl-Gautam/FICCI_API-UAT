@@ -49,7 +49,7 @@ namespace FICCI_API.DTO
         public DateTime? CreatedOn { get; set; }
         public string CreatedBy { get; set; }
         public string LastUpdateBy { get; set; }
-        public string ModifiedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
         public string? TLApprover { get; set; }
         public string? CLApprover { get; set; }
         public string? CustomerStatus { get; set; }

@@ -55,7 +55,7 @@ namespace FICCI_API.Controller.API
                             CreatedBy = customer.Createdby,
                             CreatedOn = customer.CreatedOn,
                             LastUpdateBy = customer.LastUpdateBy,
-                            ModifiedOn = customer.CustomerUpdatedOn,
+                            ModifiedOn = Convert.ToDateTime (customer.CustomerUpdatedOn),
                             TLApprover = customer.CustomerTlApprover,
                             CLApprover = customer.CustomerClusterApprover,
                            // CustomerStatus = customer.CustomerStatus == 1 ? "Draft":"Pending With TL Approver",
