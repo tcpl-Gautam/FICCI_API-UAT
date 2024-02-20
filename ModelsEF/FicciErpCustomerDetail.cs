@@ -51,7 +51,7 @@ public partial class FicciErpCustomerDetail
 
     public string CustomerGstNo { get; set; }
 
-    public string CustomerUpdatedOn { get; set; }
+    public DateTime? CustomerUpdatedOn { get; set; }
 
     public bool? IsActive { get; set; }
 

@@ -215,7 +215,7 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("CUSTOMER_TL_APPROVER_REMARKS");
             entity.Property(e => e.CustomerUpdatedOn)
-                .IsUnicode(false)
+                .HasColumnType("datetime")
                 .HasColumnName("CUSTOMER_UPDATED_ON");
             entity.Property(e => e.CustomerVatRegistration)
                 .IsUnicode(false)
@@ -1028,7 +1028,7 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("Customer_Type_Name");
             entity.Property(e => e.CustomerUpdatedOn)
-                .IsUnicode(false)
+                .HasColumnType("datetime")
                 .HasColumnName("CUSTOMER_UPDATED_ON");
             entity.Property(e => e.LastUpdateBy).IsUnicode(false);
             entity.Property(e => e.StatusName).IsUnicode(false);

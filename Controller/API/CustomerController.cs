@@ -175,7 +175,7 @@ namespace FICCI_API.Controller.API
                             customer.CustomerEmailId = data.Email;
                             customer.CustomerPinCode = data.PinCode;
                             customer.CustomerPanNo = data.PAN;
-                            customer.CustomerUpdatedOn = DateTime.Now.ToString("yyyyMMdd");
+                            customer.CustomerUpdatedOn = DateTime.Now;
                             customer.CustomerCity = data.Cityid;
                             customer.CustomerPhoneNo = data.Phone;
                             customer.GstCustomerType = data.GSTCustomerType;
@@ -217,14 +217,14 @@ namespace FICCI_API.Controller.API
                                 result.CustomerEmailId = data.Email;
                                 result.CustomerPinCode = data.PinCode;
                                 result.CustomerPanNo = data.PAN;
-                                result.CustomerUpdatedOn = DateTime.Now.ToString("yyyyMMdd");
+                              
                                 result.CustomerCity = data.Cityid;
                                 result.CustomerPhoneNo = data.Phone;
                                 result.GstCustomerType = data.GSTCustomerType;
                                 result.IsPending = true;
                                 result.IsDraft = data.IsDraft;
                                 result.LastUpdateBy = data.LoginId;
-                                result.CustomerUpdatedOn = DateTime.Now.ToString();
+                                result.CustomerUpdatedOn = DateTime.Now;
                                 result.CustomerStatus = data.IsDraft== true?1:2;
                                 _dbContext.SaveChanges();
                                 transaction.Commit();

@@ -39,7 +39,7 @@ public partial class VwCustomerApprovalList
 
     public string LastUpdateBy { get; set; }
 
-    public string CustomerUpdatedOn { get; set; }
+    public DateTime? CustomerUpdatedOn { get; set; }
 
     public string CustomerTlApprover { get; set; }
 
