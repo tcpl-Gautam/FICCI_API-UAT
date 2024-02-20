@@ -72,6 +72,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[StatusMaster]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[tbl_Category_List]",
          "ObjectType": 0
       },
@@ -86,6 +90,10 @@
       {
          "Name": "[dbo].[Userloginlogs]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[VW_CUSTOMER_APPROVAL_LIST]",
+         "ObjectType": 3
       },
       {
          "Name": "[dbo].[prc_Configuration_Delete]",

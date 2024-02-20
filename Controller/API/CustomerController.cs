@@ -17,82 +17,25 @@ namespace FICCI_API.Controller.API
         }
 
 
-        [HttpGet("{id}")]
+        [HttpGet]
         //List of all customers
-        public async Task<IActionResult> Get(int id = 0)
+        public async Task<IActionResult> Get(string email)
         {
             var result = new CustomerDTO();
             var resu = new List<CustomerList>();
             try
             {
-                if (id > 0)
+                if (email == null)
                 {
-                    result = await _dbContext.FicciErpCustomerDetails.Where(x => x.IsDelete != true && x.IsActive != false)
-                            .Include(x => x.CustomerCityNavigation)
-                            .ThenInclude(city => city.State).ThenInclude(country => country.Country)
-                            .Select(customer => new CustomerDTO
-                            {
-                                CustomerId = customer.CustomerId,
-                                CustomerCode = customer.CusotmerNo,
-                                CustomerName = customer.CustomerName,
-                                CustomerLastName = customer.CustomerLastname,
-                                Address = customer.CustoemrAddress,
-                                Address2 = customer.CustoemrAddress2,
-                                Contact = customer.CustomerContact,
-                                PinCode = customer.CustomerPinCode,
-                                Email = customer.CustomerEmailId,
-                                Phone = customer.CustomerPhoneNo,
-                                PAN = customer.CustomerPanNo,
-                                GSTNumber = customer.CustomerGstNo,
-                                IsDraft = customer.IsDraft,
-                                TLApprover = customer.CustomerTlApprover,
-                                CLApprover = customer.CustomerClusterApprover,
-                                GstType = customer.GstCustomerTypeNavigation == null ? null : new GSTCustomerTypeInfo
-                                {
-                                    GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,
-                                    GstTypeName = customer.GstCustomerTypeNavigation.CustomerTypeName,
-                                },
-                                City = customer.CustomerCityNavigation == null ? null : new CityInfo
-                                {
-                                    CityId = customer.CustomerCityNavigation.CityId,
-                                    CityName = customer.CustomerCityNavigation.CityName,
-
-                                },
-                                State = customer.CustomerCityNavigation.State == null ? null : new StateInfo
-                                {
-                                    StateId = customer.CustomerCityNavigation.StateId,
-                                    StateName = customer.CustomerCityNavigation.State.StateName,
-
-                                },
-                                Country = customer.CustomerCityNavigation.State.Country == null ? null : new CountryInfo
-                                {
-                                    CountryId = customer.CustomerCityNavigation.State.CountryId,
-                                    CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
-                                }
-
-                            }).FirstOrDefaultAsync(x => x.CustomerId == id);
-
-                    if (result == null)
-                    {
-                        var response = new
-                        {
-                            status = true,
-                            message = "No customer found for the given Id",
-                            data = result
-                        };
-                        return Ok(response);
-                    }
-                    var respons = new
+                    var response = new
                     {
                         status = true,
-                        message = "Customer Detail fetch successfully",
-                        data = result
+                        message = "Email is Mandatory field",
                     };
-                    return Ok(respons);
+                    return Ok(response);
                 }
-                else if (id == 0)
-                {
-                    resu = await _dbContext.FicciErpCustomerDetails.Where(x => x.IsDelete != true && x.IsActive != false)
+
+                resu = await _dbContext.FicciErpCustomerDetails.Where(x => x.IsDelete != true && x.IsActive != false)
                         .Select(customer => new CustomerList
                         {
                             CustomerId = customer.CustomerId,
@@ -108,13 +51,15 @@ namespace FICCI_API.Controller.API
                             PAN = customer.CustomerPanNo,
                             GSTNumber = customer.CustomerGstNo,
                             IsActive = customer.IsActive,
-                            IsDraft = customer.IsDraft,
+                            //IsDraft = customer.IsDraft,
                             CreatedBy = customer.Createdby,
                             CreatedOn = customer.CreatedOn,
                             LastUpdateBy = customer.LastUpdateBy,
                             ModifiedOn = customer.CustomerUpdatedOn,
                             TLApprover = customer.CustomerTlApprover,
                             CLApprover = customer.CustomerClusterApprover,
+                           // CustomerStatus = customer.CustomerStatus == 1 ? "Draft":"Pending With TL Approver",
+                            CustomerStatus = _dbContext.StatusMasters.Where(x => x.StatusId == customer.CustomerStatus).Select(a => a.StatusName).FirstOrDefault(),
                             GstType = customer.GstCustomerTypeNavigation == null ? null : new GSTCustomerTypeInfo
                             {
                                 GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,
@@ -138,7 +83,8 @@ namespace FICCI_API.Controller.API
                                 CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
                             }
 
-                        }).ToListAsync();
+                        }).Where(m => m.CreatedBy == email).ToListAsync();
+
                     if (resu.Count <= 0)
                     {
                         var response = new
@@ -157,17 +103,7 @@ namespace FICCI_API.Controller.API
                     };
                     return Ok(respons);
 
-                }
-                else
-                {
-                    var response = new
-                    {
-                        status = false,
-                        message = "Invalid Id",
-                        data = resu
-                    };
-                    return NotFound(response);
-                }
+              
 
             }
             catch (Exception ex)
@@ -245,6 +181,8 @@ namespace FICCI_API.Controller.API
                             customer.IsPending = true;
                             customer.IsDraft = data.IsDraft;
                             customer.Createdby = data.LoginId;
+                            customer.CustomerStatus = data.IsDraft == true ? 1 : 2;
+
                             customer.CustomerTlApprover =  _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefault().ToString() == null 
                                 ? null : _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefault().ToString();
                            
@@ -286,6 +224,7 @@ namespace FICCI_API.Controller.API
                                 result.IsDraft = data.IsDraft;
                                 result.LastUpdateBy = data.LoginId;
                                 result.CustomerUpdatedOn = DateTime.Now.ToString();
+                                result.CustomerStatus = data.IsDraft== true?1:2;
                                 _dbContext.SaveChanges();
                                 transaction.Commit();
 

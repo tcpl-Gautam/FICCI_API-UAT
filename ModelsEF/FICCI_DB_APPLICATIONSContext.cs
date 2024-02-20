@@ -41,6 +41,8 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
 
     public virtual DbSet<State> States { get; set; }
 
+    public virtual DbSet<StatusMaster> StatusMasters { get; set; }
+
     public virtual DbSet<TblCategoryList> TblCategoryLists { get; set; }
 
     public virtual DbSet<TblConfigurationMaster> TblConfigurationMasters { get; set; }
@@ -48,6 +50,8 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
     public virtual DbSet<TblFicciRole> TblFicciRoles { get; set; }
 
     public virtual DbSet<Userloginlog> Userloginlogs { get; set; }
+
+    public virtual DbSet<VwCustomerApprovalList> VwCustomerApprovalLists { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -196,6 +200,7 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.CustomerSgRemaks)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOMER_SG_REMAKS");
+            entity.Property(e => e.CustomerStatus).HasColumnName("Customer_Status");
             entity.Property(e => e.CustomerTextArea)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOMER_TEXT_AREA");
@@ -524,6 +529,7 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.ToTable("FICCI_IMPI_HEADER");
 
             entity.Property(e => e.ImpiHeaderId).HasColumnName("IMPI_HEADER_ID");
+            entity.Property(e => e.HeaderStatusId).HasColumnName("Header_StatusId");
             entity.Property(e => e.ImpiHeaderActive).HasColumnName("IMPI_HEADER_ACTIVE");
             entity.Property(e => e.ImpiHeaderAttachment).HasColumnName("IMPI_HEADER_ATTACHMENT");
             entity.Property(e => e.ImpiHeaderCencelRemarks)
@@ -871,6 +877,15 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasConstraintName("FK_States_Country");
         });
 
+        modelBuilder.Entity<StatusMaster>(entity =>
+        {
+            entity.HasKey(e => e.StatusId).HasName("PK__StatusMa__C8EE2063B33D0746");
+
+            entity.ToTable("StatusMaster");
+
+            entity.Property(e => e.StatusName).IsUnicode(false);
+        });
+
         modelBuilder.Entity<TblCategoryList>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__tbl_Cate__3214EC070559E537");
@@ -946,6 +961,76 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.LoginDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<VwCustomerApprovalList>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("VW_CUSTOMER_APPROVAL_LIST");
+
+            entity.Property(e => e.ApproverEmail)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Approver_Email");
+            entity.Property(e => e.CityName)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("cityName");
+            entity.Property(e => e.CreatedOn).HasColumnType("datetime");
+            entity.Property(e => e.Createdby).IsUnicode(false);
+            entity.Property(e => e.CustoemrAddress)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOEMR_ADDRESS");
+            entity.Property(e => e.CustoemrAddress2)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOEMR_ADDRESS2");
+            entity.Property(e => e.CustomerClusterApprover)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_CLUSTER_APPROVER");
+            entity.Property(e => e.CustomerContactPerson)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_CONTACT_PERSON");
+            entity.Property(e => e.CustomerEmailId)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_EMAIL_ID");
+            entity.Property(e => e.CustomerGstNo)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_GST_NO");
+            entity.Property(e => e.CustomerId).HasColumnName("Customer_ID");
+            entity.Property(e => e.CustomerLastname)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_LASTNAME");
+            entity.Property(e => e.CustomerName)
+                .IsRequired()
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_NAME");
+            entity.Property(e => e.CustomerPanNo)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_PAN_NO");
+            entity.Property(e => e.CustomerPhoneNo)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_PHONE_NO");
+            entity.Property(e => e.CustomerPinCode)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_PIN_CODE");
+            entity.Property(e => e.CustomerSgApprover)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_SG_APPROVER");
+            entity.Property(e => e.CustomerTlApprover)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_TL_APPROVER");
+            entity.Property(e => e.CustomerTypeName)
+                .IsUnicode(false)
+                .HasColumnName("Customer_Type_Name");
+            entity.Property(e => e.CustomerUpdatedOn)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_UPDATED_ON");
+            entity.Property(e => e.LastUpdateBy).IsUnicode(false);
+            entity.Property(e => e.StatusName).IsUnicode(false);
         });
 
         OnModelCreatingGeneratedProcedures(modelBuilder);

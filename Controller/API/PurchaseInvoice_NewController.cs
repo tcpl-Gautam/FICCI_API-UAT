@@ -63,7 +63,7 @@ namespace FICCI_API.Controller.API
                         ficciImpiHeader.ImpiHeaderTlApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == request.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefaultAsync().ToString();
                         ficciImpiHeader.ImpiHeaderSgApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == request.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefaultAsync().ToString();
                         ficciImpiHeader.ImpiHeaderClusterApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == request.LoginId).Select(x => x.ImemClusterEmail).FirstOrDefaultAsync().ToString();
-
+                        ficciImpiHeader.HeaderStatusId = request.IsDraft == true ? 1 : 2;
 
                         _dbContext.Add(ficciImpiHeader);
                         _dbContext.SaveChanges();
@@ -126,7 +126,7 @@ namespace FICCI_API.Controller.API
                             data.ImpiHeaderRemarks = request.ImpiHeaderRemarks;
                             data.ImpiHeaderStatus = request.IsDraft == true ? "Draft" : "Pending";
                             data.IsDraft = request.IsDraft;
-
+                            data.HeaderStatusId = request.IsDraft == true ? 1 : 2;
 
 
                             //_dbContext.Add(data);
@@ -235,6 +235,7 @@ namespace FICCI_API.Controller.API
                         purchaseInvoice_response.ImpiHeaderPaymentTerms = k.ImpiHeaderPaymentTerms;
                         purchaseInvoice_response.ImpiHeaderRemarks = k.ImpiHeaderRemarks;
                         purchaseInvoice_response.ImpiHeaderModifiedDate = k.ImpiHeaderModifiedOn;
+                        purchaseInvoice_response.HeaderStatus = _dbContext.StatusMasters.Where(x => x.StatusId == k.HeaderStatusId).Select(a => a.StatusName).FirstOrDefault();
                         var lindata = _dbContext.FicciImpiLines.Where(m => m.ImpiLineActive == true && m.PiHeaderId == k.ImpiHeaderId).ToList();
                         if (lindata.Count > 0)
                         {

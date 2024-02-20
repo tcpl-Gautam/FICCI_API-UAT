@@ -102,7 +102,7 @@ namespace FICCI_API.Controller.API
                             CustomerLastName = customer.CustomerLastname,
                             Address2 = customer.CustoemrAddress2,
                             Contact = customer.CustomerContact,
-                            IsDraft = customer.IsDraft,
+                            //IsDraft = customer.IsDraft,
                             PAN = customer.CustomerPanNo,
                             GSTNumber = customer.CustomerGstNo,
                             City = customer.CustomerCityNavigation == null ? null : new CityInfo
@@ -209,6 +209,38 @@ namespace FICCI_API.Controller.API
                     transaction.Rollback();
                     return StatusCode(500, new { status = false, message = "An error occurred." });
                 }
+            }
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Get(string email)
+        {
+            try
+            {
+                if(email == null)
+                {
+                    var response = new
+                    {
+                        status = true,
+                        message = "Email is Mandatory field",
+                    };
+                    return Ok(response);
+                }
+
+                var list = await _dbContext.VwCustomerApprovalLists.Where(x => x.ApproverEmail == email).ToListAsync();
+                var res = new
+                {
+                    status = true,
+                    message = "Approval list is successfully fetched.",
+                    data = list
+                };
+                return Ok(res);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { status = false, message = "An error occurred while fetching the list of Approval." });
+
             }
         }
     }

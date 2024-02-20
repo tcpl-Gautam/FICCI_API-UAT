@@ -38,6 +38,7 @@
         public string ImpiHeaderRemarks { get; set; }
         public DateTime? ImpiHeaderSubmittedDate { get; set; }
         public DateTime? ImpiHeaderModifiedDate { get; set; }
+        public string? HeaderStatus { get; set; }
         public bool? IsDraft { get; set; }
         public List<LineItem_request> lineItem_Requests { get; set; }
     }
@@ -72,6 +73,7 @@
         public bool? IsDraft { get; set; }
         public string? ImpiHeaderPiNo { get; set; }
         public string LoginId { get; set; }
+        public string? HeaderStatus { get; set; }
         public List<LineItem_request> lineItem_Requests { get; set; }
 
 

@@ -45,13 +45,14 @@ namespace FICCI_API.DTO
         //public int GSTCustomerType { get; set; }
         public string? PAN { get; set; }
         public bool? IsActive { get; set; }
-        public bool? IsDraft { get; set; }
+   //     public bool? IsDraft { get; set; }
         public DateTime? CreatedOn { get; set; }
         public string CreatedBy { get; set; }
         public string LastUpdateBy { get; set; }
         public string ModifiedOn { get; set; }
         public string? TLApprover { get; set; }
         public string? CLApprover { get; set; }
+        public string? CustomerStatus { get; set; }
         public CityInfo? City { get; set; }
         public StateInfo? State { get; set; }
         public CountryInfo? Country { get; set; }
@@ -112,5 +113,6 @@ namespace FICCI_API.DTO
         public string? PAN { get; set; }
         public int GSTCustomerType { get; set; }
         public string? LoginId { get; set; }
+        public int? CustomerStatus { get; set; }
     }
 }

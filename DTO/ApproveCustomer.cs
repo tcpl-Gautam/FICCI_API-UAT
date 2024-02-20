@@ -4,5 +4,6 @@
     {
         public int CustomerId { get; set; }
         public bool IsApproved { get; set; }
+        public string LoginId { get; set; }
     }
 }

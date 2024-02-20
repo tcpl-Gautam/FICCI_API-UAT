@@ -87,5 +87,7 @@ public partial class FicciImpiHeader
 
     public string ImpiHeaderAttachment { get; set; }
 
+    public int? HeaderStatusId { get; set; }
+
     public virtual ICollection<FicciImpiLine> FicciImpiLines { get; set; } = new List<FicciImpiLine>();
 }
