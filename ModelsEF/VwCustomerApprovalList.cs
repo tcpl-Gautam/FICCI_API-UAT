@@ -51,5 +51,7 @@ public partial class VwCustomerApprovalList
 
     public string CustomerTypeName { get; set; }
 
+    public int? CustomerStatus { get; set; }
+
     public string ApproverEmail { get; set; }
 }

@@ -1019,6 +1019,7 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOMER_SG_APPROVER");
+            entity.Property(e => e.CustomerStatus).HasColumnName("Customer_Status");
             entity.Property(e => e.CustomerTlApprover)
                 .HasMaxLength(50)
                 .IsUnicode(false)
