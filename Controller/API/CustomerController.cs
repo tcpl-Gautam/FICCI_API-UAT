@@ -19,21 +19,21 @@ namespace FICCI_API.Controller.API
 
         [HttpGet]
         //List of all customers
-        public async Task<IActionResult> Get(string email)
+        public async Task<IActionResult> Get()
         {
             var result = new CustomerDTO();
             var resu = new List<CustomerList>();
             try
             {
-                if (email == null)
-                {
-                    var response = new
-                    {
-                        status = true,
-                        message = "Email is Mandatory field",
-                    };
-                    return Ok(response);
-                }
+                //if (email == null)
+                //{
+                //    var response = new
+                //    {
+                //        status = true,
+                //        message = "Email is Mandatory field",
+                //    };
+                //    return Ok(response);
+                //}
 
                 resu = await _dbContext.FicciErpCustomerDetails.Where(x => x.IsDelete != true && x.IsActive != false)
                         .Select(customer => new CustomerList
@@ -83,7 +83,7 @@ namespace FICCI_API.Controller.API
                                 CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
                             }
 
-                        }).Where(m => m.CreatedBy == email).ToListAsync();
+                        }).ToListAsync();
 
                     if (resu.Count <= 0)
                     {
