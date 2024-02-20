@@ -13,17 +13,17 @@ namespace FICCI_API.DTO
         public string? Address2 { get; set; }
         public string Contact { get; set; }
         public string Phone { get; set; }
-        public string SalePersonCode { get; set; }
-        public string RegionCode { get; set; }
         public string PaymentMethod { get; set; }
         public string? Location { get; set; }
         public string? VatRegistration { get; set; }
         public string? GenBusPost { get; set; }
         public string? PinCode { get; set; }
         public string Email { get; set; }
-        public string? TextAreaCode { get; set; }
-        public string? ResponsibilityCenter { get; set; }
         public bool? IsDraft { get; set; }
+        public string? PAN { get; set; }
+        public string? GSTNumber { get; set; }
+        public string? TLApprover { get; set; }
+        public string? CLApprover { get; set; }
         public CityInfo? City { get; set; }
         public StateInfo? State { get; set; }
         public CountryInfo? Country { get; set; }
@@ -46,6 +46,12 @@ namespace FICCI_API.DTO
         public string? PAN { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsDraft { get; set; }
+        public DateTime? CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public string LastUpdateBy { get; set; }
+        public string ModifiedOn { get; set; }
+        public string? TLApprover { get; set; }
+        public string? CLApprover { get; set; }
         public CityInfo? City { get; set; }
         public StateInfo? State { get; set; }
         public CountryInfo? Country { get; set; }

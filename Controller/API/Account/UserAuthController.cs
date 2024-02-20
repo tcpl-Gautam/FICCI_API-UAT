@@ -73,7 +73,8 @@ namespace FICCI_API.Controller.API.Account
                             Name = user.ImumName,
                             EmpId = user.ImumEmpid,
                             RoleName = _dbContext.TblFicciRoles.Where(m => m.RoleId == user.RoleId).Select(x => x.RoleName).FirstOrDefault().ToString(),
-                            IsApprover =  _dbContext.FicciImems.Any(m => (m.ImemManagerEmail == requestData.Email|| m.ImemDepartmentHeadEmail == requestData.Email || m.ImemClusterEmail == requestData.Email && m.ImemActive != false))
+                            IsApprover =  _dbContext.FicciImems.Any(m => (m.ImemManagerEmail == requestData.Email|| m.ImemDepartmentHeadEmail == requestData.Email || m.ImemClusterEmail == requestData.Email && m.ImemActive != false)),
+                            Token = user.ImumEmail
                         })
                         .FirstOrDefaultAsync();
 

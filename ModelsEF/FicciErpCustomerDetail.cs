@@ -87,6 +87,12 @@ public partial class FicciErpCustomerDetail
 
     public string CustomerSgRemaks { get; set; }
 
+    public string Createdby { get; set; }
+
+    public DateTime? CreatedOn { get; set; }
+
+    public string LastUpdateBy { get; set; }
+
     public virtual City CustomerCityNavigation { get; set; }
 
     public virtual GstCustomerType GstCustomerTypeNavigation { get; set; }

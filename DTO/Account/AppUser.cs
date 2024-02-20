@@ -24,5 +24,6 @@ namespace FICCI_API.DTO.Account
         public string EmpId { get; set; }
         public string RoleName { get; set; }
         public bool IsApprover { get; set; }
+        public string? Token { get; set; }
     }
 }

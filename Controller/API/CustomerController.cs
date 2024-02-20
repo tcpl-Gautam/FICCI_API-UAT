@@ -39,18 +39,14 @@ namespace FICCI_API.Controller.API
                                 Address = customer.CustoemrAddress,
                                 Address2 = customer.CustoemrAddress2,
                                 Contact = customer.CustomerContact,
-                                SalePersonCode = customer.CustomerSalepersonCode,
-                                RegionCode = customer.CustomerCountryRegion,
-                                PaymentMethod = customer.CustomerPaymethod,
-                                Location = customer.CustomerLocation,
-                                VatRegistration = customer.CustomerVatRegistration,
-                                GenBusPost = customer.CustomerGenBus,
                                 PinCode = customer.CustomerPinCode,
                                 Email = customer.CustomerEmailId,
                                 Phone = customer.CustomerPhoneNo,
-                                TextAreaCode = customer.CustomerTextArea,
-                                ResponsibilityCenter = customer.CustomerResponsibility,
+                                PAN = customer.CustomerPanNo,
+                                GSTNumber = customer.CustomerGstNo,
                                 IsDraft = customer.IsDraft,
+                                TLApprover = customer.CustomerTlApprover,
+                                CLApprover = customer.CustomerClusterApprover,
                                 GstType = customer.GstCustomerTypeNavigation == null ? null : new GSTCustomerTypeInfo
                                 {
                                     GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,
@@ -113,6 +109,12 @@ namespace FICCI_API.Controller.API
                             GSTNumber = customer.CustomerGstNo,
                             IsActive = customer.IsActive,
                             IsDraft = customer.IsDraft,
+                            CreatedBy = customer.Createdby,
+                            CreatedOn = customer.CreatedOn,
+                            LastUpdateBy = customer.LastUpdateBy,
+                            ModifiedOn = customer.CustomerUpdatedOn,
+                            TLApprover = customer.CustomerTlApprover,
+                            CLApprover = customer.CustomerClusterApprover,
                             GstType = customer.GstCustomerTypeNavigation == null ? null : new GSTCustomerTypeInfo
                             {
                                 GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,
@@ -242,9 +244,15 @@ namespace FICCI_API.Controller.API
                             customer.GstCustomerType = data.GSTCustomerType;
                             customer.IsPending = true;
                             customer.IsDraft = data.IsDraft;
-                            customer.CustomerTlApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefaultAsync().ToString();
-                            customer.CustomerClusterApprover= _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemClusterEmail).FirstOrDefaultAsync().ToString();
-                            customer.CustomerSgApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefaultAsync().ToString();
+                            customer.Createdby = data.LoginId;
+                            customer.CustomerTlApprover =  _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefault().ToString() == null 
+                                ? null : _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefault().ToString();
+                           
+                            customer.CustomerClusterApprover= _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemClusterEmail).FirstOrDefault().ToString() == null
+                                 ? null : _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemClusterEmail).FirstOrDefault().ToString();
+                           
+                            customer.CustomerSgApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefault().ToString() == null
+                                 ? null : _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefault().ToString();
 
 
                             _dbContext.Add(customer);
@@ -276,7 +284,8 @@ namespace FICCI_API.Controller.API
                                 result.GstCustomerType = data.GSTCustomerType;
                                 result.IsPending = true;
                                 result.IsDraft = data.IsDraft;
-
+                                result.LastUpdateBy = data.LoginId;
+                                result.CustomerUpdatedOn = DateTime.Now.ToString();
                                 _dbContext.SaveChanges();
                                 transaction.Commit();
 

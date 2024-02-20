@@ -114,6 +114,10 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.ApprovedOn)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.CreatedOn)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Createdby).IsUnicode(false);
             entity.Property(e => e.CusotmerNo)
                 .IsRequired()
                 .HasMaxLength(50)
@@ -221,6 +225,7 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.IsPending)
                 .IsRequired()
                 .HasDefaultValueSql("((1))");
+            entity.Property(e => e.LastUpdateBy).IsUnicode(false);
 
             entity.HasOne(d => d.CustomerCityNavigation).WithMany(p => p.FicciErpCustomerDetails)
                 .HasForeignKey(d => d.CustomerCity)

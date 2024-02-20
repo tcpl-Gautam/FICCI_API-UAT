@@ -38,8 +38,8 @@ namespace FICCI_API.Controller.API
                                 Address = customer.CustoemrAddress,
                                 Address2 = customer.CustoemrAddress2,
                                 Contact = customer.CustomerContact,
-                                SalePersonCode = customer.CustomerSalepersonCode,
-                                RegionCode = customer.CustomerCountryRegion,
+                                //SalePersonCode = customer.CustomerSalepersonCode,
+                                //RegionCode = customer.CustomerCountryRegion,
                                 PaymentMethod = customer.CustomerPaymethod,
                                 Location = customer.CustomerLocation,
                                 VatRegistration = customer.CustomerVatRegistration,
@@ -47,8 +47,8 @@ namespace FICCI_API.Controller.API
                                 PinCode = customer.CustomerPinCode,
                                 Email = customer.CustomerEmailId,
                                 Phone = customer.CustomerPhoneNo,
-                                TextAreaCode = customer.CustomerTextArea,
-                                ResponsibilityCenter = customer.CustomerResponsibility,
+                                //TextAreaCode = customer.CustomerTextArea,
+                                //ResponsibilityCenter = customer.CustomerResponsibility,
                                 IsDraft = customer.IsDraft,
                                 City = customer.CustomerCityNavigation == null ? null : new CityInfo
                                 {
