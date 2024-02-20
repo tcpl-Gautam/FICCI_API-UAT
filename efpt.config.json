@@ -96,6 +96,10 @@
          "ObjectType": 3
       },
       {
+         "Name": "[dbo].[prc_Approval_Customer]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[prc_Configuration_Delete]",
          "ObjectType": 1
       },

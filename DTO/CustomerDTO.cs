@@ -53,6 +53,7 @@ namespace FICCI_API.DTO
         public string? TLApprover { get; set; }
         public string? CLApprover { get; set; }
         public string? CustomerStatus { get; set; }
+        public int? CustomerStatusId { get; set; }
         public CityInfo? City { get; set; }
         public StateInfo? State { get; set; }
         public CountryInfo? Country { get; set; }

@@ -60,6 +60,7 @@ namespace FICCI_API.Controller.API
                             CLApprover = customer.CustomerClusterApprover,
                            // CustomerStatus = customer.CustomerStatus == 1 ? "Draft":"Pending With TL Approver",
                             CustomerStatus = _dbContext.StatusMasters.Where(x => x.StatusId == customer.CustomerStatus).Select(a => a.StatusName).FirstOrDefault(),
+                            CustomerStatusId = customer.CustomerStatus,
                             GstType = customer.GstCustomerTypeNavigation == null ? null : new GSTCustomerTypeInfo
                             {
                                 GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,

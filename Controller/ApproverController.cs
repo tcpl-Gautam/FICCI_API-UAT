@@ -1,4 +1,6 @@
-﻿using FICCI_API.ModelsEF;
+﻿using FICCI_API.DTO;
+using FICCI_API.Models;
+using FICCI_API.ModelsEF;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FICCI_API.Controller
@@ -12,5 +14,22 @@ namespace FICCI_API.Controller
         {
             _dbContext = dbContext;
         }
+        //[HttpPost]
+        //public async Task<IActionResult> Post(ApproveCustomer cust)
+        //{
+        //    try
+        //    {
+        //        ApproverCustomer_Crud crud = new ApproverCustomer_Crud();
+        //        var res = await _dbContext.GetProcedures().prc_Approval_CustomerAsync(cust.CustomerId.ToString(), cust.IsApproved, cust.LoginId, cust.StatusId, cust.Remarks);
+               
+
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //    }
+        //}
     }
 }

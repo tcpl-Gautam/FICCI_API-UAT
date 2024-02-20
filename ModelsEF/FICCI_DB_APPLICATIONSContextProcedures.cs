@@ -34,6 +34,7 @@ namespace FICCI_API.ModelsEF
 
         protected void OnModelCreatingGeneratedProcedures(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<prc_Approval_CustomerResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<prc_Configuration_DeleteResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<prc_Configuration_DetailResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<prc_Configuration_FormResult>().HasNoKey().ToView(null);
@@ -54,6 +55,59 @@ namespace FICCI_API.ModelsEF
         public FICCI_DB_APPLICATIONSContextProcedures(FICCI_DB_APPLICATIONSContext context)
         {
             _context = context;
+        }
+
+        public virtual async Task<List<prc_Approval_CustomerResult>> prc_Approval_CustomerAsync(string CustomerId, bool? IsApprove, string LoginId, int? statusid, string Remarks, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "CustomerId",
+                    Size = 50,
+                    Value = CustomerId ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "IsApprove",
+                    Value = IsApprove ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Bit,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "LoginId",
+                    Size = -1,
+                    Value = LoginId ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "statusid",
+                    Value = statusid ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Remarks",
+                    Size = -1,
+                    Value = Remarks ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.NVarChar,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<prc_Approval_CustomerResult>("EXEC @returnValue = [dbo].[prc_Approval_Customer] @CustomerId, @IsApprove, @LoginId, @statusid, @Remarks", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
         }
 
         public virtual async Task<List<prc_Configuration_DeleteResult>> prc_Configuration_DeleteAsync(int? C_ID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
