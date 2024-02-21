@@ -24,4 +24,6 @@ public partial class FicciImwd
     public string ImwdCreatedBy { get; set; }
 
     public DateTime ImwdCreatedOn { get; set; }
+
+    public int? CustomerId { get; set; }
 }

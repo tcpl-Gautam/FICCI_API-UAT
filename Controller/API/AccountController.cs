@@ -70,7 +70,7 @@ namespace FICCI_API.Controller.API
                                 CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
                             }
 
-                        }).Where(m => m.CustomerStatus == "4").ToListAsync();
+                        }).Where(m => m.CustomerStatus == "5").ToListAsync();
 
                 if (resu.Count <= 0)
                 {

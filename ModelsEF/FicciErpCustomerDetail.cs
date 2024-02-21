@@ -95,6 +95,8 @@ public partial class FicciErpCustomerDetail
 
     public int? CustomerStatus { get; set; }
 
+    public string CustomerRemarks { get; set; }
+
     public virtual City CustomerCityNavigation { get; set; }
 
     public virtual GstCustomerType GstCustomerTypeNavigation { get; set; }

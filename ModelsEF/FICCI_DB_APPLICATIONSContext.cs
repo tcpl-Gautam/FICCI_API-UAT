@@ -184,6 +184,9 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.CustomerPinCode)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOMER_PIN_CODE");
+            entity.Property(e => e.CustomerRemarks)
+                .IsUnicode(false)
+                .HasColumnName("Customer_Remarks");
             entity.Property(e => e.CustomerResponsibility)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOMER_RESPONSIBILITY");

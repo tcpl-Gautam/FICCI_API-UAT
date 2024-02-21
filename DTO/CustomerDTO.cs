@@ -1,4 +1,5 @@
 ﻿using FICCI_API.Models;
+using FICCI_API.ModelsEF;
 
 namespace FICCI_API.DTO
 {
@@ -45,19 +46,21 @@ namespace FICCI_API.DTO
         //public int GSTCustomerType { get; set; }
         public string? PAN { get; set; }
         public bool? IsActive { get; set; }
-   //     public bool? IsDraft { get; set; }
+        public bool? IsDraft { get; set; }
         public DateTime? CreatedOn { get; set; }
         public string CreatedBy { get; set; }
         public string LastUpdateBy { get; set; }
         public DateTime ModifiedOn { get; set; }
         public string? TLApprover { get; set; }
         public string? CLApprover { get; set; }
+   //     public string? SGApprover { get; set; }
         public string? CustomerStatus { get; set; }
         public int? CustomerStatusId { get; set; }
         public CityInfo? City { get; set; }
         public StateInfo? State { get; set; }
         public CountryInfo? Country { get; set; }
         public GSTCustomerTypeInfo? GstType { get; set; }
+        public List<FicciImwd>? WorkFlowHistory {  get; set; }
     }
     public class CityInfo
     {
@@ -115,5 +118,28 @@ namespace FICCI_API.DTO
         public int GSTCustomerType { get; set; }
         public string? LoginId { get; set; }
         public int? CustomerStatus { get; set; }
+        public string? CustomerRemarks { get; set; }
+        public string RoleName { get; set; }
+    }
+
+    public class Ficci_imwd
+    {
+        public string ImwdScreenName { get; set; }
+
+        public string ImwdInitiatedBy { get; set; }
+
+        public string ImwdRole { get; set; }
+
+        public string ImwdRemarks { get; set; }
+
+        public string ImwdStatus { get; set; }
+
+        public string ImwdPendingAt { get; set; }
+
+        public string ImwdCreatedBy { get; set; }
+
+        public DateTime ImwdCreatedOn { get; set; }
+
+        public int? CustomerId { get; set; }
     }
 }

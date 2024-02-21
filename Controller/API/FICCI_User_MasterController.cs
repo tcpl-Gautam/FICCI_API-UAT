@@ -25,7 +25,7 @@ namespace FICCI_API.Controller.API
             {
                 var res = await _dbContext.GetProcedures().prc_UserMaster_FormAsync(data.IsUpdate, data.IMEM_EmpId, data.IMEM_ID, data.IMEM_Name, data.IMEM_Email, data.RoleId, data.IsActive, data.IMEM_Username);
                 
-                if (res[0].returncode > 1)
+                if (res[0].returncode > 0)
                 {
                     data.IMEM_ID = res[0].returncode;
                     data.RoleName = _dbContext.TblFicciRoles .Where(m => m.RoleId == data.RoleId).Select(x => x.RoleName).FirstOrDefault().ToString();

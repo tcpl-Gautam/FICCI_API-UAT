@@ -34,6 +34,7 @@ namespace FICCI_API.Controller.API
                     };
                     return Ok(response);
                 }
+                var emp_Role = await _dbContext.FicciImums.Where(x => x.ImumEmail == email).Select(a => a.RoleId).FirstOrDefaultAsync();
 
                 resu = await _dbContext.FicciErpCustomerDetails.Where(x => x.IsDelete != true && x.IsActive != false)
                         .Select(customer => new CustomerList
@@ -51,14 +52,15 @@ namespace FICCI_API.Controller.API
                             PAN = customer.CustomerPanNo,
                             GSTNumber = customer.CustomerGstNo,
                             IsActive = customer.IsActive,
-                            //IsDraft = customer.IsDraft,
+                            IsDraft = customer.IsDraft,
                             CreatedBy = customer.Createdby,
                             CreatedOn = customer.CreatedOn,
                             LastUpdateBy = customer.LastUpdateBy,
-                            ModifiedOn = Convert.ToDateTime (customer.CustomerUpdatedOn),
+                            ModifiedOn = Convert.ToDateTime(customer.CustomerUpdatedOn),
                             TLApprover = customer.CustomerTlApprover,
                             CLApprover = customer.CustomerClusterApprover,
-                           // CustomerStatus = customer.CustomerStatus == 1 ? "Draft":"Pending With TL Approver",
+                            // SGApprover = customer.CustomerSgApprover,
+                            // CustomerStatus = customer.CustomerStatus == 1 ? "Draft":"Pending With TL Approver",
                             CustomerStatus = _dbContext.StatusMasters.Where(x => x.StatusId == customer.CustomerStatus).Select(a => a.StatusName).FirstOrDefault(),
                             CustomerStatusId = customer.CustomerStatus,
                             GstType = customer.GstCustomerTypeNavigation == null ? null : new GSTCustomerTypeInfo
@@ -70,41 +72,45 @@ namespace FICCI_API.Controller.API
                             {
                                 CityId = customer.CustomerCityNavigation.CityId,
                                 CityName = customer.CustomerCityNavigation.CityName,
-                                
+
                             },
                             State = customer.CustomerCityNavigation.State == null ? null : new StateInfo
                             {
                                 StateId = customer.CustomerCityNavigation.StateId,
                                 StateName = customer.CustomerCityNavigation.State.StateName,
-                                
+
                             },
                             Country = customer.CustomerCityNavigation.State.Country == null ? null : new CountryInfo
                             {
                                 CountryId = customer.CustomerCityNavigation.State.CountryId,
                                 CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
-                            }
+                            },
+                            WorkFlowHistory = _dbContext.FicciImwds.Where(x => x.CustomerId == customer.CustomerId).ToList()
 
-                        }).Where(m => m.CreatedBy == email).ToListAsync();
-
-                    if (resu.Count <= 0)
-                    {
-                        var response = new
-                        {
-                            status = true,
-                            message = "No customer list found",
-                            data = resu
-                        };
-                        return Ok(response);
-                    }
-                    var respons = new
+                        }).ToListAsync();
+                if (emp_Role != 1)
+                {
+                    resu = resu.Where(m => m.CreatedBy == email).ToList();
+                }
+                if (resu.Count <= 0)
+                {
+                    var response = new
                     {
                         status = true,
-                        message = "Customer List fetch successfully",
+                        message = "No customer list found",
                         data = resu
                     };
-                    return Ok(respons);
+                    return Ok(response);
+                }
+                var respons = new
+                {
+                    status = true,
+                    message = "Customer List fetch successfully",
+                    data = resu
+                };
+                return Ok(respons);
 
-              
+
 
             }
             catch (Exception ex)
@@ -118,7 +124,7 @@ namespace FICCI_API.Controller.API
         {
             try
             {
-                if(customerId > 0)
+                if (customerId > 0)
                 {
                     var res = await _dbContext.FicciErpCustomerDetails.Where(x => x.CustomerId == customerId).FirstOrDefaultAsync();
                     res.IsActive = false;
@@ -130,7 +136,7 @@ namespace FICCI_API.Controller.API
                         message = "Delete successfully",
                         data = new object[] { }
                     };
-                    return StatusCode(200,response);
+                    return StatusCode(200, response);
                 }
                 else
                 {
@@ -142,7 +148,8 @@ namespace FICCI_API.Controller.API
                     return NotFound(response);
                 }
 
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return StatusCode(500, new { status = false, message = "An error occurred." });
             }
@@ -158,12 +165,12 @@ namespace FICCI_API.Controller.API
             {
                 try
                 {
-                    if(data != null)
+                    if (data != null)
                     {
-                        
-                        if(!data.isupdate)
+
+                        if (!data.isupdate)
                         {
-                           
+
                             FicciErpCustomerDetail customer = new FicciErpCustomerDetail();
                             customer.CusotmerNo = data.CustomerCode;
                             customer.CustoemrAddress = data.Address;
@@ -183,18 +190,34 @@ namespace FICCI_API.Controller.API
                             customer.IsDraft = data.IsDraft;
                             customer.Createdby = data.LoginId;
                             customer.CustomerStatus = data.IsDraft == true ? 1 : 2;
-
-                            customer.CustomerTlApprover =  _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefault().ToString() == null 
+                            customer.CustomerRemarks = data.CustomerRemarks;
+                            customer.CustomerTlApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefault().ToString() == null
                                 ? null : _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefault().ToString();
-                           
-                            customer.CustomerClusterApprover= _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemClusterEmail).FirstOrDefault().ToString() == null
+
+                            customer.CustomerClusterApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemClusterEmail).FirstOrDefault().ToString() == null
                                  ? null : _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemClusterEmail).FirstOrDefault().ToString();
-                           
-                            customer.CustomerSgApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefault().ToString() == null
-                                 ? null : _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefault().ToString();
+
+                            //customer.CustomerSgApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefault().ToString() == null
+                            //     ? null : _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefault().ToString();
 
 
                             _dbContext.Add(customer);
+                            _dbContext.SaveChanges();
+                            int returnid = customer.CustomerId;
+
+                            FicciImwd imwd = new FicciImwd();
+                            imwd.ImwdScreenName = "Customer Approver";
+                            imwd.CustomerId = returnid;
+                            imwd.ImwdCreatedOn = DateTime.Now;
+                            imwd.ImwdCreatedBy = data.LoginId;
+                            imwd.ImwdStatus = data.IsDraft == true ? "1" : "2";
+                            imwd.ImwdPendingAt = _dbContext.StatusMasters.Where(x => x.StatusId == customer.CustomerStatus).Select(a => a.StatusName).FirstOrDefault();
+                            imwd.ImwdInitiatedBy = data.LoginId;
+                            imwd.ImwdRemarks = data.CustomerRemarks;
+                            imwd.ImwdRole = data.RoleName;
+
+                            _dbContext.Add(imwd);
+
                             _dbContext.SaveChanges();
                             transaction.Commit();
 
@@ -205,7 +228,7 @@ namespace FICCI_API.Controller.API
                         else
                         {
                             var result = await _dbContext.FicciErpCustomerDetails.Where(x => x.CustomerId == data.CustomerId).FirstOrDefaultAsync();
-                            if(result!= null)
+                            if (result != null)
                             {
                                 result.CustoemrAddress = data.Address;
                                 result.CustoemrAddress2 = data.Address2;
@@ -217,7 +240,7 @@ namespace FICCI_API.Controller.API
                                 result.CustomerEmailId = data.Email;
                                 result.CustomerPinCode = data.PinCode;
                                 result.CustomerPanNo = data.PAN;
-                              
+                                result.CustomerRemarks = data.CustomerRemarks;
                                 result.CustomerCity = data.Cityid;
                                 result.CustomerPhoneNo = data.Phone;
                                 result.GstCustomerType = data.GSTCustomerType;
@@ -225,8 +248,27 @@ namespace FICCI_API.Controller.API
                                 result.IsDraft = data.IsDraft;
                                 result.LastUpdateBy = data.LoginId;
                                 result.CustomerUpdatedOn = DateTime.Now;
-                                result.CustomerStatus = data.IsDraft== true?1:2;
+                                result.CustomerStatus = data.IsDraft == true ? 1 : 2;
+
                                 _dbContext.SaveChanges();
+                                if (data.IsDraft == false)
+                                {
+                                    FicciImwd imwd = new FicciImwd();
+                                    imwd.ImwdScreenName = "Customer Approver";
+                                    imwd.CustomerId = data.CustomerId;
+                                    imwd.ImwdCreatedOn = DateTime.Now;
+                                    imwd.ImwdCreatedBy = data.LoginId;
+                                    imwd.ImwdStatus = data.CustomerStatus.ToString();
+                                    imwd.ImwdPendingAt = _dbContext.StatusMasters.Where(x => x.StatusId == result.CustomerStatus).Select(a => a.StatusName).FirstOrDefault();
+                                    imwd.ImwdInitiatedBy = data.LoginId;
+                                    imwd.ImwdRemarks = data.CustomerRemarks;
+                                    imwd.ImwdRole = data.RoleName;
+
+                                    _dbContext.Add(imwd);
+
+                                    _dbContext.SaveChanges();
+                                }
+
                                 transaction.Commit();
 
                                 request.Status = true;
@@ -247,7 +289,7 @@ namespace FICCI_API.Controller.API
                         request.Message = "Invalid data";
                         return StatusCode(404, request);
                     }
-                  
+
                 }
                 catch (Exception ex)
                 {
