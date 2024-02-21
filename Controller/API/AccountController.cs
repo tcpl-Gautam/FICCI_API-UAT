@@ -23,7 +23,7 @@ namespace FICCI_API.Controller.API
             {
                 
 
-                resu = await _dbContext.FicciErpCustomerDetails.Where(x => x.IsDelete != true && x.IsActive != false)
+                resu = await _dbContext.FicciErpCustomerDetails.Where(x => x.IsDelete != true && x.IsActive != false && x.CustomerStatus == 5)
                         .Select(customer => new CustomerList
                         {
                             CustomerId = customer.CustomerId,
@@ -70,7 +70,7 @@ namespace FICCI_API.Controller.API
                                 CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
                             }
 
-                        }).Where(m => m.CustomerStatus == "5").ToListAsync();
+                        }).ToListAsync();
 
                 if (resu.Count <= 0)
                 {
