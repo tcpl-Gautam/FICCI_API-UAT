@@ -1,15 +1,26 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 using FICCI_API.ModelsEF;
+using FICCI_API.Models;
+
+using System.Net.Mail;
+using System.Net;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
 namespace FICCI_API.Controller
 {
     public class BaseController : ControllerBase
     {
       public readonly FICCI_DB_APPLICATIONSContext _context;
+       
         public BaseController(FICCI_DB_APPLICATIONSContext context)
         {
             this._context = context;
+
         }
+      
+      
 
         [NonAction]
         public string htmlBody(string header, string customerNo, string custName, string CityCode, string PAN, string GST)
@@ -20,9 +31,67 @@ namespace FICCI_API.Controller
         }
 
         [NonAction]
-        public void SendEmail(string MailTo, string MailCC, string EmailLink, string MailSubject, string MailBody)
+        public void SendEmail(string MailTo, string MailCC, string EmailLink, string MailSubject, string MailBody,MySettings? _mySettings)
         {
-            string res = htmlBody("TL", "C001", "Vishu", "Delhi", "62672", "828292");
+            if (Convert.ToBoolean(_mySettings.MailFlag))
+            {
+                try
+                {
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        mail.From = new MailAddress(_mySettings.Username, _mySettings.MailFrom);
+
+
+                        mail.To.Add(MailTo);
+
+                        string ccEmail = _mySettings.MailCc;
+                        if (!string.IsNullOrEmpty(ccEmail))
+                        {
+                            foreach (string item in ccEmail.Split(new char[] { ';', ',' }))
+                            {
+                                mail.CC.Add(item);
+                            }
+                        }
+
+
+                        string bccEmail = _mySettings.MailBcc;
+                        if (!string.IsNullOrEmpty(bccEmail))
+                        {
+                            foreach (string item in bccEmail.Split(new char[] { ';', ',' }))
+                            {
+                                mail.Bcc.Add(item);
+                            }
+                        }
+
+
+                        mail.Subject = MailSubject;
+                        mail.IsBodyHtml = true;
+                        mail.Body = MailBody;
+                        SmtpClient smtp = new SmtpClient();
+                        smtp.Host = _mySettings.Host;
+                        smtp.EnableSsl = true;
+                        NetworkCredential NetworkCred = new NetworkCredential(_mySettings.Username, _mySettings.Password);
+                        smtp.EnableSsl = Convert.ToBoolean(_mySettings.EnableSsl);
+                        smtp.UseDefaultCredentials = true;
+                        smtp.Credentials = NetworkCred;
+                        smtp.Port = Convert.ToInt32(_mySettings.Port);
+                        smtp.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+                        smtp.Send(mail);
+
+
+                    }
+                }
+                catch (Exception ex)
+                {
+
+
+                    throw ex;
+                }
+            }
+            else
+            {
+                //  log.Error("Mail flag has been disabled");
+            }
 
         }
     }

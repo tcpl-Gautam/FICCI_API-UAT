@@ -1,8 +1,10 @@
 ﻿using FICCI_API.DTO;
+using FICCI_API.Models;
 using FICCI_API.ModelsEF;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FICCI_API.Controller.API
@@ -12,12 +14,15 @@ namespace FICCI_API.Controller.API
     public class CustomerController : BaseController
     {
         private readonly FICCI_DB_APPLICATIONSContext _dbContext;
-        public CustomerController(FICCI_DB_APPLICATIONSContext dbContext) : base(dbContext)
+        private readonly MySettings _mySettings;
+        public CustomerController(FICCI_DB_APPLICATIONSContext dbContext, IOptions<MySettings> mySettings) : base(dbContext)
         {
             _dbContext = dbContext;
+            _mySettings = mySettings.Value;
         }
 
-
+     
+     
         [HttpGet]
         //List of all customers
         public async Task<IActionResult> Get(string email)
@@ -217,7 +222,7 @@ namespace FICCI_API.Controller.API
                             if (data.IsDraft == false)
                             {
                                 string htmlbody = htmlBody(imwd.ImwdPendingAt, customer.CusotmerNo, customer.CustomerName, customer.CityCode, customer.CustomerPanNo, customer.CustomerGstNo);
-                                SendEmail(customer.CustomerTlApprover, customer.CustomerEmailId, "http", $"New Customer Assigned for Approval : {customer.CustomerName}", htmlbody);
+                                SendEmail(customer.CustomerTlApprover, customer.CustomerEmailId, "http", $"New Customer Assigned for Approval : {customer.CustomerName}", htmlbody, _mySettings);
                             }
                             request.Status = true;
                             request.Message = "Customer Insert Successfully";

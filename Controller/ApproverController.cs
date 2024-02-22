@@ -24,11 +24,11 @@ namespace FICCI_API.Controller
             {
                 var res = await _dbContext.GetProcedures().prc_Approval_CustomerAsync(cust.CustomerId.ToString(), cust.IsApproved, cust.LoginId, cust.StatusId, cust.Remarks);
                 if (res[0].returncode == 1)
-                {
+                { 
                     var result = await _dbContext.FicciErpCustomerDetails.Where(x => x.CustomerId == Convert.ToInt32(res[0].CustomerId)).FirstOrDefaultAsync();
 
                     string htmlbody = htmlBody(res[0].Status, result.CusotmerNo, result.CustomerName, result.CityCode, result.CustomerPanNo, result.CustomerGstNo);
-                    SendEmail(res[0].InitiatedBy, result.CustomerEmailId, "http", $"New Customer Assigned for Approval : {result.CustomerName}", htmlbody);
+                  //  SendEmail(res[0].InitiatedBy, result.CustomerEmailId, "http", $"New Customer Assigned for Approval : {result.CustomerName}", htmlbody,);
 
                 }
                 crud.status = res[0].returncode == 1 ? true : false;

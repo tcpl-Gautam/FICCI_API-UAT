@@ -1,11 +1,13 @@
 
 using Microsoft.EntityFrameworkCore;
 using FICCI_API.ModelsEF;
+using FICCI_API.Models;
+using System.Runtime;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.Configure<MySettings>(builder.Configuration.GetSection("MySettings"));
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<FICCI_DB_APPLICATIONSContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
