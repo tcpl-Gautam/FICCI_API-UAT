@@ -16,14 +16,6 @@
    "T4TemplatePath": "ModelsEF",
    "Tables": [
       {
-         "Name": "[dbo].[City]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[Country]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[FICCI_ERP_CUSTOMER_DETAILS]",
          "ObjectType": 0
       },
@@ -65,10 +57,6 @@
       },
       {
          "Name": "[dbo].[GST_Customer_Type]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[States]",
          "ObjectType": 0
       },
       {

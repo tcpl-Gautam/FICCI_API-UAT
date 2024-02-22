@@ -1,6 +1,7 @@
 ﻿using FICCI_API.DTO.Account;
 using FICCI_API.ModelsEF;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Mail;
 
@@ -114,5 +115,25 @@ namespace FICCI_API.Controller.API.Account
         //    }
         //}
 
+
+        //public async Task<IActionResult> GetResult(int customerid)
+        //{
+        //    try
+        //    {
+        //        var result = await _dbContext.FicciErpCustomerDetails.Where(x => x.CustomerId == customerid).FirstOrDefaultAsync();
+
+        //        string name = result.CustomerName;
+        //        string customerNo = result.CusotmerNo;
+        //        string GST = result.CustomerGstNo;
+        //        string Pan = result.CustomerPanNo;
+        //        string city = _dbContext.Cities.Where(x => x.CityId == result.CustomerCity).Select(x => x.CityName).FirstOrDefault();
+        //        string status = _dbContext.StatusMasters.Where(s => s.StatusId == result.CustomerStatus).Select(a => a.StatusName).FirstOrDefault();
+        //       // SendMail(name, customerNo, GST, Pan, city, status);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
     }
 }

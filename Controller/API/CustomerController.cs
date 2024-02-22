@@ -59,6 +59,9 @@ namespace FICCI_API.Controller.API
                             ModifiedOn = Convert.ToDateTime(customer.CustomerUpdatedOn),
                             TLApprover = customer.CustomerTlApprover,
                             CLApprover = customer.CustomerClusterApprover,
+                            CityCode = customer.CityCode,
+                            StateCode = customer.StateCode,
+                            CountryCode = customer.CountryCode,
                             // SGApprover = customer.CustomerSgApprover,
                             // CustomerStatus = customer.CustomerStatus == 1 ? "Draft":"Pending With TL Approver",
                             CustomerStatus = _dbContext.StatusMasters.Where(x => x.StatusId == customer.CustomerStatus).Select(a => a.StatusName).FirstOrDefault(),
@@ -68,23 +71,7 @@ namespace FICCI_API.Controller.API
                                 GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,
                                 GstTypeName = customer.GstCustomerTypeNavigation.CustomerTypeName,
                             },
-                            City = customer.CustomerCityNavigation == null ? null : new CityInfo
-                            {
-                                CityId = customer.CustomerCityNavigation.CityId,
-                                CityName = customer.CustomerCityNavigation.CityName,
-
-                            },
-                            State = customer.CustomerCityNavigation.State == null ? null : new StateInfo
-                            {
-                                StateId = customer.CustomerCityNavigation.StateId,
-                                StateName = customer.CustomerCityNavigation.State.StateName,
-
-                            },
-                            Country = customer.CustomerCityNavigation.State.Country == null ? null : new CountryInfo
-                            {
-                                CountryId = customer.CustomerCityNavigation.State.CountryId,
-                                CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
-                            },
+                            
                             WorkFlowHistory = _dbContext.FicciImwds.Where(x => x.CustomerId == customer.CustomerId).ToList()
 
                         }).ToListAsync();
@@ -183,13 +170,16 @@ namespace FICCI_API.Controller.API
                             customer.CustomerPinCode = data.PinCode;
                             customer.CustomerPanNo = data.PAN;
                             customer.CustomerUpdatedOn = DateTime.Now;
-                            customer.CustomerCity = data.Cityid;
+                            //customer.CustomerCity = data.Cityid;
                             customer.CustomerPhoneNo = data.Phone;
                             customer.GstCustomerType = data.GSTCustomerType;
                             customer.IsPending = true;
                             customer.IsDraft = data.IsDraft;
                             customer.Createdby = data.LoginId;
                             customer.CustomerStatus = data.IsDraft == true ? 1 : 2;
+                            customer.CityCode = data.CityCode;
+                            customer.CountryCode = data.CountryCode;
+                            customer.StateCode = data.StateCode;
                             customer.CustomerRemarks = data.CustomerRemarks;
                             customer.CustomerTlApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefault().ToString() == null
                                 ? null : _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemManagerEmail).FirstOrDefault().ToString();
@@ -241,7 +231,7 @@ namespace FICCI_API.Controller.API
                                 result.CustomerPinCode = data.PinCode;
                                 result.CustomerPanNo = data.PAN;
                                 result.CustomerRemarks = data.CustomerRemarks;
-                                result.CustomerCity = data.Cityid;
+                               // result.CustomerCity = data.Cityid;
                                 result.CustomerPhoneNo = data.Phone;
                                 result.GstCustomerType = data.GSTCustomerType;
                                 result.IsPending = true;
@@ -249,6 +239,9 @@ namespace FICCI_API.Controller.API
                                 result.LastUpdateBy = data.LoginId;
                                 result.CustomerUpdatedOn = DateTime.Now;
                                 result.CustomerStatus = data.IsDraft == true ? 1 : 2;
+                                result.CityCode = data.CityCode;
+                                result.CountryCode = data.CountryCode;
+                                result.StateCode = data.StateCode;
 
                                 _dbContext.SaveChanges();
                                 if (data.IsDraft == false)

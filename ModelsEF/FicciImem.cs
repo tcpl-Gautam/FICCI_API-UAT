@@ -37,7 +37,7 @@ public partial class FicciImem
 
     public string ImemDepartmentHeadEmail { get; set; }
 
-    public bool ImemActive { get; set; }
+    public bool? ImemActive { get; set; }
 
     public string ImemCreatedBy { get; set; }
 
@@ -50,6 +50,4 @@ public partial class FicciImem
     public string ImemEmploymentType { get; set; }
 
     public string ImemUsername { get; set; }
-
-    public virtual ICollection<FicciImum> FicciImums { get; set; } = new List<FicciImum>();
 }

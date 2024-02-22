@@ -25,9 +25,9 @@ namespace FICCI_API.DTO
         public string? GSTNumber { get; set; }
         public string? TLApprover { get; set; }
         public string? CLApprover { get; set; }
-        public CityInfo? City { get; set; }
-        public StateInfo? State { get; set; }
-        public CountryInfo? Country { get; set; }
+        //public CityInfo? City { get; set; }
+        //public StateInfo? State { get; set; }
+        //public CountryInfo? Country { get; set; }
         public GSTCustomerTypeInfo? GstType { get; set; }
     }
     public class CustomerList
@@ -56,9 +56,12 @@ namespace FICCI_API.DTO
    //     public string? SGApprover { get; set; }
         public string? CustomerStatus { get; set; }
         public int? CustomerStatusId { get; set; }
-        public CityInfo? City { get; set; }
-        public StateInfo? State { get; set; }
-        public CountryInfo? Country { get; set; }
+        //public CityInfo? City { get; set; }
+        //public StateInfo? State { get; set; }
+        //public CountryInfo? Country { get; set; }
+        public string? CityCode { get; set; }
+        public string? StateCode { get; set; }
+        public string? CountryCode { get; set; }
         public GSTCustomerTypeInfo? GstType { get; set; }
         public List<FicciImwd>? WorkFlowHistory {  get; set; }
     }
@@ -111,7 +114,7 @@ namespace FICCI_API.DTO
         public string Phone { get; set; }
         public string? PinCode { get; set; }
         public string Email { get; set; }
-        public int Cityid { get; set; }
+      //  public int Cityid { get; set; }
         public bool? IsDraft { get; set; }
         public string? GSTNumber { get; set; }
         public string? PAN { get; set; }
@@ -120,6 +123,11 @@ namespace FICCI_API.DTO
         public int? CustomerStatus { get; set; }
         public string? CustomerRemarks { get; set; }
         public string RoleName { get; set; }
+        public string? CityCode { get; set; }
+        public string? StateCode { get; set; }
+        public string? CountryCode { get; set; }
+
+
     }
 
     public class Ficci_imwd

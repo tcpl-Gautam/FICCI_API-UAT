@@ -13,10 +13,6 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
     {
     }
 
-    public virtual DbSet<City> Cities { get; set; }
-
-    public virtual DbSet<Country> Countries { get; set; }
-
     public virtual DbSet<FicciErpCustomerDetail> FicciErpCustomerDetails { get; set; }
 
     public virtual DbSet<FicciErpProjectDetail> FicciErpProjectDetails { get; set; }
@@ -39,8 +35,6 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
 
     public virtual DbSet<GstCustomerType> GstCustomerTypes { get; set; }
 
-    public virtual DbSet<State> States { get; set; }
-
     public virtual DbSet<StatusMaster> StatusMasters { get; set; }
 
     public virtual DbSet<TblCategoryList> TblCategoryLists { get; set; }
@@ -55,58 +49,6 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<City>(entity =>
-        {
-            entity.HasKey(e => e.CityId).HasName("PK__City__F2D21B764DF52E26");
-
-            entity.ToTable("City");
-
-            entity.Property(e => e.CityCode)
-                .IsRequired()
-                .HasMaxLength(5)
-                .IsUnicode(false)
-                .IsFixedLength();
-            entity.Property(e => e.CityName)
-                .IsRequired()
-                .HasMaxLength(30)
-                .IsUnicode(false);
-            entity.Property(e => e.CreateDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.IsActive)
-                .IsRequired()
-                .HasDefaultValueSql("((1))");
-
-            entity.HasOne(d => d.State).WithMany(p => p.Cities)
-                .HasForeignKey(d => d.StateId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_City_States");
-        });
-
-        modelBuilder.Entity<Country>(entity =>
-        {
-            entity.HasKey(e => e.CountryId).HasName("PK__Country__10D1609FA65946D7");
-
-            entity.ToTable("Country");
-
-            entity.HasIndex(e => e.CountryName, "UQ__Country__E056F2016C6A65CA").IsUnique();
-
-            entity.Property(e => e.CountryCode)
-                .HasMaxLength(4)
-                .IsUnicode(false)
-                .IsFixedLength();
-            entity.Property(e => e.CountryName)
-                .IsRequired()
-                .HasMaxLength(30)
-                .IsUnicode(false);
-            entity.Property(e => e.CreateDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.IsActive)
-                .IsRequired()
-                .HasDefaultValueSql("((1))");
-        });
-
         modelBuilder.Entity<FicciErpCustomerDetail>(entity =>
         {
             entity.HasKey(e => e.CustomerId).HasName("PK__FICCI_ER__8CB286B97BBAB335");
@@ -114,10 +56,17 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.ToTable("FICCI_ERP_CUSTOMER_DETAILS");
 
             entity.Property(e => e.CustomerId).HasColumnName("Customer_ID");
+            entity.Property(e => e.AccountRemarks)
+                .IsUnicode(false)
+                .HasColumnName("Account_Remarks");
             entity.Property(e => e.ApprovedBy).IsUnicode(false);
-            entity.Property(e => e.ApprovedOn)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
+            entity.Property(e => e.ApprovedOn).HasColumnType("datetime");
+            entity.Property(e => e.CityCode)
+                .IsUnicode(false)
+                .HasColumnName("City_Code");
+            entity.Property(e => e.CountryCode)
+                .IsUnicode(false)
+                .HasColumnName("Country_Code");
             entity.Property(e => e.CreatedOn)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -133,7 +82,6 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.CustoemrAddress2)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOEMR_ADDRESS2");
-            entity.Property(e => e.CustomerCity).HasColumnName("CUSTOMER_CITY");
             entity.Property(e => e.CustomerClusterApprover)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -234,11 +182,9 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .IsRequired()
                 .HasDefaultValueSql("((1))");
             entity.Property(e => e.LastUpdateBy).IsUnicode(false);
-
-            entity.HasOne(d => d.CustomerCityNavigation).WithMany(p => p.FicciErpCustomerDetails)
-                .HasForeignKey(d => d.CustomerCity)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Customer_City");
+            entity.Property(e => e.StateCode)
+                .IsUnicode(false)
+                .HasColumnName("State_Code");
 
             entity.HasOne(d => d.GstCustomerTypeNavigation).WithMany(p => p.FicciErpCustomerDetails)
                 .HasForeignKey(d => d.GstCustomerType)
@@ -346,7 +292,10 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("IMEM_EMPID");
-            entity.Property(e => e.ImemActive).HasColumnName("IMEM_ACTIVE");
+            entity.Property(e => e.ImemActive)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasColumnName("IMEM_ACTIVE");
             entity.Property(e => e.ImemClusterEmail)
                 .HasMaxLength(100)
                 .IsUnicode(false)
@@ -356,7 +305,6 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("IMEM_CLUSTER_ID");
             entity.Property(e => e.ImemCreatedBy)
-                .IsRequired()
                 .HasMaxLength(20)
                 .IsUnicode(false)
                 .HasColumnName("IMEM_CREATED_BY");
@@ -365,7 +313,6 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("IMEM_CREATED_ON");
             entity.Property(e => e.ImemDepartment)
-                .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("IMEM_DEPARTMENT");
@@ -378,7 +325,6 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("IMEM_DEPARTMENT_HEAD_ID");
             entity.Property(e => e.ImemDesignation)
-                .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("IMEM_DESIGNATION");
@@ -398,7 +344,6 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("IMEM_JOINING_DATE");
             entity.Property(e => e.ImemLocation)
-                .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("IMEM_LOCATION");
@@ -427,7 +372,6 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("IMEM_USERNAME");
             entity.Property(e => e.ImemWorkLevel)
-                .IsRequired()
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("IMEM_WORK_LEVEL");
@@ -781,11 +725,6 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasMaxLength(20)
                 .IsUnicode(false);
 
-            entity.HasOne(d => d.ImumEmp).WithMany(p => p.FicciImums)
-                .HasForeignKey(d => d.ImumEmpid)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_FICCI_IMUM_FICCI_IMEM");
-
             entity.HasOne(d => d.Role).WithMany(p => p.FicciImums)
                 .HasForeignKey(d => d.RoleId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
@@ -801,7 +740,7 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.ImwdId).HasColumnName("IMWD_ID");
             entity.Property(e => e.ImwdCreatedBy)
                 .IsRequired()
-                .HasMaxLength(20)
+                .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("IMWD_CREATED_BY");
             entity.Property(e => e.ImwdCreatedOn)
@@ -853,31 +792,6 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.IsActive)
                 .IsRequired()
                 .HasDefaultValueSql("((1))");
-        });
-
-        modelBuilder.Entity<State>(entity =>
-        {
-            entity.HasKey(e => e.StateId).HasName("PK__States__C3BA3B3AD10A10F8");
-
-            entity.Property(e => e.CreateDate)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.IsActive)
-                .IsRequired()
-                .HasDefaultValueSql("((1))");
-            entity.Property(e => e.StateCode)
-                .HasMaxLength(5)
-                .IsUnicode(false)
-                .IsFixedLength();
-            entity.Property(e => e.StateName)
-                .IsRequired()
-                .HasMaxLength(30)
-                .IsUnicode(false);
-
-            entity.HasOne(d => d.Country).WithMany(p => p.States)
-                .HasForeignKey(d => d.CountryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_States_Country");
         });
 
         modelBuilder.Entity<StatusMaster>(entity =>
@@ -976,10 +890,12 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("Approver_Email");
-            entity.Property(e => e.CityName)
-                .HasMaxLength(30)
+            entity.Property(e => e.CityCode)
                 .IsUnicode(false)
-                .HasColumnName("cityName");
+                .HasColumnName("City_Code");
+            entity.Property(e => e.CountryCode)
+                .IsUnicode(false)
+                .HasColumnName("Country_Code");
             entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.Createdby).IsUnicode(false);
             entity.Property(e => e.CustoemrAddress)
@@ -1034,6 +950,9 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("CUSTOMER_UPDATED_ON");
             entity.Property(e => e.LastUpdateBy).IsUnicode(false);
+            entity.Property(e => e.StateCode)
+                .IsUnicode(false)
+                .HasColumnName("State_Code");
             entity.Property(e => e.StatusName).IsUnicode(false);
         });
 

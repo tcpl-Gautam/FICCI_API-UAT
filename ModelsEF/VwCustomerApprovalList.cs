@@ -47,7 +47,11 @@ public partial class VwCustomerApprovalList
 
     public string CustomerSgApprover { get; set; }
 
-    public string CityName { get; set; }
+    public string CountryCode { get; set; }
+
+    public string StateCode { get; set; }
+
+    public string CityCode { get; set; }
 
     public string CustomerTypeName { get; set; }
 

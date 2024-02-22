@@ -37,7 +37,5 @@ public partial class FicciImum
 
     public bool? IsDelete { get; set; }
 
-    public virtual FicciImem ImumEmp { get; set; }
-
     public virtual TblFicciRole Role { get; set; }
 }

@@ -19,8 +19,6 @@ public partial class FicciErpCustomerDetail
 
     public string CustoemrAddress2 { get; set; }
 
-    public int CustomerCity { get; set; }
-
     public string CustomerContact { get; set; }
 
     public string CustomerPhoneNo { get; set; }
@@ -97,7 +95,13 @@ public partial class FicciErpCustomerDetail
 
     public string CustomerRemarks { get; set; }
 
-    public virtual City CustomerCityNavigation { get; set; }
+    public string CountryCode { get; set; }
+
+    public string StateCode { get; set; }
+
+    public string CityCode { get; set; }
+
+    public string AccountRemarks { get; set; }
 
     public virtual GstCustomerType GstCustomerTypeNavigation { get; set; }
 }

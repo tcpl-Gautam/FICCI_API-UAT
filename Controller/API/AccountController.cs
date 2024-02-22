@@ -52,23 +52,26 @@ namespace FICCI_API.Controller.API
                                 GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,
                                 GstTypeName = customer.GstCustomerTypeNavigation.CustomerTypeName,
                             },
-                            City = customer.CustomerCityNavigation == null ? null : new CityInfo
-                            {
-                                CityId = customer.CustomerCityNavigation.CityId,
-                                CityName = customer.CustomerCityNavigation.CityName,
+                            CityCode = customer.CityCode,
+                            StateCode = customer.StateCode,
+                            CountryCode = customer.CountryCode,
+                            //City = customer.CustomerCityNavigation == null ? null : new CityInfo
+                            //{
+                            //    CityId = customer.CustomerCityNavigation.CityId,
+                            //    CityName = customer.CustomerCityNavigation.CityName,
 
-                            },
-                            State = customer.CustomerCityNavigation.State == null ? null : new StateInfo
-                            {
-                                StateId = customer.CustomerCityNavigation.StateId,
-                                StateName = customer.CustomerCityNavigation.State.StateName,
+                            //},
+                            //State = customer.CustomerCityNavigation.State == null ? null : new StateInfo
+                            //{
+                            //    StateId = customer.CustomerCityNavigation.StateId,
+                            //    StateName = customer.CustomerCityNavigation.State.StateName,
 
-                            },
-                            Country = customer.CustomerCityNavigation.State.Country == null ? null : new CountryInfo
-                            {
-                                CountryId = customer.CustomerCityNavigation.State.CountryId,
-                                CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
-                            }
+                            //},
+                            //Country = customer.CustomerCityNavigation.State.Country == null ? null : new CountryInfo
+                            //{
+                            //    CountryId = customer.CustomerCityNavigation.State.CountryId,
+                            //    CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
+                            //}
 
                         }).ToListAsync();
 
