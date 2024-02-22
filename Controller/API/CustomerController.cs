@@ -3,6 +3,7 @@ using FICCI_API.ModelsEF;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FICCI_API.Controller.API
 {
@@ -71,7 +72,7 @@ namespace FICCI_API.Controller.API
                                 GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,
                                 GstTypeName = customer.GstCustomerTypeNavigation.CustomerTypeName,
                             },
-                            
+
                             WorkFlowHistory = _dbContext.FicciImwds.Where(x => x.CustomerId == customer.CustomerId).ToList()
 
                         }).ToListAsync();
@@ -154,11 +155,11 @@ namespace FICCI_API.Controller.API
                 {
                     if (data != null)
                     {
-
+                        FicciErpCustomerDetail customer = new FicciErpCustomerDetail();
                         if (!data.isupdate)
                         {
 
-                            FicciErpCustomerDetail customer = new FicciErpCustomerDetail();
+                         
                             customer.CusotmerNo = data.CustomerCode;
                             customer.CustoemrAddress = data.Address;
                             customer.CustoemrAddress2 = data.Address2;
@@ -186,10 +187,13 @@ namespace FICCI_API.Controller.API
 
                             customer.CustomerClusterApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemClusterEmail).FirstOrDefault().ToString() == null
                                  ? null : _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemClusterEmail).FirstOrDefault().ToString();
+                            var k = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefault();
+                            if(k != null)
+                            {
+                                customer.CustomerSgApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefault();
 
-                            //customer.CustomerSgApprover = _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefault().ToString() == null
-                            //     ? null : _dbContext.FicciImems.Where(x => x.ImemEmail == data.LoginId).Select(x => x.ImemDepartmentHeadEmail).FirstOrDefault().ToString();
-
+                            }
+                            
 
                             _dbContext.Add(customer);
                             _dbContext.SaveChanges();
@@ -210,7 +214,11 @@ namespace FICCI_API.Controller.API
 
                             _dbContext.SaveChanges();
                             transaction.Commit();
-
+                            if (data.IsDraft == false)
+                            {
+                                string htmlbody = htmlBody(imwd.ImwdPendingAt, customer.CusotmerNo, customer.CustomerName, customer.CityCode, customer.CustomerPanNo, customer.CustomerGstNo);
+                                SendEmail(customer.CustomerTlApprover, customer.CustomerEmailId, "http", $"New Customer Assigned for Approval : {customer.CustomerName}", htmlbody);
+                            }
                             request.Status = true;
                             request.Message = "Customer Insert Successfully";
                             return StatusCode(200, request);
@@ -231,7 +239,7 @@ namespace FICCI_API.Controller.API
                                 result.CustomerPinCode = data.PinCode;
                                 result.CustomerPanNo = data.PAN;
                                 result.CustomerRemarks = data.CustomerRemarks;
-                               // result.CustomerCity = data.Cityid;
+                                // result.CustomerCity = data.Cityid;
                                 result.CustomerPhoneNo = data.Phone;
                                 result.GstCustomerType = data.GSTCustomerType;
                                 result.IsPending = true;
@@ -244,26 +252,28 @@ namespace FICCI_API.Controller.API
                                 result.StateCode = data.StateCode;
 
                                 _dbContext.SaveChanges();
-                                if (data.IsDraft == false)
-                                {
-                                    FicciImwd imwd = new FicciImwd();
-                                    imwd.ImwdScreenName = "Customer Approver";
-                                    imwd.CustomerId = data.CustomerId;
-                                    imwd.ImwdCreatedOn = DateTime.Now;
-                                    imwd.ImwdCreatedBy = data.LoginId;
-                                    imwd.ImwdStatus = data.CustomerStatus.ToString();
-                                    imwd.ImwdPendingAt = _dbContext.StatusMasters.Where(x => x.StatusId == result.CustomerStatus).Select(a => a.StatusName).FirstOrDefault();
-                                    imwd.ImwdInitiatedBy = data.LoginId;
-                                    imwd.ImwdRemarks = data.CustomerRemarks;
-                                    imwd.ImwdRole = data.RoleName;
 
-                                    _dbContext.Add(imwd);
+                                FicciImwd imwd = new FicciImwd();
+                                imwd.ImwdScreenName = "Customer Approver";
+                                imwd.CustomerId = data.CustomerId;
+                                imwd.ImwdCreatedOn = DateTime.Now;
+                                imwd.ImwdCreatedBy = data.LoginId;
+                                imwd.ImwdStatus = data.CustomerStatus.ToString();
+                                imwd.ImwdPendingAt = _dbContext.StatusMasters.Where(x => x.StatusId == result.CustomerStatus).Select(a => a.StatusName).FirstOrDefault();
+                                imwd.ImwdInitiatedBy = data.LoginId;
+                                imwd.ImwdRemarks = data.CustomerRemarks;
+                                imwd.ImwdRole = data.RoleName;
 
-                                    _dbContext.SaveChanges();
-                                }
+                                _dbContext.Add(imwd);
 
+                                _dbContext.SaveChanges();
+                               
                                 transaction.Commit();
-
+                                if (data.IsDraft==false)
+                                {
+                                    string htmlbody = htmlBody(imwd.ImwdPendingAt, result.CusotmerNo, result.CustomerName, result.CityCode, result.CustomerPanNo, result.CustomerGstNo);
+                                    SendEmail(customer.CustomerTlApprover, result.CustomerEmailId,"http", $"New Customer Assigned for Approval : {result.CustomerName}", htmlbody);
+                                }
                                 request.Status = true;
                                 request.Message = "Customer Update Successfully";
                                 return StatusCode(200, request);
@@ -291,6 +301,21 @@ namespace FICCI_API.Controller.API
                 }
             }
         }
+        [NonAction]
+        public string htmlBody(string header, string customerNo, string custName, string CityCode, string PAN, string GST)
+        {
+            string template = $@"Dear User,</br>Following Customer has been  {header} in the Invoice portal:</br><strong>Customer No:</strong> {customerNo}</br><strong>Customer Name:</strong> {custName}</br><strong>Customer City:</strong> {CityCode}</br><strong>Customer PAN No:</strong>{PAN}</br><strong>Customer GST No:</strong>{GST}</br>To Access Invoice Portal: <a href='#' class='cta-button'>Click Here</a></br>";
+            return template;
 
+        }
+
+        [NonAction]
+        public void SendEmail(string MailTo, string MailCC, string EmailLink, string MailSubject, string MailBody)
+        {
+            // string res = htmlBody("TL", "C001", "Vishu", "Delhi", "62672", "828292");
+
+        }
     }
+
 }
+

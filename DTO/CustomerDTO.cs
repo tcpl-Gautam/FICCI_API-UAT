@@ -103,23 +103,23 @@ namespace FICCI_API.DTO
 
     public class CustomerRequest
     {
-        public bool isupdate { get; set; }
-        public int? CustomerId { get; set; }
+        public bool isupdate { get; set; } //update
+        public int? CustomerId { get; set; } //update
         public string? CustomerCode { get; set; }
-        public string CustomerName { get; set; }
+        public string? CustomerName { get; set; }
         public string? CustomerLastName { get; set; }
         public string? Address { get; set; }
         public string? Address2 { get; set; }
-        public string Contact { get; set; }
-        public string Phone { get; set; }
+        public string? Contact { get; set; }
+        public string? Phone { get; set; }
         public string? PinCode { get; set; }
-        public string Email { get; set; }
+        public string? Email { get; set; }
       //  public int Cityid { get; set; }
-        public bool? IsDraft { get; set; }
+        public bool IsDraft { get; set; } //check submit
         public string? GSTNumber { get; set; }
         public string? PAN { get; set; }
         public int GSTCustomerType { get; set; }
-        public string? LoginId { get; set; }
+        public string LoginId { get; set; }
         public int? CustomerStatus { get; set; }
         public string? CustomerRemarks { get; set; }
         public string RoleName { get; set; }

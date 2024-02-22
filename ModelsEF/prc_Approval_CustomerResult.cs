@@ -9,5 +9,10 @@ namespace FICCI_API.ModelsEF
     {
         public int returncode { get; set; }
         public string Message { get; set; }
+        [Column("Initiated By")]
+        public string InitiatedBy { get; set; }
+        public string Status { get; set; }
+        [Column("Customer Id")]
+        public string CustomerId { get; set; }
     }
 }
