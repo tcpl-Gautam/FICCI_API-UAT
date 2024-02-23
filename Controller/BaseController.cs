@@ -19,19 +19,48 @@ namespace FICCI_API.Controller
             this._context = context;
 
         }
-      
-      
 
+
+     
         [NonAction]
-        public string htmlBody(string header, string customerNo, string custName, string CityCode, string PAN, string GST)
+        public string AssignhtmlBody(string EmailLink, string customerNo, string custName, string CityCode, string PAN, string GST)
         {
-            string template = $@"Dear User,</br>Following Customer has been approved by {header} in the Invoice portal:</br><strong>Customer No:</strong> {customerNo}</br><strong>Customer Name:</strong> {custName}</br><strong>Customer City:</strong> {CityCode}</br><strong>Customer PAN No:</strong>{PAN}</br><strong>Customer GST No:</strong>{GST}</br>To Access Invoice Portal: <a href='#' class='cta-button'>Click Here</a></br>";
+            string template = $@"Dear User,
+                                </br>Following Customer has been assigned in the Invoice portal for your necessary approval.
+                               </br><strong>Customer No:</strong> {customerNo}
+                               </br><strong>Customer Name:</strong> {custName}
+                               </br><strong>Customer City:</strong> {CityCode}
+                               </br><strong>Customer PAN No:</strong>{PAN}
+                               </br><strong>Customer GST No:</strong>{GST}
+                              </br>To Access Invoice Portal: <a href='{EmailLink}' class='cta-button'>Click Here</a>
+                              </br>Note:To open the Invoice portal, please open it in Microsoft Edge or In Google Chrome
+                              </br>Regards
+                              </br>FICCI Team";
             return template;
 
         }
 
         [NonAction]
-        public void SendEmail(string MailTo, string MailCC, string EmailLink, string MailSubject, string MailBody,MySettings? _mySettings)
+        public string ApprovalhtmlBody(string header, string EmailLink, string customerNo, string custName, string CityCode, string PAN, string GST)
+        {
+            string template = $@"Dear User,</br>Following Customer has been  {header} in the Invoice portal:
+                               </br><strong>Customer No:</strong> {customerNo}
+                               </br><strong>Customer Name:</strong> {custName}
+                               </br><strong>Customer City:</strong> {CityCode}
+                               </br><strong>Customer PAN No:</strong>{PAN}
+                               </br><strong>Customer GST No:</strong>{GST}
+                              </br>To Access Invoice Portal: <a href='{EmailLink}' class='cta-button'>Click Here</a>
+                              </br>Note:To open the Invoice portal, please open it in Microsoft Edge or In Google Chrome
+                              </br>Regards
+                              </br>FICCI Team";
+            return template;
+
+        }
+
+
+
+        [NonAction]
+        public void SendEmail(string MailTo, string MailCC, string MailSubject, string MailBody, MySettings? _mySettings)
         {
             if (Convert.ToBoolean(_mySettings.MailFlag))
             {
@@ -76,7 +105,7 @@ namespace FICCI_API.Controller
                         smtp.Credentials = NetworkCred;
                         smtp.Port = Convert.ToInt32(_mySettings.Port);
                         smtp.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
-                        smtp.Send(mail);
+                      //  smtp.Send(mail);
 
 
                     }
@@ -85,7 +114,7 @@ namespace FICCI_API.Controller
                 {
 
 
-                    throw ex;
+
                 }
             }
             else
@@ -96,3 +125,4 @@ namespace FICCI_API.Controller
         }
     }
 }
+

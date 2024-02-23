@@ -13,6 +13,7 @@ namespace FICCI_API.ModelsEF
     public partial interface IFICCI_DB_APPLICATIONSContextProcedures
     {
         Task<List<prc_Approval_CustomerResult>> prc_Approval_CustomerAsync(string CustomerId, bool? IsApprove, string LoginId, int? statusid, string Remarks, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<prc_Approval_InvoiceResult>> prc_Approval_InvoiceAsync(string HeaderId, bool? IsApprove, string LoginId, int? statusid, string Remarks, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<prc_Configuration_DeleteResult>> prc_Configuration_DeleteAsync(int? C_ID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<prc_Configuration_DetailResult>> prc_Configuration_DetailAsync(int? C_ID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<prc_Configuration_FormResult>> prc_Configuration_FormAsync(bool? IsUpdate, int? C_ID, string C_Code, string C_Value, int? CategoryID, string User, bool? IsActive, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);

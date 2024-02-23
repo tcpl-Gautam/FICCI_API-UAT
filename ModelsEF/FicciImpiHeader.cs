@@ -89,5 +89,9 @@ public partial class FicciImpiHeader
 
     public int? HeaderStatusId { get; set; }
 
+    public string AccountApprover { get; set; }
+
+    public DateTime? AccountApproverDate { get; set; }
+
     public virtual ICollection<FicciImpiLine> FicciImpiLines { get; set; } = new List<FicciImpiLine>();
 }

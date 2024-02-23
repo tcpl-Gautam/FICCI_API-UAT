@@ -221,8 +221,8 @@ namespace FICCI_API.Controller.API
                             transaction.Commit();
                             if (data.IsDraft == false)
                             {
-                                string htmlbody = htmlBody(imwd.ImwdPendingAt, customer.CusotmerNo, customer.CustomerName, customer.CityCode, customer.CustomerPanNo, customer.CustomerGstNo);
-                                SendEmail(customer.CustomerTlApprover, customer.CustomerEmailId, "http", $"New Customer Assigned for Approval : {customer.CustomerName}", htmlbody, _mySettings);
+                                string htmlbody = AssignhtmlBody(_mySettings.Website_link, customer.CusotmerNo, customer.CustomerName, customer.CityCode, customer.CustomerPanNo, customer.CustomerGstNo);
+                                SendEmail(customer.CustomerTlApprover, customer.CustomerEmailId, $"New Customer Assigned for Approval : {customer.CustomerName}", htmlbody, _mySettings);
                             }
                             request.Status = true;
                             request.Message = "Customer Insert Successfully";
@@ -274,10 +274,10 @@ namespace FICCI_API.Controller.API
                                 _dbContext.SaveChanges();
                                
                                 transaction.Commit();
-                                if (data.IsDraft==false)
+                                if (data.IsDraft == false)
                                 {
-                                    string htmlbody = htmlBody(imwd.ImwdPendingAt, result.CusotmerNo, result.CustomerName, result.CityCode, result.CustomerPanNo, result.CustomerGstNo);
-                                    SendEmail(customer.CustomerTlApprover, result.CustomerEmailId,"http", $"New Customer Assigned for Approval : {result.CustomerName}", htmlbody);
+                                    string htmlbody = AssignhtmlBody(_mySettings.Website_link, customer.CusotmerNo, customer.CustomerName, customer.CityCode, customer.CustomerPanNo, customer.CustomerGstNo);
+                                    SendEmail(customer.CustomerTlApprover, customer.CustomerEmailId, $"New Customer Assigned for Approval : {customer.CustomerName}", htmlbody, _mySettings);
                                 }
                                 request.Status = true;
                                 request.Message = "Customer Update Successfully";
@@ -306,20 +306,7 @@ namespace FICCI_API.Controller.API
                 }
             }
         }
-        [NonAction]
-        public string htmlBody(string header, string customerNo, string custName, string CityCode, string PAN, string GST)
-        {
-            string template = $@"Dear User,</br>Following Customer has been  {header} in the Invoice portal:</br><strong>Customer No:</strong> {customerNo}</br><strong>Customer Name:</strong> {custName}</br><strong>Customer City:</strong> {CityCode}</br><strong>Customer PAN No:</strong>{PAN}</br><strong>Customer GST No:</strong>{GST}</br>To Access Invoice Portal: <a href='#' class='cta-button'>Click Here</a></br>";
-            return template;
-
-        }
-
-        [NonAction]
-        public void SendEmail(string MailTo, string MailCC, string EmailLink, string MailSubject, string MailBody)
-        {
-            // string res = htmlBody("TL", "C001", "Vishu", "Delhi", "62672", "828292");
-
-        }
+     
     }
 
 }

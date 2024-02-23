@@ -13,6 +13,7 @@
 
         public string MailCc { get; set; }
         public string MailBcc { get; set; }
+        public string Website_link { get; set; }
 
     }
 }

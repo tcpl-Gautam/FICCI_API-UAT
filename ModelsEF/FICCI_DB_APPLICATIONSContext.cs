@@ -47,6 +47,8 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
 
     public virtual DbSet<VwCustomerApprovalList> VwCustomerApprovalLists { get; set; }
 
+    public virtual DbSet<VwInvoiceApprovalList> VwInvoiceApprovalLists { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<FicciErpCustomerDetail>(entity =>
@@ -476,6 +478,12 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.ToTable("FICCI_IMPI_HEADER");
 
             entity.Property(e => e.ImpiHeaderId).HasColumnName("IMPI_HEADER_ID");
+            entity.Property(e => e.AccountApprover)
+                .IsUnicode(false)
+                .HasColumnName("Account_Approver");
+            entity.Property(e => e.AccountApproverDate)
+                .HasColumnType("datetime")
+                .HasColumnName("Account_Approver_Date");
             entity.Property(e => e.HeaderStatusId).HasColumnName("Header_StatusId");
             entity.Property(e => e.ImpiHeaderActive).HasColumnName("IMPI_HEADER_ACTIVE");
             entity.Property(e => e.ImpiHeaderAttachment).HasColumnName("IMPI_HEADER_ATTACHMENT");
@@ -953,6 +961,86 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.StateCode)
                 .IsUnicode(false)
                 .HasColumnName("State_Code");
+            entity.Property(e => e.StatusName).IsUnicode(false);
+        });
+
+        modelBuilder.Entity<VwInvoiceApprovalList>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("VW_INVOICE_APPROVAL_LIST");
+
+            entity.Property(e => e.ApproverEmail)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Approver_Email");
+            entity.Property(e => e.HeaderStatusId).HasColumnName("Header_StatusId");
+            entity.Property(e => e.ImpiHeaderCreatedBy)
+                .IsRequired()
+                .HasMaxLength(20)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_CREATED_BY");
+            entity.Property(e => e.ImpiHeaderCustomerCity)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_CUSTOMER_CITY");
+            entity.Property(e => e.ImpiHeaderCustomerCode)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_CUSTOMER_CODE");
+            entity.Property(e => e.ImpiHeaderCustomerEmailId)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_CUSTOMER_EMAIL_ID");
+            entity.Property(e => e.ImpiHeaderCustomerGstNo)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_CUSTOMER_GST_NO");
+            entity.Property(e => e.ImpiHeaderCustomerPhoneNo)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_CUSTOMER_PHONE_NO");
+            entity.Property(e => e.ImpiHeaderCustomerPinCode)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_CUSTOMER_PIN_CODE");
+            entity.Property(e => e.ImpiHeaderCustomerState)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_CUSTOMER_STATE");
+            entity.Property(e => e.ImpiHeaderDivison)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_DIVISON");
+            entity.Property(e => e.ImpiHeaderGstNo)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_GST_NO");
+            entity.Property(e => e.ImpiHeaderId).HasColumnName("IMPI_HEADER_ID");
+            entity.Property(e => e.ImpiHeaderInvoiceType)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_INVOICE_TYPE");
+            entity.Property(e => e.ImpiHeaderPanNo)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_PAN_NO");
+            entity.Property(e => e.ImpiHeaderPaymentTerms)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_PAYMENT_TERMS");
+            entity.Property(e => e.ImpiHeaderPiNo)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_PI_NO");
+            entity.Property(e => e.ImpiHeaderRemarks)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_REMARKS");
+            entity.Property(e => e.ImpiHeaderSubmittedDate)
+                .HasColumnType("datetime")
+                .HasColumnName("IMPI_HEADER_SUBMITTED_DATE");
+            entity.Property(e => e.ImpiHeaderTotalInvoiceAmount)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("IMPI_HEADER_TOTAL_INVOICE_AMOUNT");
             entity.Property(e => e.StatusName).IsUnicode(false);
         });
 

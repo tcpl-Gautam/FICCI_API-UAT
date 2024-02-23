@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore;
 using FICCI_API.ModelsEF;
 using FICCI_API.DTO;
+using FICCI_API.Models;
+using Microsoft.Extensions.Options;
 
 namespace FICCI_API.Controller.API
 {
@@ -11,9 +13,11 @@ namespace FICCI_API.Controller.API
     public class ApproveCustomerController : BaseController
     {
         private readonly FICCI_DB_APPLICATIONSContext _dbContext;
-        public ApproveCustomerController(FICCI_DB_APPLICATIONSContext dbContext) : base(dbContext)
+        private readonly MySettings _mySettings;
+        public ApproveCustomerController(FICCI_DB_APPLICATIONSContext dbContext, IOptions<MySettings> mySettings) : base(dbContext)
         {
             _dbContext = dbContext;
+            _mySettings = mySettings.Value;
         }
 
         //[HttpGet("{id}")]
@@ -109,13 +113,13 @@ namespace FICCI_API.Controller.API
         //                    {
         //                        CityId = customer.CustomerCityNavigation.CityId,
         //                        CityName = customer.CustomerCityNavigation.CityName,
-                               
+
         //                    },
         //                    State = customer.CustomerCityNavigation.State == null ? null : new StateInfo
         //                    {
         //                        StateId = customer.CustomerCityNavigation.StateId,
         //                        StateName = customer.CustomerCityNavigation.State.StateName,
-                                
+
         //                    },
         //                    Country = customer.CustomerCityNavigation.State.Country == null ? null : new CountryInfo
         //                    {
@@ -241,6 +245,76 @@ namespace FICCI_API.Controller.API
             {
                 return StatusCode(500, new { status = false, message = "An error occurred while fetching the list of Approval." });
 
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Post(ApproveCustomer cust)
+        {
+            ApproverCustomer_Crud crud = new ApproverCustomer_Crud();
+
+            try
+            {
+                string htmlbody = "";
+                var res = await _dbContext.GetProcedures().prc_Approval_CustomerAsync(cust.CustomerId.ToString(), cust.IsApproved, cust.LoginId, cust.StatusId, cust.Remarks);
+                if (res[0].returncode == 1)
+                {
+                    var result = await _dbContext.FicciErpCustomerDetails.Where(x => x.CustomerId == Convert.ToInt32(res[0].CustomerId)).FirstOrDefaultAsync();
+                    string subject = "";
+                    if (cust.IsApproved)
+                    {
+                        if (cust.StatusId == 2)
+                        {
+                            subject = "New Customer Approved by TL : " + result.CustomerName + "";
+                            htmlbody = ApprovalhtmlBody(res[0].Status, _mySettings.Website_link, result.CusotmerNo, result.CustomerName, result.CityCode, result.CustomerPanNo, result.CustomerGstNo);
+                            SendEmail(result.CustomerClusterApprover, result.CustomerEmailId, subject, htmlbody, _mySettings);
+                        }
+                        else if (cust.StatusId == 3)
+                        {
+                            subject = "New Customer Approved by CH : " + result.CustomerName + "";
+                            htmlbody = ApprovalhtmlBody(res[0].Status, _mySettings.Website_link, result.CusotmerNo, result.CustomerName, result.CityCode, result.CustomerPanNo, result.CustomerGstNo);
+                            SendEmail(res[0].InitiatedBy, result.CustomerEmailId, subject, htmlbody, _mySettings);
+                        }
+                        else if (cust.StatusId == 5)
+                        {
+                            subject = "New Customer Approved by Account : " + result.CustomerName + "";
+                            htmlbody = ApprovalhtmlBody("approved by Accounts approver", _mySettings.Website_link, result.CusotmerNo, result.CustomerName, result.CityCode, result.CustomerPanNo, result.CustomerGstNo);
+                            SendEmail(result.CustomerEmailId, "" + result.CustomerTlApprover + "," + result.CustomerClusterApprover + "," + result.CustomerSgApprover + "", subject, htmlbody, _mySettings);
+                            return StatusCode(200, crud);
+                        }
+
+                    }
+                    if (!cust.IsApproved)
+                    {
+                        if (cust.StatusId == 2)
+                        {
+                            subject = "New Customer Rejected by TL : " + result.CustomerName + "";
+                        }
+                        else if (cust.StatusId == 3)
+                        {
+                            subject = "New Customer Rejected by CH : " + result.CustomerName + "";
+                        }
+                        else if (cust.StatusId == 5)
+                        {
+                            subject = "New Customer Rejected by Account : " + result.CustomerName + "";
+                        }
+                        htmlbody = ApprovalhtmlBody("rejected by the approver", _mySettings.Website_link, result.CusotmerNo, result.CustomerName, result.CityCode, result.CustomerPanNo, result.CustomerGstNo);
+                        SendEmail(result.CustomerEmailId, "" + result.CustomerTlApprover + "," + result.CustomerClusterApprover + "," + result.CustomerSgApprover + "", subject, htmlbody, _mySettings);
+                        return StatusCode(200, crud);
+                    }
+
+
+
+                }
+                crud.status = res[0].returncode == 1 ? true : false;
+                crud.message = res[0].Message;
+                return StatusCode(200, crud);
+
+            }
+            catch (Exception ex)
+            {
+                crud.status = false;
+                crud.message = ex.InnerException.Message.ToString();
+                return StatusCode(500, crud);
             }
         }
     }

@@ -84,7 +84,15 @@
          "ObjectType": 3
       },
       {
+         "Name": "[dbo].[VW_INVOICE_APPROVAL_LIST]",
+         "ObjectType": 3
+      },
+      {
          "Name": "[dbo].[prc_Approval_Customer]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[prc_Approval_Invoice]",
          "ObjectType": 1
       },
       {

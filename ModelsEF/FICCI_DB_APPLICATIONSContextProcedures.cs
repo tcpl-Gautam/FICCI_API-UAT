@@ -35,6 +35,7 @@ namespace FICCI_API.ModelsEF
         protected void OnModelCreatingGeneratedProcedures(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<prc_Approval_CustomerResult>().HasNoKey().ToView(null);
+            modelBuilder.Entity<prc_Approval_InvoiceResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<prc_Configuration_DeleteResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<prc_Configuration_DetailResult>().HasNoKey().ToView(null);
             modelBuilder.Entity<prc_Configuration_FormResult>().HasNoKey().ToView(null);
@@ -104,6 +105,59 @@ namespace FICCI_API.ModelsEF
                 parameterreturnValue,
             };
             var _ = await _context.SqlQueryAsync<prc_Approval_CustomerResult>("EXEC @returnValue = [dbo].[prc_Approval_Customer] @CustomerId, @IsApprove, @LoginId, @statusid, @Remarks", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<List<prc_Approval_InvoiceResult>> prc_Approval_InvoiceAsync(string HeaderId, bool? IsApprove, string LoginId, int? statusid, string Remarks, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "HeaderId",
+                    Size = 50,
+                    Value = HeaderId ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "IsApprove",
+                    Value = IsApprove ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Bit,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "LoginId",
+                    Size = -1,
+                    Value = LoginId ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "statusid",
+                    Value = statusid ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Remarks",
+                    Size = -1,
+                    Value = Remarks ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<prc_Approval_InvoiceResult>("EXEC @returnValue = [dbo].[prc_Approval_Invoice] @HeaderId, @IsApprove, @LoginId, @statusid, @Remarks", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
