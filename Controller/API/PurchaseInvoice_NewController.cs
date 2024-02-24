@@ -65,7 +65,7 @@ namespace FICCI_API.Controller.API
                         ficciImpiHeader.IsDraft = request.IsDraft;
 
                         ficciImpiHeader.ImpiHeaderSubmittedDate = DateTime.Now;
-                        ficciImpiHeader.ImpiHeaderTlApprover = request.ImpiHeaderTlApprover;
+                        ficciImpiHeader.ImpiHeaderTlApprover = request.ImpiHeaderTlApprover + "@ficci.com";
                         ficciImpiHeader.ImpiHeaderClusterApprover = request.ImpiHeaderClusterApprover + "@ficci.com";
                         ficciImpiHeader.ImpiHeaderFinanceApprover = request.ImpiHeaderFinanceApprover + "@ficci.com";
                         ficciImpiHeader.ImpiHeaderSupportApprover = request.ImpiHeaderSupportApprover + "@ficci.com";
