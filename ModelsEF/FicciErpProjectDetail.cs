@@ -9,23 +9,27 @@ public partial class FicciErpProjectDetail
 {
     public int ProjectId { get; set; }
 
-    public string ProjectNo { get; set; }
+    public string ProjectCode { get; set; }
 
     public string ProjectName { get; set; }
 
-    public string ProjectDivision { get; set; }
+    public string ProjectDepartmentCode { get; set; }
 
-    public string ProjectDepartment { get; set; }
+    public string ProjectDepartmentName { get; set; }
 
-    public string ProjectCost { get; set; }
+    public string ProjectDivisionCode { get; set; }
 
-    public DateTime? ProjectUpdatedOn { get; set; }
+    public string ProjectDivisionName { get; set; }
+
+    public string TlApprover { get; set; }
+
+    public string ChApprover { get; set; }
+
+    public string FinanceApprover { get; set; }
+
+    public string SupportApprover { get; set; }
 
     public bool? ProjectActive { get; set; }
 
     public bool IsDelete { get; set; }
-
-    public string ProjectGst { get; set; }
-
-    public string ProjectPan { get; set; }
 }

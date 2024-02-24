@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.Configure<MySettings>(builder.Configuration.GetSection("MySettings"));
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<FICCI_DB_APPLICATIONSContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -5,6 +5,7 @@ using FICCI_API.ModelsEF;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.Metrics;
 
 namespace FICCI_API.Controller.API
@@ -70,14 +71,15 @@ namespace FICCI_API.Controller.API
             try
             {
                 var employees = await _dbContext.GetProcedures().prc_EmployeeMaster_listAsync(id);
-                if(employees.Count > 0)
+                if (employees.Count > 0)
                 {
-                    var employeeResponse = employees.Select(c => new Employee_Master{
+                    var employeeResponse = employees.Select(c => new Employee_Master
+                    {
                         IMEM_ID = c.IMEM_ID,
-                        IMEM_Email =c.IMEM_EMAIL,
-                        IMEM_Name =c.IMEM_NAME,
+                        IMEM_Email = c.IMEM_EMAIL,
+                        IMEM_Name = c.IMEM_NAME,
                         IMEM_EmpId = c.IMEM_EMPID,
-                        IMEM_Username =c.IMEM_USERNAME,
+                        IMEM_Username = c.IMEM_USERNAME,
                         IsActive = c.IMEM_ACTIVE
 
                     }).ToList();
@@ -103,7 +105,7 @@ namespace FICCI_API.Controller.API
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -239,7 +241,7 @@ namespace FICCI_API.Controller.API
             try
             {
                 var custType = await _dbContext.GstCustomerTypes.Where(x => x.IsDelete != true && x.IsActive != false).OrderBy(x => x.CustomerTypeName).ToListAsync();
-                if(custType.Count > 0)
+                if (custType.Count > 0)
                 {
                     var custResponse = custType.Select(c => new GSTCustomerTypeInfo
                     {
@@ -274,70 +276,23 @@ namespace FICCI_API.Controller.API
         [HttpGet("GetProject")]
         public async Task<IActionResult> GetProject(int id = 0)
         {
-            var result = new ProjectDTO();
-            var resu = new List<AllProjectList>();
+            //var result = new ProjectDTO();
+            //var resu = new List<AllProjectList>();
             try
             {
-                if (id > 0)
-                {
-                    result = await _dbContext.FicciErpProjectDetails.Where(x => x.IsDelete != true && x.ProjectActive != false)
-                        .Select(project => new ProjectDTO
-                        {
-                            ProjectId = project.ProjectId,
-                            ProjectCode = project.ProjectNo,
-                            GST = project.ProjectGst ?? "",
-                            PAN = project.ProjectPan ?? "",
-                            Department = project.ProjectDepartment,
-                            Division = project.ProjectDivision,
 
-                        }).FirstOrDefaultAsync(x => x.ProjectId == id);
-
-                    if (result == null)
-                    {
-                        var respons = new
-                        {
-                            status = true,
-                            message = "No Projects found for the given Id",
-                            data = result
-                        };
-                        return NotFound(respons);
-                    }
-                    var response = new
-                    {
-                        status = true,
-                        message = "Project Detail fetch successfully",
-                        data = result
-                    };
-                    return Ok(response);
-                }
-                else if (id == 0)
+                var result = await _dbContext.FicciErpProjectDetails.Where(x => x.IsDelete != true && x.ProjectActive != false).ToListAsync();
+                if (result.Count > 0)
                 {
-                    resu = await _dbContext.FicciErpProjectDetails.Where(x => x.IsDelete != true && x.ProjectActive != false)
-                    .Select(project => new AllProjectList
+                    if (id > 0)
                     {
-                        ProjectId = project.ProjectId,
-                        ProjectName = project.ProjectName,
-                        ProjectCode = project.ProjectNo,
-                        Department = project.ProjectDepartment,
-                        Divison = project.ProjectDivision
-                        
-                    })
-                    .ToListAsync();
-                    if (resu.Count <= 0)
-                    {
-                        var respons = new
-                        {
-                            status = true,
-                            message = "No Projects found for the given Id",
-                            data = result
-                        };
-                        return NotFound(respons);
+                        result = result.Where(m => m.ProjectId == id).ToList();
                     }
                     var response = new
                     {
                         status = true,
                         message = "List fetch successfully",
-                        data = resu
+                        data = result
                     };
 
                     return Ok(response);
@@ -346,10 +301,11 @@ namespace FICCI_API.Controller.API
                 {
                     var response = new
                     {
-                        status = false,
-                        message = "Invalid Id",
-                        data = resu
+                        status = true,
+                        message = "No records found",
+
                     };
+
                     return NotFound(response);
                 }
 

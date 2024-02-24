@@ -15,9 +15,15 @@ public partial class FicciImpiHeader
 
     public string ImpiHeaderProjectCode { get; set; }
 
-    public string ImpiHeaderDepartment { get; set; }
+    public string ImpiHeaderProjectName { get; set; }
 
-    public string ImpiHeaderDivison { get; set; }
+    public string ImpiHeaderProjectDepartmentCode { get; set; }
+
+    public string ImpiHeaderProjectDepartmentName { get; set; }
+
+    public string ImpiHeaderProjectDivisionCode { get; set; }
+
+    public string ImpiHeaderProjectDivisionName { get; set; }
 
     public string ImpiHeaderPanNo { get; set; }
 
@@ -71,11 +77,13 @@ public partial class FicciImpiHeader
 
     public string ImpiHeaderClusterApproverRemarks { get; set; }
 
-    public string ImpiHeaderSgApprover { get; set; }
+    public string ImpiHeaderFinanceApprover { get; set; }
 
-    public DateTime? ImpiHeaderSgApproverDate { get; set; }
+    public DateTime? ImpiHeaderFinanceApproverDate { get; set; }
 
-    public string ImpiHeaderSgRemaks { get; set; }
+    public string ImpiHeaderFinanceRemarks { get; set; }
+
+    public string ImpiHeaderSupportApprover { get; set; }
 
     public string ImpiHeaderRemarks { get; set; }
 

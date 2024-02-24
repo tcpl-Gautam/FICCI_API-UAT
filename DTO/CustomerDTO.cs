@@ -67,20 +67,20 @@ namespace FICCI_API.DTO
     }
     public class CityInfo
     {
-        public int CityId {  get; set; }
+        public string CityId { get; set; }
         public string CityName { get; set; }
         public StateInfo? State { get; set; }
     }
     public class StateInfo
     {
-        public int StateId { get; set; }
+        public string StateId { get; set; }
         public string StateName { get; set; }
-        public CountryInfo? Country { get; set; }
+        // public CountryInfo? Country { get; set; }
 
     }
     public class CountryInfo
     {
-        public int CountryId {  get; set; }
+        public string CountryId { get; set; }
         public string CountryName { get; set; }
 
     }

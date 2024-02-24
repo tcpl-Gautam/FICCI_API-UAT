@@ -200,39 +200,48 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.ToTable("FICCI_ERP_PROJECT_DETAILS");
 
             entity.Property(e => e.ProjectId).HasColumnName("Project_Id");
+            entity.Property(e => e.ChApprover)
+                .IsRequired()
+                .IsUnicode(false)
+                .HasColumnName("CH_APPROVER");
+            entity.Property(e => e.FinanceApprover)
+                .IsRequired()
+                .IsUnicode(false)
+                .HasColumnName("FINANCE_APPROVER");
             entity.Property(e => e.ProjectActive)
                 .IsRequired()
                 .HasDefaultValueSql("((1))")
                 .HasColumnName("PROJECT_ACTIVE");
-            entity.Property(e => e.ProjectCost)
+            entity.Property(e => e.ProjectCode)
+                .IsRequired()
+                .HasMaxLength(50)
                 .IsUnicode(false)
-                .HasColumnName("PROJECT_COST");
-            entity.Property(e => e.ProjectDepartment)
+                .HasColumnName("PROJECT_CODE");
+            entity.Property(e => e.ProjectDepartmentCode)
                 .IsRequired()
                 .IsUnicode(false)
-                .HasColumnName("PROJECT_DEPARTMENT");
-            entity.Property(e => e.ProjectDivision)
+                .HasColumnName("PROJECT_DEPARTMENT_CODE");
+            entity.Property(e => e.ProjectDepartmentName)
                 .IsRequired()
                 .IsUnicode(false)
-                .HasColumnName("PROJECT_DIVISION");
-            entity.Property(e => e.ProjectGst)
+                .HasColumnName("PROJECT_DEPARTMENT_NAME");
+            entity.Property(e => e.ProjectDivisionCode)
                 .IsUnicode(false)
-                .HasColumnName("Project_GST");
+                .HasColumnName("PROJECT_DIVISION_CODE");
+            entity.Property(e => e.ProjectDivisionName)
+                .IsUnicode(false)
+                .HasColumnName("PROJECT_DIVISION_NAME");
             entity.Property(e => e.ProjectName)
                 .IsRequired()
                 .IsUnicode(false)
                 .HasColumnName("PROJECT_NAME");
-            entity.Property(e => e.ProjectNo)
+            entity.Property(e => e.SupportApprover)
+                .IsUnicode(false)
+                .HasColumnName("SUPPORT_APPROVER");
+            entity.Property(e => e.TlApprover)
                 .IsRequired()
-                .HasMaxLength(50)
                 .IsUnicode(false)
-                .HasColumnName("PROJECT_NO");
-            entity.Property(e => e.ProjectPan)
-                .IsUnicode(false)
-                .HasColumnName("Project_PAN");
-            entity.Property(e => e.ProjectUpdatedOn)
-                .HasColumnType("datetime")
-                .HasColumnName("PROJECT_UPDATED_ON");
+                .HasColumnName("TL_APPROVER");
         });
 
         modelBuilder.Entity<FicciImad>(entity =>
@@ -549,14 +558,16 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("IMPI_HEADER_CUSTOMER_STATE");
-            entity.Property(e => e.ImpiHeaderDepartment)
+            entity.Property(e => e.ImpiHeaderFinanceApprover)
                 .HasMaxLength(50)
                 .IsUnicode(false)
-                .HasColumnName("IMPI_HEADER_DEPARTMENT");
-            entity.Property(e => e.ImpiHeaderDivison)
-                .HasMaxLength(50)
+                .HasColumnName("IMPI_HEADER_FINANCE_APPROVER");
+            entity.Property(e => e.ImpiHeaderFinanceApproverDate)
+                .HasColumnType("datetime")
+                .HasColumnName("IMPI_HEADER_FINANCE_APPROVER_DATE");
+            entity.Property(e => e.ImpiHeaderFinanceRemarks)
                 .IsUnicode(false)
-                .HasColumnName("IMPI_HEADER_DIVISON");
+                .HasColumnName("IMPI_HEADER_FINANCE_REMARKS");
             entity.Property(e => e.ImpiHeaderGstNo)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -584,22 +595,31 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("IMPI_HEADER_PI_NO");
             entity.Property(e => e.ImpiHeaderProjectCode)
+                .IsRequired()
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("IMPI_HEADER_PROJECT_CODE");
+            entity.Property(e => e.ImpiHeaderProjectDepartmentCode)
+                .IsRequired()
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_PROJECT_DEPARTMENT_CODE");
+            entity.Property(e => e.ImpiHeaderProjectDepartmentName)
+                .IsRequired()
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_PROJECT_DEPARTMENT_NAME");
+            entity.Property(e => e.ImpiHeaderProjectDivisionCode)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_PROJECT_DIVISION_CODE");
+            entity.Property(e => e.ImpiHeaderProjectDivisionName)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_PROJECT_DIVISION_NAME");
+            entity.Property(e => e.ImpiHeaderProjectName)
+                .IsRequired()
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_PROJECT_NAME");
             entity.Property(e => e.ImpiHeaderRemarks)
                 .IsUnicode(false)
                 .HasColumnName("IMPI_HEADER_REMARKS");
-            entity.Property(e => e.ImpiHeaderSgApprover)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("IMPI_HEADER_SG_APPROVER");
-            entity.Property(e => e.ImpiHeaderSgApproverDate)
-                .HasColumnType("datetime")
-                .HasColumnName("IMPI_HEADER_SG_APPROVER_DATE");
-            entity.Property(e => e.ImpiHeaderSgRemaks)
-                .IsUnicode(false)
-                .HasColumnName("IMPI_HEADER_SG_REMAKS");
             entity.Property(e => e.ImpiHeaderStatus)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -607,6 +627,9 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.ImpiHeaderSubmittedDate)
                 .HasColumnType("datetime")
                 .HasColumnName("IMPI_HEADER_SUBMITTED_DATE");
+            entity.Property(e => e.ImpiHeaderSupportApprover)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_SUPPORT_APPROVER");
             entity.Property(e => e.ImpiHeaderTlApprover)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -1008,10 +1031,6 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("IMPI_HEADER_CUSTOMER_STATE");
-            entity.Property(e => e.ImpiHeaderDivison)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("IMPI_HEADER_DIVISON");
             entity.Property(e => e.ImpiHeaderGstNo)
                 .HasMaxLength(50)
                 .IsUnicode(false)
@@ -1032,6 +1051,9 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("IMPI_HEADER_PI_NO");
+            entity.Property(e => e.ImpiHeaderProjectDivisionCode)
+                .IsUnicode(false)
+                .HasColumnName("IMPI_HEADER_PROJECT_DIVISION_CODE");
             entity.Property(e => e.ImpiHeaderRemarks)
                 .IsUnicode(false)
                 .HasColumnName("IMPI_HEADER_REMARKS");

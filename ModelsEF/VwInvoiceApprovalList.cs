@@ -13,7 +13,7 @@ public partial class VwInvoiceApprovalList
 
     public string ImpiHeaderInvoiceType { get; set; }
 
-    public string ImpiHeaderDivison { get; set; }
+    public string ImpiHeaderProjectDivisionCode { get; set; }
 
     public string ImpiHeaderPanNo { get; set; }
 
