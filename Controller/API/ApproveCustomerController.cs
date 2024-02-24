@@ -66,6 +66,8 @@ namespace FICCI_API.Controller.API
                 {
                     var result = await _dbContext.FicciErpCustomerDetails.Where(x => x.CustomerId == Convert.ToInt32(res[0].CustomerId)).FirstOrDefaultAsync();
                     string subject = "";
+                    crud.status = res[0].returncode == 1 ? true : false;
+                    crud.message = res[0].Message;
                     if (cust.IsApproved)
                     {
                         if (cust.StatusId == 2)
@@ -111,8 +113,7 @@ namespace FICCI_API.Controller.API
 
 
                 }
-                crud.status = res[0].returncode == 1 ? true : false;
-                crud.message = res[0].Message;
+              
                 return StatusCode(200, crud);
 
             }

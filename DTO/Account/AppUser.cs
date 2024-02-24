@@ -23,7 +23,10 @@ namespace FICCI_API.DTO.Account
         public string Name { get; set; }
         public string EmpId { get; set; }
         public string RoleName { get; set; }
+
         public bool IsApprover { get; set; }
+        public bool Invoice_IsApprover { get; set; }
+        
         public string? Token { get; set; }
     }
 }
