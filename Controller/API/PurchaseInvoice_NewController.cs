@@ -248,6 +248,7 @@ namespace FICCI_API.Controller.API
                         purchaseInvoice_response.ImpiHeaderCustomerEmailId = k.ImpiHeaderCustomerEmailId;
                         purchaseInvoice_response.ImpiHeaderCustomerPhoneNo = k.ImpiHeaderCustomerPhoneNo;
                         purchaseInvoice_response.ImpiHeaderCreatedBy = k.ImpiHeaderCreatedBy;
+                        purchaseInvoice_response.ImpiHeaderAttachment = k.ImpiHeaderAttachment;
 
                         purchaseInvoice_response.IsDraft = k.IsDraft;
                         purchaseInvoice_response.ImpiHeaderSubmittedDate = k.ImpiHeaderSubmittedDate;
@@ -255,6 +256,10 @@ namespace FICCI_API.Controller.API
                         purchaseInvoice_response.ImpiHeaderPaymentTerms = k.ImpiHeaderPaymentTerms;
                         purchaseInvoice_response.ImpiHeaderRemarks = k.ImpiHeaderRemarks;
                         purchaseInvoice_response.ImpiHeaderModifiedDate = k.ImpiHeaderModifiedOn;
+                        purchaseInvoice_response.ImpiHeaderTlApprover = k.ImpiHeaderTlApprover;
+                        purchaseInvoice_response.ImpiHeaderClusterApprover = k.ImpiHeaderClusterApprover;
+                        purchaseInvoice_response.ImpiHeaderFinanceApprover = k.ImpiHeaderFinanceApprover;
+
                         purchaseInvoice_response.HeaderStatus = _dbContext.StatusMasters.Where(x => x.StatusId == k.HeaderStatusId).Select(a => a.StatusName).FirstOrDefault();
                         var lindata = _dbContext.FicciImpiLines.Where(m => m.ImpiLineActive == true && m.PiHeaderId == k.ImpiHeaderId).ToList();
                         if (lindata.Count > 0)

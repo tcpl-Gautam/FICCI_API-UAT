@@ -43,13 +43,17 @@
         public string ImpiHeaderCustomerPhoneNo { get; set; }
         public string ImpiHeaderCreatedBy { get; set; }
         public decimal? ImpiHeaderTotalInvoiceAmount { get; set; }
-        public IFormFile ImpiHeaderAttachment { get; set; }
+        public string ImpiHeaderAttachment { get; set; }
         public string ImpiHeaderPaymentTerms { get; set; }
         public string ImpiHeaderRemarks { get; set; }
         public DateTime? ImpiHeaderSubmittedDate { get; set; }
         public DateTime? ImpiHeaderModifiedDate { get; set; }
         public string? HeaderStatus { get; set; }
         public bool? IsDraft { get; set; }
+        public string ImpiHeaderTlApprover { get; set; }
+        public string ImpiHeaderClusterApprover { get; set; }
+        public string ImpiHeaderFinanceApprover { get; set; }
+        public string? ImpiHeaderSupportApprover { get; set; }
         public List<LineItem_request> lineItem_Requests { get; set; }
     }
     
