@@ -97,7 +97,7 @@
         public string ImpiHeaderTlApprover { get; set; }
         public string ImpiHeaderClusterApprover { get; set; }
         public string ImpiHeaderFinanceApprover { get; set; }
-        public string ImpiHeaderSupportApprover { get; set; }
+        public string? ImpiHeaderSupportApprover { get; set; }
         public List<LineItem_request> lineItem_Requests { get; set; }
 
 

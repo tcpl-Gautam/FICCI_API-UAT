@@ -131,7 +131,11 @@ namespace FICCI_API.Controller.API
                             data.ImpiHeaderModifiedOn = DateTime.Now;
                             //data.ImpiHeaderActive = true;
                             data.ImpiHeaderTotalInvoiceAmount = request.ImpiHeaderTotalInvoiceAmount;
-                            data.ImpiHeaderAttachment = UploadFile(request.ImpiHeaderAttachment);
+                            if (request.ImpiHeaderAttachment != null)
+                            {
+                                data.ImpiHeaderAttachment = UploadFile(request.ImpiHeaderAttachment);
+                            }
+                           
                             data.ImpiHeaderPaymentTerms = request.ImpiHeaderPaymentTerms;
                             data.ImpiHeaderRemarks = request.ImpiHeaderRemarks;
                             data.ImpiHeaderStatus = request.IsDraft == true ? "Draft" : "Pending";
