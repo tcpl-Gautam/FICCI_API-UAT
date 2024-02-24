@@ -115,6 +115,8 @@ namespace FICCI_API.Controller.API
 
 
                 }
+                crud.status = res[0].returncode == 1 ? true : false;
+                crud.message = res[0].Message;
                 return StatusCode(200, crud);
 
             }
