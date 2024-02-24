@@ -68,7 +68,10 @@ namespace FICCI_API.Controller.API
                         ficciImpiHeader.ImpiHeaderTlApprover = request.ImpiHeaderTlApprover + "@ficci.com";
                         ficciImpiHeader.ImpiHeaderClusterApprover = request.ImpiHeaderClusterApprover + "@ficci.com";
                         ficciImpiHeader.ImpiHeaderFinanceApprover = request.ImpiHeaderFinanceApprover + "@ficci.com";
-                        ficciImpiHeader.ImpiHeaderSupportApprover = request.ImpiHeaderSupportApprover + "@ficci.com";
+                        if (request.ImpiHeaderSupportApprover != null)
+                        {
+                            ficciImpiHeader.ImpiHeaderSupportApprover = request.ImpiHeaderSupportApprover + "@ficci.com";
+                        }
                         ficciImpiHeader.HeaderStatusId = request.IsDraft == true ? 1 : 2;
 
                         _dbContext.Add(ficciImpiHeader);
