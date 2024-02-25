@@ -4,6 +4,7 @@ using FICCI_API.ModelsEF;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace FICCI_API.Controller.API
 {
@@ -65,9 +66,9 @@ namespace FICCI_API.Controller.API
                         ficciImpiHeader.IsDraft = request.IsDraft;
 
                         ficciImpiHeader.ImpiHeaderSubmittedDate = DateTime.Now;
-                        ficciImpiHeader.ImpiHeaderTlApprover = request.ImpiHeaderTlApprover + "@ficci.com";
-                        ficciImpiHeader.ImpiHeaderClusterApprover = request.ImpiHeaderClusterApprover + "@ficci.com";
-                        ficciImpiHeader.ImpiHeaderFinanceApprover = request.ImpiHeaderFinanceApprover + "@ficci.com";
+                        ficciImpiHeader.ImpiHeaderTlApprover = "amit.jha@teamcomputers.com";//request.ImpiHeaderTlApprover + "@ficci.com";
+                        ficciImpiHeader.ImpiHeaderClusterApprover = "debananda.panda@teamcomputers.com";//request.ImpiHeaderClusterApprover + "@ficci.com";
+                        ficciImpiHeader.ImpiHeaderFinanceApprover = "nikhil.vig@teamcomputers.com";//request.ImpiHeaderFinanceApprover + "@ficci.com";
                         if (request.ImpiHeaderSupportApprover != null)
                         {
                             ficciImpiHeader.ImpiHeaderSupportApprover = request.ImpiHeaderSupportApprover + "@ficci.com";
@@ -77,6 +78,20 @@ namespace FICCI_API.Controller.API
                         _dbContext.Add(ficciImpiHeader);
                         _dbContext.SaveChanges();
                         int returnid = ficciImpiHeader.ImpiHeaderId;
+                        FicciImwd imwd = new FicciImwd();
+                        imwd.ImwdScreenName = "Invoice Approver";
+                        imwd.CustomerId = returnid;
+                        imwd.ImwdCreatedOn = DateTime.Now;
+                        imwd.ImwdCreatedBy = request.LoginId;
+                        imwd.ImwdStatus = request.IsDraft == true ? "1" : "2";
+                        imwd.ImwdPendingAt = _dbContext.StatusMasters.Where(x => x.StatusId == ficciImpiHeader.HeaderStatusId).Select(a => a.StatusName).FirstOrDefault();
+                        imwd.ImwdInitiatedBy = request.LoginId;
+                        imwd.ImwdRemarks = request.InvoiceRemarks;
+                        imwd.ImwdRole = request.RoleName;
+                        imwd.ImwdType = 2;
+                        _dbContext.Add(imwd);
+
+                        _dbContext.SaveChanges();
                         if (returnid != 0 && request.lineItem_Requests.Count > 0)
                         {
                             foreach (var k in request.lineItem_Requests)
@@ -149,6 +164,20 @@ namespace FICCI_API.Controller.API
                             //_dbContext.Add(data);
                             _dbContext.SaveChanges();
                             int returnid = data.ImpiHeaderId;
+                            FicciImwd imwd = new FicciImwd();
+                            imwd.ImwdScreenName = "Invoice Approver";
+                            imwd.CustomerId = returnid;
+                            imwd.ImwdCreatedOn = DateTime.Now;
+                            imwd.ImwdCreatedBy = request.LoginId;
+                            imwd.ImwdStatus = request.IsDraft == true ? "1" : "2";
+                            imwd.ImwdPendingAt = _dbContext.StatusMasters.Where(x => x.StatusId == data.HeaderStatusId).Select(a => a.StatusName).FirstOrDefault();
+                            imwd.ImwdInitiatedBy = request.LoginId;
+                            imwd.ImwdRemarks = request.InvoiceRemarks;
+                            imwd.ImwdRole = request.RoleName;
+                            imwd.ImwdType = 2;
+                            _dbContext.Add(imwd);
+
+                            _dbContext.SaveChanges();
                             if (returnid != 0 && request.lineItem_Requests.Count > 0)
                             {
                                 var dataline = _dbContext.FicciImpiLines.ToList();
@@ -264,6 +293,7 @@ namespace FICCI_API.Controller.API
                         purchaseInvoice_response.ImpiHeaderFinanceApprover = k.ImpiHeaderFinanceApprover;
 
                         purchaseInvoice_response.HeaderStatus = _dbContext.StatusMasters.Where(x => x.StatusId == k.HeaderStatusId).Select(a => a.StatusName).FirstOrDefault();
+                        purchaseInvoice_response.WorkFlowHistory = _dbContext.FicciImwds.Where(x => x.CustomerId == purchaseInvoice_response.HeaderId && x.ImwdType == 2).ToList(); ;
                         var lindata = _dbContext.FicciImpiLines.Where(m => m.ImpiLineActive == true && m.PiHeaderId == k.ImpiHeaderId).ToList();
                         if (lindata.Count > 0)
                         {

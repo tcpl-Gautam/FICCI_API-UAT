@@ -97,7 +97,7 @@ public partial class FicciImpiHeader
 
     public int? HeaderStatusId { get; set; }
 
-    public string AccountApprover { get; set; }
+    public string AccountApproverRemarks { get; set; }
 
     public DateTime? AccountApproverDate { get; set; }
 

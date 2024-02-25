@@ -487,12 +487,12 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.ToTable("FICCI_IMPI_HEADER");
 
             entity.Property(e => e.ImpiHeaderId).HasColumnName("IMPI_HEADER_ID");
-            entity.Property(e => e.AccountApprover)
-                .IsUnicode(false)
-                .HasColumnName("Account_Approver");
             entity.Property(e => e.AccountApproverDate)
                 .HasColumnType("datetime")
                 .HasColumnName("Account_Approver_Date");
+            entity.Property(e => e.AccountApproverRemarks)
+                .IsUnicode(false)
+                .HasColumnName("Account_Approver_Remarks");
             entity.Property(e => e.HeaderStatusId).HasColumnName("Header_StatusId");
             entity.Property(e => e.ImpiHeaderActive).HasColumnName("IMPI_HEADER_ACTIVE");
             entity.Property(e => e.ImpiHeaderAttachment).HasColumnName("IMPI_HEADER_ATTACHMENT");
@@ -804,6 +804,7 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("IMWD_STATUS");
+            entity.Property(e => e.ImwdType).HasColumnName("IMWD_Type");
         });
 
         modelBuilder.Entity<GstCustomerType>(entity =>

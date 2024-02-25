@@ -78,7 +78,7 @@ namespace FICCI_API.Controller.API
                                 GstTypeName = customer.GstCustomerTypeNavigation.CustomerTypeName,
                             },
 
-                            WorkFlowHistory = _dbContext.FicciImwds.Where(x => x.CustomerId == customer.CustomerId).ToList()
+                            WorkFlowHistory = _dbContext.FicciImwds.Where(x => x.CustomerId == customer.CustomerId && x.ImwdType == 1).ToList()
 
                         }).ToListAsync();
                 if (emp_Role != 1)
@@ -214,7 +214,7 @@ namespace FICCI_API.Controller.API
                             imwd.ImwdInitiatedBy = data.LoginId;
                             imwd.ImwdRemarks = data.CustomerRemarks;
                             imwd.ImwdRole = data.RoleName;
-
+                            imwd.ImwdType = 1;
                             _dbContext.Add(imwd);
 
                             _dbContext.SaveChanges();
@@ -268,7 +268,7 @@ namespace FICCI_API.Controller.API
                                 imwd.ImwdInitiatedBy = data.LoginId;
                                 imwd.ImwdRemarks = data.CustomerRemarks;
                                 imwd.ImwdRole = data.RoleName;
-
+                                imwd.ImwdType = 1;
                                 _dbContext.Add(imwd);
 
                                 _dbContext.SaveChanges();

@@ -1,4 +1,5 @@
 ﻿using FICCI_API.DTO;
+using FICCI_API.Models;
 using FICCI_API.ModelsEF;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -97,6 +98,76 @@ namespace FICCI_API.Controller.API
             catch (Exception ex)
             {
                 return StatusCode(500, new { status = false, message = "An error occurred while fetching the detail of Customers." });
+            }
+        }
+
+
+
+        [HttpGet("GetInvoice")]
+        public async Task<IActionResult> GetInvoice()
+        {
+            var result = new PurchaseInvoice_Response();
+            var resu = new List<InvoiceList>();
+            try
+            {
+
+
+                resu = await _dbContext.FicciImpiHeaders.Where(x =>   x.ImpiHeaderActive != false && x.HeaderStatusId == 5)
+                        .Select(invoice => new InvoiceList
+                        {
+                            HeaderId = invoice.ImpiHeaderId,
+                            HeaderPiNo = invoice.ImpiHeaderPiNo,
+                            ImpiHeaderInvoiceType = invoice.ImpiHeaderInvoiceType,
+                            ImpiHeaderProjectCode = invoice.ImpiHeaderProjectCode,
+                            ImpiHeaderProjectDepartmentName = invoice.ImpiHeaderProjectDepartmentName,
+                            ImpiHeaderProjectDivisionName = invoice.ImpiHeaderProjectDivisionName,
+                            ImpiHeaderProjectDepartmentCode = invoice.ImpiHeaderProjectDepartmentCode,
+                            ImpiHeaderPanNo = invoice.ImpiHeaderPanNo,
+                            ImpiHeaderGstNo = invoice.ImpiHeaderGstNo,
+                            ImpiHeaderCustomerName = invoice.ImpiHeaderCustomerName,
+                            ImpiHeaderCustomerCity = invoice.ImpiHeaderCustomerCity,
+                            ImpiHeaderCustomerAddress = invoice.ImpiHeaderCustomerAddress,
+                            ImpiHeaderCustomerCode = invoice.ImpiHeaderCustomerCode,
+                            ImpiHeaderCustomerState = invoice.ImpiHeaderCustomerState,
+                            ImpiHeaderCustomerPinCode = invoice.ImpiHeaderCustomerPinCode,
+                            ImpiHeaderCustomerGstNo = invoice.ImpiHeaderCustomerGstNo,
+                            ImpiHeaderCustomerContactPerson = invoice.ImpiHeaderCustomerContactPerson,
+                            ImpiHeaderCustomerEmailId = invoice.ImpiHeaderCustomerEmailId,
+                            ImpiHeaderCustomerPhoneNo = invoice.ImpiHeaderCustomerPhoneNo,
+                            ImpiHeaderTlApprover = invoice.ImpiHeaderTlApprover,
+                            ImpiHeaderClusterApprover = invoice.ImpiHeaderClusterApprover,
+                            ImpiHeaderFinanceApprover = invoice.ImpiHeaderFinanceApprover,
+                            ImpiHeaderProjectName = invoice.ImpiHeaderProjectName,
+                            ImpiHeaderProjectDivisionCode = invoice.ImpiHeaderProjectDivisionCode,
+                            ImpiHeaderCreatedBy = invoice.ImpiHeaderCreatedBy,
+                            IsDraft = invoice.IsDraft,
+                            HeaderStatus = _dbContext.StatusMasters.Where(x => x.StatusId == invoice.HeaderStatusId).Select(a => a.StatusName).FirstOrDefault(),
+
+
+            }).ToListAsync();
+
+                if (resu.Count <= 0)
+                {
+                    var response = new
+                    {
+                        status = true,
+                        message = "No Invoice list found",
+                        data = resu
+                    };
+                    return Ok(response);
+                }
+                var respons = new
+                {
+                    status = true,
+                    message = "Invoice List fetch successfully",
+                    data = resu
+                };
+                return Ok(respons);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { status = false, message = "An error occurred while fetching the detail of Invoice." });
             }
         }
 
