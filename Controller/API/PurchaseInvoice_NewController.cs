@@ -52,7 +52,7 @@ namespace FICCI_API.Controller.API
                         ficciImpiHeader.ImpiHeaderCustomerContactPerson = request.ImpiHeaderCustomerContactPerson;
                         ficciImpiHeader.ImpiHeaderCustomerEmailId = request.ImpiHeaderCustomerEmailId;
                         ficciImpiHeader.ImpiHeaderCustomerPhoneNo = request.ImpiHeaderCustomerPhoneNo;
-                        ficciImpiHeader.ImpiHeaderCreatedBy = request.ImpiHeaderCreatedBy;
+                        ficciImpiHeader.ImpiHeaderCreatedBy = request.LoginId;
                         ficciImpiHeader.ImpiHeaderCreatedOn = DateTime.Now;
                         ficciImpiHeader.ImpiHeaderActive = true;
                         ficciImpiHeader.ImpiHeaderTotalInvoiceAmount = request.ImpiHeaderTotalInvoiceAmount;
@@ -239,18 +239,26 @@ namespace FICCI_API.Controller.API
             }
         }
 
-        [HttpGet("{headerid}")]
+        [HttpGet]
 
-        public async Task<IActionResult> GET(int headerid = 0)
+        public async Task<IActionResult> GET(string email)
         {
             PurchaseInvoice_New purchaseInvoice_New = new PurchaseInvoice_New();
             try
             {
-
-                var list = _dbContext.FicciImpiHeaders.Where(m => m.ImpiHeaderActive == true).ToList();
-                if (headerid != 0)
+                if (email == null)
                 {
-                    list = list.Where(m => m.ImpiHeaderId == headerid).ToList();
+                    var response = new
+                    {
+                        status = true,
+                        message = "Email is Mandatory field",
+                    };
+                    return Ok(response);
+                }
+                var list = _dbContext.FicciImpiHeaders.Where(m => m.ImpiHeaderActive == true).ToList();
+                if (email != null)
+                {
+                    list = list.Where(m => m.ImpiHeaderCreatedBy == email).ToList();
                 }
                 if (list.Count > 0)
                 {
