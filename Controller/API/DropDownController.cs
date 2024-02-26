@@ -111,129 +111,129 @@ namespace FICCI_API.Controller.API
             }
         }
 
-        //[HttpGet("GetCityByStateId")]
-        //public async Task<IActionResult> GetCityByStateId(int stateId)
-        //{
-        //    try
-        //    {
-        //        var city = await _dbContext.Cities.Where(x => x.IsDelete != true && x.IsActive != false && x.StateId == stateId).OrderBy(x => x.CityName).ToListAsync();
-        //        if(city.Count > 0)
-        //        {
-        //            var cityResponse = city.Select(c => new CityInfo
-        //            {
-        //                CityId = c.CityId,
-        //                CityName = c.CityName,
-        //            }).ToList();
+        [HttpGet("GetCity")]
+        public async Task<IActionResult> GetCity()
+        {
+            try
+            {
+                var city = await _dbContext.Cities.Where(x => x.IsDelete != true && x.IsActive != false).OrderBy(x => x.CityName).ToListAsync();
+                if (city.Count > 0)
+                {
+                    var cityResponse = city.Select(c => new CityInfo
+                    {
+                        CityCode = c.CityCode,
+                        CityName = c.CityName,
+                    }).ToList();
 
-        //            var response = new
-        //            {
-        //                status = true,
-        //                message = "City List fetch successfully",
-        //                data = cityResponse
-        //            };
-        //            return Ok(response);
+                    var response = new
+                    {
+                        status = true,
+                        message = "City List fetch successfully",
+                        data = cityResponse
+                    };
+                    return Ok(response);
 
-        //        }
-        //        else
-        //        {
-        //            var response = new
-        //            {
-        //                status = true,
-        //                message = "No City list found",
-        //                data = city
-        //            };
-        //            return Ok(response);
-        //        }
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
-
-
-
-        //[HttpGet("GetStateByCountryId")]
-        //public async Task<IActionResult> GetStateByCountryId(int counrtyId)
-        //{
-        //    try
-        //    {
-        //        var state = await _dbContext.States.Where(x => x.IsDelete != true && x.IsActive != false && x.CountryId == counrtyId).OrderBy(x => x.StateName).ToListAsync();
-        //        if (state.Count > 0)
-        //        {
-        //            var stateResponse = state.Select(c => new StateInfo
-        //            {
-        //                StateId = c.StateId,
-        //                StateName = c.StateName,
-        //            }).ToList();
-
-        //            var response = new
-        //            {
-        //                status = true,
-        //                message = "State List fetch successfully",
-        //                data = stateResponse
-        //            };
-        //            return Ok(response);
-
-        //        }
-        //        else
-        //        {
-        //            var response = new
-        //            {
-        //                status = true,
-        //                message = "No State list found",
-        //                data = state
-        //            };
-        //            return Ok(response);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                }
+                else
+                {
+                    var response = new
+                    {
+                        status = true,
+                        message = "No City list found",
+                        data = city
+                    };
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
 
 
-        //[HttpGet("GetCountryList")]
-        //public async Task<IActionResult> GetCountryList()
-        //{
-        //    try
-        //    {
-        //        var country = await _dbContext.Countries.Where(x => x.IsDelete != true && x.IsActive != false).OrderBy(x => x.CountryName).ToListAsync();
-        //        if (country.Count > 0)
-        //        {
-        //            var countryResponse = country.Select(c => new CountryInfo
-        //            {
-        //                CountryId = c.CountryId,
-        //                CountryName = c.CountryName,
-        //            }).ToList();
+        [HttpGet("GetState")]
+        public async Task<IActionResult> GetState()
+        {
+            try
+            {
+                var state = await _dbContext.States.Where(x => x.IsDelete != true && x.IsActive != false).OrderBy(x => x.StateName).ToListAsync();
+                if (state.Count > 0)
+                {
+                    var stateResponse = state.Select(c => new StateInfo
+                    {
+                        StateCode = c.StateCode,
+                        StateName = c.StateName,
+                    }).ToList();
 
-        //            var response = new
-        //            {
-        //                status = true,
-        //                message = "Country List fetch successfully",
-        //                data = countryResponse
-        //            };
-        //            return Ok(response);
+                    var response = new
+                    {
+                        status = true,
+                        message = "State List fetch successfully",
+                        data = stateResponse
+                    };
+                    return Ok(response);
 
-        //        }
-        //        else
-        //        {
-        //            var response = new
-        //            {
-        //                status = true,
-        //                message = "No Country list found",
-        //                data = country
-        //            };
-        //            return NotFound(response);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(ex.Message);
-        //    }
-        //}
+                }
+                else
+                {
+                    var response = new
+                    {
+                        status = true,
+                        message = "No State list found",
+                        data = state
+                    };
+                    return Ok(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+
+        [HttpGet("GetCountry")]
+        public async Task<IActionResult> GetCountry()
+        {
+            try
+            {
+                var country = await _dbContext.Countries.Where(x => x.IsDelete != true && x.IsActive != false).OrderBy(x => x.CountryName).ToListAsync();
+                if (country.Count > 0)
+                {
+                    var countryResponse = country.Select(c => new CountryInfo
+                    {
+                        CountryCode = c.CountryCode,
+                        CountryName = c.CountryName,
+                    }).ToList();
+
+                    var response = new
+                    {
+                        status = true,
+                        message = "Country List fetch successfully",
+                        data = countryResponse
+                    };
+                    return Ok(response);
+
+                }
+                else
+                {
+                    var response = new
+                    {
+                        status = true,
+                        message = "No Country list found",
+                        data = country
+                    };
+                    return NotFound(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpGet("GstCustomerType")]
         public async Task<IActionResult> GstCustomerType()
