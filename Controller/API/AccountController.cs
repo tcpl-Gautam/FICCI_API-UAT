@@ -53,27 +53,23 @@ namespace FICCI_API.Controller.API
                                 GstTypeId = customer.GstCustomerTypeNavigation.CustomerTypeId,
                                 GstTypeName = customer.GstCustomerTypeNavigation.CustomerTypeName,
                             },
-                            CityCode = customer.CityCode,
-                            StateCode = customer.StateCode,
-                            CountryCode = customer.CountryCode,
-                            //City = customer.CustomerCityNavigation == null ? null : new CityInfo
-                            //{
-                            //    CityId = customer.CustomerCityNavigation.CityId,
-                            //    CityName = customer.CustomerCityNavigation.CityName,
+                            CityCode = new CityInfo
+                            {
+                                CityId = _dbContext.Cities.Where(x => x.CityCode == customer.CityCode && x.IsActive != false).Select(a => a.CityCode).FirstOrDefault(),
+                                CityName = _dbContext.Cities.Where(x => x.CityCode == customer.CityCode && x.IsActive != false).Select(a => a.CityName).FirstOrDefault(),
 
-                            //},
-                            //State = customer.CustomerCityNavigation.State == null ? null : new StateInfo
-                            //{
-                            //    StateId = customer.CustomerCityNavigation.StateId,
-                            //    StateName = customer.CustomerCityNavigation.State.StateName,
-
-                            //},
-                            //Country = customer.CustomerCityNavigation.State.Country == null ? null : new CountryInfo
-                            //{
-                            //    CountryId = customer.CustomerCityNavigation.State.CountryId,
-                            //    CountryName = customer.CustomerCityNavigation.State.Country.CountryName,
-                            //}
-
+                            },
+                            StateCode = new StateInfo
+                            {
+                                StateId = _dbContext.States.Where(x => x.StateCode == customer.StateCode && x.IsActive != false).Select(a => a.StateCode).FirstOrDefault(),
+                                StateName = _dbContext.States.Where(x => x.StateCode == customer.StateCode && x.IsActive != false).Select(a => a.StateName).FirstOrDefault(),
+                            },
+                            CountryCode = new CountryInfo
+                            {
+                                CountryId = _dbContext.Countries.Where(x => x.CountryCode == customer.CountryCode && x.IsActive != false).Select(a => a.CountryCode).FirstOrDefault(),
+                                CountryName = _dbContext.Countries.Where(x => x.CountryCode == customer.CountryCode && x.IsActive != false).Select(a => a.CountryName).FirstOrDefault()
+                            },
+                            
                         }).ToListAsync();
 
                 if (resu.Count <= 0)
@@ -111,41 +107,6 @@ namespace FICCI_API.Controller.API
             try
             {
                 PurchaseInvoice_New purchaseInvoice_New = new PurchaseInvoice_New();
-
-
-                //    resu = await _dbContext.FicciImpiHeaders.Where(x =>   x.ImpiHeaderActive != false && x.HeaderStatusId == 5)
-                //            .Select(invoice => new InvoiceList
-                //            {
-                //                HeaderId = invoice.ImpiHeaderId,
-                //                HeaderPiNo = invoice.ImpiHeaderPiNo,
-                //                ImpiHeaderInvoiceType = invoice.ImpiHeaderInvoiceType,
-                //                ImpiHeaderProjectCode = invoice.ImpiHeaderProjectCode,
-                //                ImpiHeaderProjectDepartmentName = invoice.ImpiHeaderProjectDepartmentName,
-                //                ImpiHeaderProjectDivisionName = invoice.ImpiHeaderProjectDivisionName,
-                //                ImpiHeaderProjectDepartmentCode = invoice.ImpiHeaderProjectDepartmentCode,
-                //                ImpiHeaderPanNo = invoice.ImpiHeaderPanNo,
-                //                ImpiHeaderGstNo = invoice.ImpiHeaderGstNo,
-                //                ImpiHeaderCustomerName = invoice.ImpiHeaderCustomerName,
-                //                ImpiHeaderCustomerCity = invoice.ImpiHeaderCustomerCity,
-                //                ImpiHeaderCustomerAddress = invoice.ImpiHeaderCustomerAddress,
-                //                ImpiHeaderCustomerCode = invoice.ImpiHeaderCustomerCode,
-                //                ImpiHeaderCustomerState = invoice.ImpiHeaderCustomerState,
-                //                ImpiHeaderCustomerPinCode = invoice.ImpiHeaderCustomerPinCode,
-                //                ImpiHeaderCustomerGstNo = invoice.ImpiHeaderCustomerGstNo,
-                //                ImpiHeaderCustomerContactPerson = invoice.ImpiHeaderCustomerContactPerson,
-                //                ImpiHeaderCustomerEmailId = invoice.ImpiHeaderCustomerEmailId,
-                //                ImpiHeaderCustomerPhoneNo = invoice.ImpiHeaderCustomerPhoneNo,
-                //                ImpiHeaderTlApprover = invoice.ImpiHeaderTlApprover,
-                //                ImpiHeaderClusterApprover = invoice.ImpiHeaderClusterApprover,
-                //                ImpiHeaderFinanceApprover = invoice.ImpiHeaderFinanceApprover,
-                //                ImpiHeaderProjectName = invoice.ImpiHeaderProjectName,
-                //                ImpiHeaderProjectDivisionCode = invoice.ImpiHeaderProjectDivisionCode,
-                //                ImpiHeaderCreatedBy = invoice.ImpiHeaderCreatedBy,
-                //                IsDraft = invoice.IsDraft,
-                //                HeaderStatus = _dbContext.StatusMasters.Where(x => x.StatusId == invoice.HeaderStatusId).Select(a => a.StatusName).FirstOrDefault(),
-
-
-                //}).ToListAsync();
                 var list = await _dbContext.FicciImpiHeaders.Where(x => x.ImpiHeaderActive != false && x.HeaderStatusId == 5).ToListAsync();
 
                 if (list.Count > 0)

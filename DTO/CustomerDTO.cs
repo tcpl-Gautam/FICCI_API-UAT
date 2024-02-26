@@ -59,9 +59,9 @@ namespace FICCI_API.DTO
         //public CityInfo? City { get; set; }
         //public StateInfo? State { get; set; }
         //public CountryInfo? Country { get; set; }
-        public string? CityCode { get; set; }
-        public string? StateCode { get; set; }
-        public string? CountryCode { get; set; }
+        public CityInfo? CityCode { get; set; }
+        public StateInfo? StateCode { get; set; }
+        public CountryInfo? CountryCode { get; set; }
         public GSTCustomerTypeInfo? GstType { get; set; }
         public List<FicciImwd>? WorkFlowHistory {  get; set; }
     }
@@ -69,7 +69,7 @@ namespace FICCI_API.DTO
     {
         public string CityId { get; set; }
         public string CityName { get; set; }
-        public StateInfo? State { get; set; }
+        //public StateInfo? State { get; set; }
     }
     public class StateInfo
     {

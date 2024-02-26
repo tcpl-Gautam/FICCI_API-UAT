@@ -13,6 +13,10 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
     {
     }
 
+    public virtual DbSet<City> Cities { get; set; }
+
+    public virtual DbSet<Country> Countries { get; set; }
+
     public virtual DbSet<FicciErpCustomerDetail> FicciErpCustomerDetails { get; set; }
 
     public virtual DbSet<FicciErpProjectDetail> FicciErpProjectDetails { get; set; }
@@ -35,6 +39,8 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
 
     public virtual DbSet<GstCustomerType> GstCustomerTypes { get; set; }
 
+    public virtual DbSet<State> States { get; set; }
+
     public virtual DbSet<StatusMaster> StatusMasters { get; set; }
 
     public virtual DbSet<TblCategoryList> TblCategoryLists { get; set; }
@@ -51,6 +57,51 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<City>(entity =>
+        {
+            entity.HasKey(e => e.CityId).HasName("PK__City__F2D21B764DF52E26");
+
+            entity.ToTable("City");
+
+            entity.Property(e => e.CityCode)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CityName)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CreateDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("((1))");
+        });
+
+        modelBuilder.Entity<Country>(entity =>
+        {
+            entity.HasKey(e => e.CountryId).HasName("PK__Country__10D1609FA65946D7");
+
+            entity.ToTable("Country");
+
+            entity.HasIndex(e => e.CountryCode, "UQ__Country__E056F2016C6A65CA").IsUnique();
+
+            entity.Property(e => e.CountryCode)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CountryName)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CreateDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("((1))");
+        });
+
         modelBuilder.Entity<FicciErpCustomerDetail>(entity =>
         {
             entity.HasKey(e => e.CustomerId).HasName("PK__FICCI_ER__8CB286B97BBAB335");
@@ -511,7 +562,7 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasColumnName("IMPI_HEADER_CLUSTER_APPROVER_REMARKS");
             entity.Property(e => e.ImpiHeaderCreatedBy)
                 .IsRequired()
-                .HasMaxLength(20)
+                .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("IMPI_HEADER_CREATED_BY");
             entity.Property(e => e.ImpiHeaderCreatedOn)
@@ -659,7 +710,7 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasColumnName("IMPI_LINE_AMOUNT");
             entity.Property(e => e.ImpiLineCreatedBy)
                 .IsRequired()
-                .HasMaxLength(20)
+                .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("IMPI_LINE_CREATED_BY");
             entity.Property(e => e.ImpiLineCreatedOn)
@@ -824,6 +875,25 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.IsActive)
                 .IsRequired()
                 .HasDefaultValueSql("((1))");
+        });
+
+        modelBuilder.Entity<State>(entity =>
+        {
+            entity.HasKey(e => e.StateId).HasName("PK__States__C3BA3B3AD10A10F8");
+
+            entity.Property(e => e.CreateDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("((1))");
+            entity.Property(e => e.StateCode)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.StateName)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<StatusMaster>(entity =>

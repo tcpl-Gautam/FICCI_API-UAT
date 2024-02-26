@@ -6,11 +6,13 @@ using FICCI_API.ModelsEF;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Net;
 using System.Net.Http;
 using System.Web;
@@ -20,15 +22,16 @@ namespace FICCI_API.Controller.API
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NavERPController : ControllerBase
+    public class NavERPController : BaseController
     {
+        private readonly FICCI_DB_APPLICATIONSContext _dbContext;
         private readonly IConfiguration _configuration;
         private readonly string _erpServer;
         private readonly string _navURL;
         private readonly string _navServiceURL;
         private readonly string _endURL;
         ApiResponseModel _responseModel;
-        public NavERPController(IConfiguration configuration)
+        public NavERPController(IConfiguration configuration, FICCI_DB_APPLICATIONSContext dbContext): base(dbContext)
         {
             _configuration = configuration;            
             _navURL = _configuration["ERP:URL"] ?? "https://api.businesscentral.dynamics.com/v2.0/d3a55687-ec5c-433b-9eaa-9d952c913e94";
@@ -36,6 +39,7 @@ namespace FICCI_API.Controller.API
             _endURL = _configuration["ERP:EndURL"] ?? "ODataV4/Company('FICCI')";
             _navServiceURL = $"{_navURL}/{_erpServer}/{_endURL}";
             _responseModel = new ApiResponseModel();
+            _dbContext = dbContext;
         }
 
         [HttpGet("GetCountry")]
@@ -71,7 +75,15 @@ namespace FICCI_API.Controller.API
                         CountryId = c.Code,
                         CountryName = c.Name,
                     }).ToList();
-
+                    _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE Country");
+                    foreach (var k in countryResponse)
+                    {
+                        Country country = new Country();
+                        country.CountryCode = k.CountryId;
+                        country.CountryName = k.CountryName;
+                        _dbContext.Add(country);
+                        _dbContext.SaveChanges();
+                    }
 
 
                     var response = new
@@ -136,7 +148,15 @@ namespace FICCI_API.Controller.API
                         StateId = c.Code,
                         StateName = c.Name,
                     }).ToList();
-
+                    _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE States");
+                    foreach (var k in stateResponse)
+                    {
+                        State state = new State();
+                        state.StateCode = k.StateId;
+                        state.StateName = k.StateName;
+                        _dbContext.Add(state);
+                        _dbContext.SaveChanges();
+                    }
                     var response = new
                     {
                         status = true,
@@ -199,7 +219,15 @@ namespace FICCI_API.Controller.API
                         CityId = c.Code,
                         CityName = c.Name,
                     }).ToList();
-
+                    _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE City");
+                    foreach (var k in cityResponse)
+                    {
+                        City city = new City();
+                        city.CityCode = k.CityId;
+                        city.CityName = k.CityName;
+                        _dbContext.Add(city);
+                        _dbContext.SaveChanges();
+                    }
                     var response = new
                     {
                         status = true,

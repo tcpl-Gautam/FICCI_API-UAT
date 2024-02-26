@@ -65,11 +65,25 @@ namespace FICCI_API.Controller.API
                             ModifiedOn = Convert.ToDateTime(customer.CustomerUpdatedOn),
                             TLApprover = customer.CustomerTlApprover,
                             CLApprover = customer.CustomerClusterApprover,
-                            CityCode = customer.CityCode,
-                            StateCode = customer.StateCode,
-                            CountryCode = customer.CountryCode,
+                            CityCode = new CityInfo
+                            {
+                                CityId = _dbContext.Cities.Where(x => x.CityCode == customer.CityCode && x.IsActive != false).Select(a => a.CityCode).FirstOrDefault(),
+                                CityName = _dbContext.Cities.Where(x => x.CityCode == customer.CityCode && x.IsActive != false).Select(a => a.CityName).FirstOrDefault(),
+                            },
+                            StateCode = new StateInfo
+                            {
+                                StateId = _dbContext.States.Where(x => x.StateCode == customer.StateCode && x.IsActive != false).Select(a => a.StateCode).FirstOrDefault() ,
+                                StateName = _dbContext.States.Where(x => x.StateCode == customer.StateCode && x.IsActive != false).Select(a => a.StateName).FirstOrDefault(),
+                            },
+                            CountryCode = new CountryInfo
+                            {
+                                CountryId = _dbContext.Countries.Where(x => x.CountryCode == customer.CountryCode && x.IsActive != false).Select(a => a.CountryCode).FirstOrDefault(),
+                                CountryName = _dbContext.Countries.Where(x => x.CountryCode == customer.CountryCode && x.IsActive != false).Select(a => a.CountryName).FirstOrDefault()
+                            },
+
                             // SGApprover = customer.CustomerSgApprover,
                             // CustomerStatus = customer.CustomerStatus == 1 ? "Draft":"Pending With TL Approver",
+
                             CustomerStatus = _dbContext.StatusMasters.Where(x => x.StatusId == customer.CustomerStatus).Select(a => a.StatusName).FirstOrDefault(),
                             CustomerStatusId = customer.CustomerStatus,
                             GstType = customer.GstCustomerTypeNavigation == null ? null : new GSTCustomerTypeInfo
