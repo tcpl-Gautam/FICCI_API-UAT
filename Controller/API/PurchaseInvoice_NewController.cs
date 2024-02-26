@@ -255,11 +255,20 @@ namespace FICCI_API.Controller.API
                     };
                     return Ok(response);
                 }
+                //var list = _dbContext.FicciImpiHeaders.Where(m => m.ImpiHeaderActive == true).ToList();
+                //if (email != null)
+                //{
+                //    list = list.Where(m => m.ImpiHeaderCreatedBy == email).ToList();
+                //}
+
+                var emp_Role = await _dbContext.FicciImums.Where(x => x.ImumEmail == email).Select(a => a.RoleId).FirstOrDefaultAsync();
+
                 var list = _dbContext.FicciImpiHeaders.Where(m => m.ImpiHeaderActive == true).ToList();
-                if (email != null)
+                if (emp_Role != 1)
                 {
                     list = list.Where(m => m.ImpiHeaderCreatedBy == email).ToList();
                 }
+               
                 if (list.Count > 0)
                 {
                     List<PurchaseInvoice_Response> purchaseInvoice_responsel = new List<PurchaseInvoice_Response>();
