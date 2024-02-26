@@ -21,6 +21,8 @@ public partial class VwInvoiceApprovalList
 
     public string ImpiHeaderCustomerCode { get; set; }
 
+    public string ImpiHeaderCustomerName { get; set; }
+
     public string ImpiHeaderCustomerCity { get; set; }
 
     public string ImpiHeaderCustomerState { get; set; }
@@ -28,6 +30,12 @@ public partial class VwInvoiceApprovalList
     public string ImpiHeaderCustomerPinCode { get; set; }
 
     public string ImpiHeaderCustomerGstNo { get; set; }
+
+    public string ImpiHeaderProjectDivisionName { get; set; }
+
+    public string ImpiHeaderProjectName { get; set; }
+
+    public string ImpiHeaderCustomerAddress { get; set; }
 
     public string ImpiHeaderCustomerEmailId { get; set; }
 
@@ -39,6 +47,18 @@ public partial class VwInvoiceApprovalList
 
     public decimal? ImpiHeaderTotalInvoiceAmount { get; set; }
 
+    public string ImpiHeaderProjectDepartmentName { get; set; }
+
+    public string ImpiHeaderProjectDepartmentCode { get; set; }
+
+    public string ImpiHeaderCustomerContactPerson { get; set; }
+
+    public string ImpiHeaderTlApprover { get; set; }
+
+    public string ImpiHeaderClusterApprover { get; set; }
+
+    public string ImpiHeaderFinanceApprover { get; set; }
+
     public string ImpiHeaderPaymentTerms { get; set; }
 
     public string ImpiHeaderRemarks { get; set; }
@@ -46,6 +66,12 @@ public partial class VwInvoiceApprovalList
     public int? HeaderStatusId { get; set; }
 
     public string StatusName { get; set; }
+
+    public DateTime? ImpiHeaderModifiedOn { get; set; }
+
+    public string ImpiHeaderAttachment { get; set; }
+
+    public string ImpiHeaderProjectCode { get; set; }
 
     public string ApproverEmail { get; set; }
 }

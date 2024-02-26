@@ -25,6 +25,7 @@ namespace FICCI_API.Controller.API
         {
             try
             {
+                PurchaseInvoice_New purchaseInvoice_New = new PurchaseInvoice_New();
                 if (email == null)
                 {
                     var response = new
@@ -36,13 +37,85 @@ namespace FICCI_API.Controller.API
                 }
 
                 var list = await _dbContext.VwInvoiceApprovalLists.Where(x => x.ApproverEmail == email).ToListAsync();
-                var res = new
+                if (list.Count > 0)
                 {
-                    status = true,
-                    message = "Approval list is successfully fetched.",
-                    data = list
-                };
-                return Ok(res);
+                    List<PurchaseInvoice_Response> purchaseInvoice_responsel = new List<PurchaseInvoice_Response>();
+                    foreach (var k in list)
+                    {
+                        PurchaseInvoice_Response purchaseInvoice_response = new PurchaseInvoice_Response();
+                        purchaseInvoice_response.HeaderStatusId = k.HeaderStatusId;
+                        purchaseInvoice_response.HeaderId = k.ImpiHeaderId;
+                        purchaseInvoice_response.HeaderPiNo = k.ImpiHeaderPiNo;
+                        purchaseInvoice_response.ImpiHeaderInvoiceType = k.ImpiHeaderInvoiceType;
+                        purchaseInvoice_response.ImpiHeaderProjectCode = k.ImpiHeaderProjectCode;
+                        purchaseInvoice_response.ImpiHeaderProjectName = k.ImpiHeaderProjectName;
+                        purchaseInvoice_response.ImpiHeaderProjectDepartmentCode = k.ImpiHeaderProjectDepartmentCode;
+                        purchaseInvoice_response.ImpiHeaderProjectDepartmentName = k.ImpiHeaderProjectDepartmentName;
+                        purchaseInvoice_response.ImpiHeaderProjectDivisionCode = k.ImpiHeaderProjectDivisionCode;
+                        purchaseInvoice_response.ImpiHeaderProjectDivisionName = k.ImpiHeaderProjectDivisionName;
+                        purchaseInvoice_response.ImpiHeaderPanNo = k.ImpiHeaderPanNo;
+                        purchaseInvoice_response.ImpiHeaderGstNo = k.ImpiHeaderGstNo;
+                        purchaseInvoice_response.ImpiHeaderCustomerName = k.ImpiHeaderCustomerName;
+                        purchaseInvoice_response.ImpiHeaderCustomerCode = k.ImpiHeaderCustomerCode;
+                        purchaseInvoice_response.ImpiHeaderCustomerAddress = k.ImpiHeaderCustomerAddress;
+                        purchaseInvoice_response.ImpiHeaderCustomerCity = k.ImpiHeaderCustomerCity;
+                        purchaseInvoice_response.ImpiHeaderCustomerState = k.ImpiHeaderCustomerState;
+                        purchaseInvoice_response.ImpiHeaderCustomerPinCode = k.ImpiHeaderCustomerPinCode;
+                        purchaseInvoice_response.ImpiHeaderCustomerGstNo = k.ImpiHeaderCustomerGstNo;
+                        purchaseInvoice_response.ImpiHeaderCustomerContactPerson = k.ImpiHeaderCustomerContactPerson;
+                        purchaseInvoice_response.ImpiHeaderCustomerEmailId = k.ImpiHeaderCustomerEmailId;
+                        purchaseInvoice_response.ImpiHeaderCustomerPhoneNo = k.ImpiHeaderCustomerPhoneNo;
+                        purchaseInvoice_response.ImpiHeaderCreatedBy = k.ImpiHeaderCreatedBy;
+                        purchaseInvoice_response.ImpiHeaderAttachment = k.ImpiHeaderAttachment;
+
+
+                        purchaseInvoice_response.ImpiHeaderSubmittedDate = k.ImpiHeaderSubmittedDate;
+                        purchaseInvoice_response.ImpiHeaderTotalInvoiceAmount = k.ImpiHeaderTotalInvoiceAmount;
+                        purchaseInvoice_response.ImpiHeaderPaymentTerms = k.ImpiHeaderPaymentTerms;
+                        purchaseInvoice_response.ImpiHeaderRemarks = k.ImpiHeaderRemarks;
+                        purchaseInvoice_response.ImpiHeaderModifiedDate = k.ImpiHeaderModifiedOn;
+                        purchaseInvoice_response.ImpiHeaderTlApprover = k.ImpiHeaderTlApprover;
+                        purchaseInvoice_response.ImpiHeaderClusterApprover = k.ImpiHeaderClusterApprover;
+                        purchaseInvoice_response.ImpiHeaderFinanceApprover = k.ImpiHeaderFinanceApprover;
+
+                        purchaseInvoice_response.HeaderStatus = _dbContext.StatusMasters.Where(x => x.StatusId == k.HeaderStatusId).Select(a => a.StatusName).FirstOrDefault();
+                       // purchaseInvoice_response.WorkFlowHistory = _dbContext.FicciImwds.Where(x => x.CustomerId == purchaseInvoice_response.HeaderId && x.ImwdType == 2).ToList(); ;
+                        var lindata = _dbContext.FicciImpiLines.Where(m => m.ImpiLineActive == true && m.PiHeaderId == k.ImpiHeaderId).ToList();
+                        if (lindata.Count > 0)
+                        {
+                            List<LineItem_request> lineItem_Requestl = new List<LineItem_request>();
+                            foreach (var l in lindata)
+                            {
+                                LineItem_request lineItem_Request = new LineItem_request();
+                                lineItem_Request.impiLineDescription = l.ImpiLineDescription;
+                                lineItem_Request.ImpiLineUnitPrice = l.ImpiLineUnitPrice;
+                                lineItem_Request.ImpiLineQuantity = l.ImpiLineQuantity;
+                                lineItem_Request.ImpiLineDiscount = l.ImpiLineDiscount;
+                                lineItem_Request.ImpiLineAmount = l.ImpiLineAmount;
+                                lineItem_Requestl.Add(lineItem_Request);
+                            }
+
+                            purchaseInvoice_response.lineItem_Requests = lineItem_Requestl;
+
+
+                        }
+                        purchaseInvoice_responsel.Add(purchaseInvoice_response);
+
+                    }
+
+
+                    purchaseInvoice_New.Status = true;
+                    purchaseInvoice_New.Data = purchaseInvoice_responsel;
+                    purchaseInvoice_New.Message = "Purchase Invoice list successfully";
+                    return StatusCode(200, purchaseInvoice_New);
+                }
+                else
+                {
+                    purchaseInvoice_New.Status = false;
+                    purchaseInvoice_New.Message = "No Data found";
+                    return StatusCode(200, purchaseInvoice_New);
+                }
+                
             }
             catch (Exception ex)
             {

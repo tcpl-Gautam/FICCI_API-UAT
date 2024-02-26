@@ -5,6 +5,7 @@ using FICCI_API.ModelsEF;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using FICCI_API.Controller;
 
 namespace FICCI_API.Controller.API.Account
 {
@@ -50,6 +51,7 @@ namespace FICCI_API.Controller.API.Account
             {
                 if (requestData != null)
                 {
+                  
 
                     //check if email exist in database
                     bool emailValid = await _dbContext.FicciImums.AnyAsync(x => x.ImumEmail == requestData.Email);
