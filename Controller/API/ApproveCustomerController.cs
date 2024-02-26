@@ -28,7 +28,8 @@ namespace FICCI_API.Controller.API
         {
             try
             {
-                if(email == null)
+                Approval_Customer approverCustomer = new Approval_Customer();
+                if (email == null)
                 {
                     var response = new
                     {
@@ -39,13 +40,69 @@ namespace FICCI_API.Controller.API
                 }
 
                 var list = await _dbContext.VwCustomerApprovalLists.Where(x => x.ApproverEmail == email).ToListAsync();
-                var res = new
+                if(list.Count > 0)
                 {
-                    status = true,
-                    message = "Approval list is successfully fetched.",
-                    data = list
-                };
-                return Ok(res);
+                    List<Approval_CustomerValue> custom = new List<Approval_CustomerValue>();
+                    foreach(var k in list)
+                    {
+                        Approval_CustomerValue cust = new Approval_CustomerValue();
+                        cust.CustomerId = k.CustomerId;
+                        cust.CustomerName = k.CustomerName;
+                        cust.CustomerLastName = k.CustomerLastname;
+                        cust.CustomerCode = k.CusotmerNo;
+                        cust.Address = k.CustoemrAddress;
+                        cust.Address2 = k.CustoemrAddress2;
+                        cust.PhoneNumber = k.CustomerPhoneNo;
+                        cust.Email = k.CustomerEmailId;
+                        cust.Pincode = k.CustomerPinCode;
+                        cust.Contact = k.CustomerContact;
+                        cust.GSTNumber = k.CustomerGstNo;
+                        cust.PAN = k.CustomerPanNo;
+                        cust.IsActive = k.IsActive;
+                        cust.CreatedBy = k.Createdby;
+                        cust.CreatedOn = k.CreatedOn;
+                        cust.TLApprover = k.CustomerTlApprover;
+                        cust.CLApprover = k.CustomerClusterApprover;
+                        cust.CustomerStatus = k.StatusName;
+                        cust.CustomerStatusId = k.CustomerStatus;
+                        cust.ModifiedOn = k.CustomerUpdatedOn;
+                        cust.IsDraft = k.IsDraft;
+                        cust.LastUpdateBy = k.LastUpdateBy;
+                        cust.CityCode = new CityInfo
+                        {
+                            CityId = _dbContext.Cities.Where(x => x.CityCode == k.CityCode && x.IsActive != false).Select(a => a.CityCode).FirstOrDefault(),
+                            CityName = _dbContext.Cities.Where(x => x.CityCode == k.CityCode && x.IsActive != false).Select(a => a.CityName).FirstOrDefault(),
+
+                        };
+                        cust.StateCode = new StateInfo
+                        {
+                            StateId = _dbContext.States.Where(x => x.StateCode == k.StateCode && x.IsActive != false).Select(a => a.StateCode).FirstOrDefault(),
+                            StateName = _dbContext.States.Where(x => x.StateCode == k.StateCode && x.IsActive != false).Select(a => a.StateName).FirstOrDefault(),
+                        };
+                        cust.CountryCode = new CountryInfo
+                        {
+                            CountryId = _dbContext.Countries.Where(x => x.CountryCode == k.CountryCode && x.IsActive != false).Select(a => a.CountryCode).FirstOrDefault(),
+                            CountryName = _dbContext.Countries.Where(x => x.CountryCode == k.CountryCode && x.IsActive != false).Select(a => a.CountryName).FirstOrDefault()
+                        };
+                        cust.GstType = new GSTCustomerTypeInfo
+                        {
+                            GstTypeId = _dbContext.GstCustomerTypes.Where(x => x.CustomerTypeId == k.GstCustomerType && x.IsActive != false).Select(a => a.CustomerTypeId).FirstOrDefault(),
+                            GstTypeName = _dbContext.GstCustomerTypes.Where(x => x.CustomerTypeId == k.GstCustomerType && x.IsActive != false).Select(a => a.CustomerTypeName).FirstOrDefault(),
+                        };
+                        custom.Add(cust);
+                    }
+                    approverCustomer.Status = true;
+                    approverCustomer.Data = custom;
+                    approverCustomer.Message = "Customer list successfully";
+                    return StatusCode(200, approverCustomer);
+                }
+                else
+                {
+                    approverCustomer.Status = false;
+                    approverCustomer.Message = "No Data found";
+                    return StatusCode(200, approverCustomer);
+                }
+                
             }
             catch(Exception ex)
             {

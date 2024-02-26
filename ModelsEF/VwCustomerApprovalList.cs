@@ -57,5 +57,13 @@ public partial class VwCustomerApprovalList
 
     public int? CustomerStatus { get; set; }
 
+    public string CusotmerNo { get; set; }
+
+    public string CustomerContact { get; set; }
+
+    public int? GstCustomerType { get; set; }
+
+    public bool IsDraft { get; set; }
+
     public string ApproverEmail { get; set; }
 }

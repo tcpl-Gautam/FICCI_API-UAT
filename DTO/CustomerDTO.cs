@@ -150,4 +150,45 @@ namespace FICCI_API.DTO
 
         public int? CustomerId { get; set; }
     }
+
+
+    public class Approval_Customer
+    {
+        public Boolean Status { get; set; }
+        public string Message { get; set; }
+        public List<Approval_CustomerValue> Data { get; set; }
+
+    }
+    public class Approval_CustomerValue
+    {
+        public int CustomerId { get; set; }
+        public string CustomerCode { get; set; }
+        public string CustomerName { get; set; }
+        public string Address { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public string Pincode { get; set; }
+        public string CustomerLastName { get; set; }
+        public string Address2 { get; set; }
+        public string Contact { get; set; }
+        public string? GSTNumber { get; set; }
+       // public int GSTCustomerType { get; set; }
+        public string? PAN { get; set; }
+        public bool? IsActive { get; set; }
+        public bool? IsDraft { get; set; }
+        public DateTime? CreatedOn { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
+        public string? TLApprover { get; set; }
+        public string? CLApprover { get; set; }
+        public string? CustomerStatus { get; set; }
+        public int? CustomerStatusId { get; set; }
+        public string LastUpdateBy { get; set; }
+
+        public CityInfo? CityCode { get; set; }
+        public StateInfo? StateCode { get; set; }
+        public CountryInfo? CountryCode { get; set; }
+        public GSTCustomerTypeInfo? GstType { get; set; }
+    }
+
 }

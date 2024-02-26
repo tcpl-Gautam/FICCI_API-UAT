@@ -1000,6 +1000,11 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasColumnName("Country_Code");
             entity.Property(e => e.CreatedOn).HasColumnType("datetime");
             entity.Property(e => e.Createdby).IsUnicode(false);
+            entity.Property(e => e.CusotmerNo)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("CUSOTMER_NO");
             entity.Property(e => e.CustoemrAddress)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOEMR_ADDRESS");
@@ -1010,6 +1015,9 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOMER_CLUSTER_APPROVER");
+            entity.Property(e => e.CustomerContact)
+                .IsUnicode(false)
+                .HasColumnName("CUSTOMER_CONTACT");
             entity.Property(e => e.CustomerContactPerson)
                 .IsUnicode(false)
                 .HasColumnName("CUSTOMER_CONTACT_PERSON");
@@ -1051,6 +1059,7 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.CustomerUpdatedOn)
                 .HasColumnType("datetime")
                 .HasColumnName("CUSTOMER_UPDATED_ON");
+            entity.Property(e => e.GstCustomerType).HasColumnName("GST_Customer_Type");
             entity.Property(e => e.LastUpdateBy).IsUnicode(false);
             entity.Property(e => e.StateCode)
                 .IsUnicode(false)
