@@ -121,7 +121,7 @@ namespace FICCI_API.Controller.API
                 {
                     var cityResponse = city.Select(c => new CityInfo
                     {
-                        CityCode = c.CityCode,
+                        cityCode = c.CityCode,
                         CityName = c.CityName,
                     }).ToList();
 
@@ -163,7 +163,7 @@ namespace FICCI_API.Controller.API
                 {
                     var stateResponse = state.Select(c => new StateInfo
                     {
-                        StateCode = c.StateCode,
+                        stateCode = c.StateCode,
                         StateName = c.StateName,
                     }).ToList();
 
@@ -205,7 +205,7 @@ namespace FICCI_API.Controller.API
                 {
                     var countryResponse = country.Select(c => new CountryInfo
                     {
-                        CountryCode = c.CountryCode,
+                        countryCode = c.CountryCode,
                         CountryName = c.CountryName,
                     }).ToList();
 

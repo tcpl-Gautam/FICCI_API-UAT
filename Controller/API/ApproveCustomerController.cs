@@ -68,20 +68,20 @@ namespace FICCI_API.Controller.API
                         cust.ModifiedOn = k.CustomerUpdatedOn;
                         cust.IsDraft = k.IsDraft;
                         cust.LastUpdateBy = k.LastUpdateBy;
-                        cust.CityCode = new CityInfo
+                        cust.CityList = new CityInfo
                         {
-                            CityId = _dbContext.Cities.Where(x => x.CityCode == k.CityCode && x.IsActive != false).Select(a => a.CityCode).FirstOrDefault(),
+                            cityCode = _dbContext.Cities.Where(x => x.CityCode == k.CityCode && x.IsActive != false).Select(a => a.CityCode).FirstOrDefault(),
                             CityName = _dbContext.Cities.Where(x => x.CityCode == k.CityCode && x.IsActive != false).Select(a => a.CityName).FirstOrDefault(),
 
                         };
-                        cust.StateCode = new StateInfo
+                        cust.StateList = new StateInfo
                         {
-                            StateId = _dbContext.States.Where(x => x.StateCode == k.StateCode && x.IsActive != false).Select(a => a.StateCode).FirstOrDefault(),
+                            stateCode = _dbContext.States.Where(x => x.StateCode == k.StateCode && x.IsActive != false).Select(a => a.StateCode).FirstOrDefault(),
                             StateName = _dbContext.States.Where(x => x.StateCode == k.StateCode && x.IsActive != false).Select(a => a.StateName).FirstOrDefault(),
                         };
-                        cust.CountryCode = new CountryInfo
+                        cust.CountryList = new CountryInfo
                         {
-                            CountryId = _dbContext.Countries.Where(x => x.CountryCode == k.CountryCode && x.IsActive != false).Select(a => a.CountryCode).FirstOrDefault(),
+                            countryCode = _dbContext.Countries.Where(x => x.CountryCode == k.CountryCode && x.IsActive != false).Select(a => a.CountryCode).FirstOrDefault(),
                             CountryName = _dbContext.Countries.Where(x => x.CountryCode == k.CountryCode && x.IsActive != false).Select(a => a.CountryName).FirstOrDefault()
                         };
                         cust.GstType = new GSTCustomerTypeInfo

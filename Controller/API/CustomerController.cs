@@ -65,19 +65,19 @@ namespace FICCI_API.Controller.API
                             ModifiedOn = Convert.ToDateTime(customer.CustomerUpdatedOn),
                             TLApprover = customer.CustomerTlApprover,
                             CLApprover = customer.CustomerClusterApprover,
-                            CityCode = new CityInfo
+                            CityList = new CityInfo
                             {
-                                CityId = _dbContext.Cities.Where(x => x.CityCode == customer.CityCode && x.IsActive != false).Select(a => a.CityCode).FirstOrDefault(),
+                                cityCode = _dbContext.Cities.Where(x => x.CityCode == customer.CityCode && x.IsActive != false).Select(a => a.CityCode).FirstOrDefault(),
                                 CityName = _dbContext.Cities.Where(x => x.CityCode == customer.CityCode && x.IsActive != false).Select(a => a.CityName).FirstOrDefault(),
                             },
-                            StateCode = new StateInfo
+                            StateList = new StateInfo
                             {
-                                StateId = _dbContext.States.Where(x => x.StateCode == customer.StateCode && x.IsActive != false).Select(a => a.StateCode).FirstOrDefault() ,
+                                stateCode = _dbContext.States.Where(x => x.StateCode == customer.StateCode && x.IsActive != false).Select(a => a.StateCode).FirstOrDefault() ,
                                 StateName = _dbContext.States.Where(x => x.StateCode == customer.StateCode && x.IsActive != false).Select(a => a.StateName).FirstOrDefault(),
                             },
-                            CountryCode = new CountryInfo
+                            CountryList = new CountryInfo
                             {
-                                CountryId = _dbContext.Countries.Where(x => x.CountryCode == customer.CountryCode && x.IsActive != false).Select(a => a.CountryCode).FirstOrDefault(),
+                                countryCode = _dbContext.Countries.Where(x => x.CountryCode == customer.CountryCode && x.IsActive != false).Select(a => a.CountryCode).FirstOrDefault(),
                                 CountryName = _dbContext.Countries.Where(x => x.CountryCode == customer.CountryCode && x.IsActive != false).Select(a => a.CountryName).FirstOrDefault()
                             },
 

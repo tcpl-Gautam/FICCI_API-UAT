@@ -59,9 +59,9 @@ namespace FICCI_API.DTO
         //public CityInfo? City { get; set; }
         //public StateInfo? State { get; set; }
         //public CountryInfo? Country { get; set; }
-        public CityInfo? CityCode { get; set; }
-        public StateInfo? StateCode { get; set; }
-        public CountryInfo? CountryCode { get; set; }
+        public CityInfo? CityList { get; set; }
+        public StateInfo? StateList { get; set; }
+        public CountryInfo? CountryList { get; set; }
         public GSTCustomerTypeInfo? GstType { get; set; }
         public List<FicciImwd>? WorkFlowHistory {  get; set; }
     }
@@ -69,14 +69,14 @@ namespace FICCI_API.DTO
     {
         public string CityId { get; set; }
         public string CityName { get; set; }
-        public string CityCode { get; set; }
+        public string cityCode { get; set; }
         //public StateInfo? State { get; set; }
     }
     public class StateInfo
     {
         public string StateId { get; set; }
         public string StateName { get; set; }
-        public string StateCode { get; set; }
+        public string stateCode { get; set; }
         // public CountryInfo? Country { get; set; }
 
     }
@@ -84,7 +84,7 @@ namespace FICCI_API.DTO
     {
         public string CountryId { get; set; }
         public string CountryName { get; set; }
-        public string CountryCode { get; set; }
+        public string countryCode { get; set; }
 
     }
 
@@ -188,9 +188,9 @@ namespace FICCI_API.DTO
         public int? CustomerStatusId { get; set; }
         public string LastUpdateBy { get; set; }
 
-        public CityInfo? CityCode { get; set; }
-        public StateInfo? StateCode { get; set; }
-        public CountryInfo? CountryCode { get; set; }
+        public CityInfo? CityList { get; set; }
+        public StateInfo? StateList { get; set; }
+        public CountryInfo? CountryList { get; set; }
         public GSTCustomerTypeInfo? GstType { get; set; }
     }
 
