@@ -68,7 +68,7 @@ namespace FICCI_API.Controller.API
                         ficciImpiHeader.ImpiHeaderSubmittedDate = DateTime.Now;
                         ficciImpiHeader.ImpiHeaderTlApprover = "amit.jha@teamcomputers.com";//request.ImpiHeaderTlApprover + "@ficci.com";
                         ficciImpiHeader.ImpiHeaderClusterApprover = "debananda.panda@teamcomputers.com";//request.ImpiHeaderClusterApprover + "@ficci.com";
-                        ficciImpiHeader.ImpiHeaderFinanceApprover = "nikhil.vig@teamcomputers.com";//request.ImpiHeaderFinanceApprover + "@ficci.com";
+                        ficciImpiHeader.ImpiHeaderFinanceApprover = "gautam.v@teamcomputers.com";//request.ImpiHeaderFinanceApprover + "@ficci.com";
                         if (request.ImpiHeaderSupportApprover != null)
                         {
                             ficciImpiHeader.ImpiHeaderSupportApprover = request.ImpiHeaderSupportApprover + "@ficci.com";
