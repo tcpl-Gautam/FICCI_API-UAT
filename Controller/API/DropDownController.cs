@@ -1,4 +1,5 @@
-﻿using FICCI_API.DTO;
+﻿using Azure;
+using FICCI_API.DTO;
 using FICCI_API.Interface;
 using FICCI_API.Models;
 using FICCI_API.ModelsEF;
@@ -276,7 +277,7 @@ namespace FICCI_API.Controller.API
         [HttpGet("GetProject")]
         public async Task<IActionResult> GetProject(int id = 0)
         {
-            //var result = new ProjectDTO();
+           // var result = new ProjectDTO();
             //var resu = new List<AllProjectList>();
             try
             {
@@ -284,6 +285,21 @@ namespace FICCI_API.Controller.API
                 var result = await _dbContext.FicciErpProjectDetails.Where(x => x.IsDelete != true && x.ProjectActive != false).ToListAsync();
                 if (result.Count > 0)
                 {
+                    var resonse = result.Select(c => new ProjectDTO
+                    {
+                        dimension_Code = c.DimensionCode,
+                        code = c.ProjectCode,
+                        name = c.ProjectName,
+                        departmentCode = c.ProjectDepartmentCode,
+                        departmentName = c.ProjectDepartmentName,
+                        divisionCode = c.ProjectDivisionCode,
+                        divisionName = c.ProjectDivisionName,
+                        tlApprover =c.TlApprover,
+                        chApprover =c.ChApprover,
+                        financeApprover =c.FinanceApprover,
+                        supportApprover =c.SupportApprover
+                    }).ToList();
+
                     if (id > 0)
                     {
                         result = result.Where(m => m.ProjectId == id).ToList();
@@ -292,7 +308,7 @@ namespace FICCI_API.Controller.API
                     {
                         status = true,
                         message = "List fetch successfully",
-                        data = result
+                        data = resonse
                     };
 
                     return Ok(response);
@@ -313,6 +329,41 @@ namespace FICCI_API.Controller.API
             catch (Exception ex)
             {
                 return StatusCode(500, new { status = false, message = "An error occurred while fetching the detail of projects." });
+            }
+        }
+
+        [HttpGet("GetCustomer")]
+        public async Task<IActionResult> GetCustomer()
+        {
+            try
+            {
+                var result = await _dbContext.Erpcustomers.ToListAsync();
+                if(result.Count > 0)
+                {
+                    var response = new
+                    {
+                        status = true,
+                        message = "List fetch successfully",
+                        data = result
+                    };
+                    return Ok(response);
+                }
+                else
+                {
+                    var response = new
+                    {
+                        status = true,
+                        message = "No records found",
+
+                    };
+
+                    return NotFound(response);
+                }
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, new { status = false, message = "An error occurred while fetching the detail of projects." });
+
             }
         }
 

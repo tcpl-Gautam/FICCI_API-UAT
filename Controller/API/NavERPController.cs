@@ -274,7 +274,15 @@ namespace FICCI_API.Controller.API
             try
             {
                 List<PostCodeMaster> cityList = await GetList<PostCodeMaster>("PostCode");
-
+                _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE PostCode");
+                foreach(var k in cityList)
+                {
+                    PostCode code = new PostCode();
+                    code.PostCode1 = k.PostCode;
+                    code.City = k.City;
+                    _dbContext.Add(code);
+                    _dbContext.SaveChanges();
+                }
                 var apiResponse = new
                 {
                     data = cityList,
@@ -297,7 +305,27 @@ namespace FICCI_API.Controller.API
             try
             {
                 List<CustomerModel> cityList = await GetList<CustomerModel>("Customer");
-
+                _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE ERPCustomer");
+                foreach (var k in cityList)
+                {
+                    Erpcustomer cust = new Erpcustomer();
+                    cust.CustNo = k.No;
+                    cust.CustName = k.Name;
+                    cust.CustName2 = k.Name2;
+                    cust.CustAddress = k.Address;
+                    cust.CustAddress2 = k.Address2;
+                    cust.City = k.City;
+                    cust.StateCode = k.State_Code;
+                    cust.CountryRegionCode = k.Country_Region_Code;
+                    cust.GstregistrationNo = k.GSTRegistrationNo;
+                    cust.GstcustomerType = k.GSTCustomerType;
+                    cust.Contact = k.Contact;
+                    cust.PanNo = k.PAN_No;
+                    cust.Email = k.EMail;
+                    cust.PrimaryContactNo = k.PrimaryContactNo;
+                    _dbContext.Add(cust);
+                    _dbContext.SaveChanges();
+                }
                 var apiResponse = new
                 {
                     data = cityList,
@@ -341,7 +369,24 @@ namespace FICCI_API.Controller.API
             try
             {
                 List<ProjectModel> cityList = await GetList<ProjectModel>("Project");
-
+                _dbContext.Database.ExecuteSqlRaw($"TRUNCATE TABLE FICCI_ERP_PROJECT_DETAILS");
+                foreach (var k in cityList)
+                {
+                    FicciErpProjectDetail proj = new FicciErpProjectDetail();
+                    proj.ProjectCode = k.Code;
+                    proj.ProjectName = k.Name;
+                    proj.ProjectDepartmentCode = k.DepartmentCode;
+                    proj.ProjectDepartmentName = k.DepartmentName;
+                    proj.ProjectDivisionName = k.DivisionName;
+                    proj.ProjectDivisionCode = k.DivisionCode;
+                    proj.TlApprover = k.TLApprover;
+                    proj.ChApprover = k.CHApprover;
+                    proj.FinanceApprover = k.FinanceApprover;
+                    proj.SupportApprover = k.SupportApprover;
+                    proj.DimensionCode = k.Dimension_Code;
+                    _dbContext.Add(proj);
+                    _dbContext.SaveChanges();
+                }
                 var apiResponse = new
                 {
                     data = cityList,

@@ -32,4 +32,6 @@ public partial class FicciErpProjectDetail
     public bool? ProjectActive { get; set; }
 
     public bool IsDelete { get; set; }
+
+    public string DimensionCode { get; set; }
 }

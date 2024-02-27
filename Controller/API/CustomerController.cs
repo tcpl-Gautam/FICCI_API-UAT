@@ -126,35 +126,35 @@ namespace FICCI_API.Controller.API
             }
         }
 
-        [HttpDelete("{customerId}")]
+        [HttpDelete("Delete/{customerId:int}")]
         public async Task<IActionResult> Delete(int customerId)
         {
             try
             {
-                if (customerId > 0)
+                if (customerId <= 0)
                 {
-                    var res = await _dbContext.FicciErpCustomerDetails.Where(x => x.CustomerId == customerId).FirstOrDefaultAsync();
-                    res.IsActive = false;
-                    res.IsDelete = true;
-                    await _dbContext.SaveChangesAsync();
-                    var response = new
-                    {
-                        status = true,
-                        message = "Delete successfully",
-                        data = new object[] { }
-                    };
-                    return StatusCode(200, response);
+                    return BadRequest(new { status = false, message = "Invalid Id" });
+                   
                 }
-                else
-                {
-                    var response = new
-                    {
-                        status = false,
-                        message = "Invalid Id",
-                    };
-                    return NotFound(response);
-                }
+                var res = await _dbContext.FicciErpCustomerDetails.Where(x => x.CustomerId == customerId).FirstOrDefaultAsync();
 
+                if(res == null)
+                {
+                    return NotFound(new { status = false, message = "Customer not found" });
+                }
+                res.IsActive = false;
+                res.IsDelete = true;
+                await _dbContext.SaveChangesAsync();
+
+                var response = new
+                {
+                    status = true,
+                    message = "Delete successfully",
+                    data = new object[] { }
+                };
+
+                return StatusCode(200, response);
+                
             }
             catch (Exception ex)
             {

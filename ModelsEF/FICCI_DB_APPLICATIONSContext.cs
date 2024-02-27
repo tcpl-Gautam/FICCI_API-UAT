@@ -17,6 +17,8 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
 
     public virtual DbSet<Country> Countries { get; set; }
 
+    public virtual DbSet<Erpcustomer> Erpcustomers { get; set; }
+
     public virtual DbSet<FicciErpCustomerDetail> FicciErpCustomerDetails { get; set; }
 
     public virtual DbSet<FicciErpProjectDetail> FicciErpProjectDetails { get; set; }
@@ -38,6 +40,8 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
     public virtual DbSet<FicciImwd> FicciImwds { get; set; }
 
     public virtual DbSet<GstCustomerType> GstCustomerTypes { get; set; }
+
+    public virtual DbSet<PostCode> PostCodes { get; set; }
 
     public virtual DbSet<State> States { get; set; }
 
@@ -100,6 +104,58 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.IsActive)
                 .IsRequired()
                 .HasDefaultValueSql("((1))");
+        });
+
+        modelBuilder.Entity<Erpcustomer>(entity =>
+        {
+            entity.HasKey(e => e.CustId).HasName("PK__ERPCusto__049E3AA9CEE328ED");
+
+            entity.ToTable("ERPCustomer");
+
+            entity.Property(e => e.City)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Contact)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CountryRegionCode)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Country_Region_Code");
+            entity.Property(e => e.CustAddress).IsUnicode(false);
+            entity.Property(e => e.CustAddress2).IsUnicode(false);
+            entity.Property(e => e.CustName).IsUnicode(false);
+            entity.Property(e => e.CustName2).IsUnicode(false);
+            entity.Property(e => e.CustNo)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Email)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("EMail");
+            entity.Property(e => e.GstcustomerType)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("GSTCustomerType");
+            entity.Property(e => e.GstregistrationNo)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("GSTRegistrationNo");
+            entity.Property(e => e.PanNo)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("PAN_No");
+            entity.Property(e => e.PinCode)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.PrimaryContactNo)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.StateCode)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("State_Code");
         });
 
         modelBuilder.Entity<FicciErpCustomerDetail>(entity =>
@@ -255,6 +311,10 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
                 .IsRequired()
                 .IsUnicode(false)
                 .HasColumnName("CH_APPROVER");
+            entity.Property(e => e.DimensionCode)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("Dimension_Code");
             entity.Property(e => e.FinanceApprover)
                 .IsRequired()
                 .IsUnicode(false)
@@ -875,6 +935,29 @@ public partial class FICCI_DB_APPLICATIONSContext : DbContext
             entity.Property(e => e.IsActive)
                 .IsRequired()
                 .HasDefaultValueSql("((1))");
+        });
+
+        modelBuilder.Entity<PostCode>(entity =>
+        {
+            entity.HasKey(e => e.PostCodeId).HasName("PK__PostCode__8579AD92DF20BE07");
+
+            entity.ToTable("PostCode");
+
+            entity.Property(e => e.City)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CreateDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.IsActive)
+                .IsRequired()
+                .HasDefaultValueSql("((1))");
+            entity.Property(e => e.PostCode1)
+                .IsRequired()
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .HasColumnName("PostCode");
         });
 
         modelBuilder.Entity<State>(entity =>
